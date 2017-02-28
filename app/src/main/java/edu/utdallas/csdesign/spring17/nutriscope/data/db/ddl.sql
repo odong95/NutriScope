@@ -47,7 +47,9 @@ PRIMARY KEY (food_id, recipe_id)
 
 DROP TABLE IF EXISTS food;
 CREATE TABLE food (
-  id int PRIMARY KEY NOT NULL,
+  id int NOT NULL,
+  user_id int REFERENCES user(id) NOT NULL,
+  PRIMARY KEY (id, user_id),
   food_group_id int REFERENCES food_group(id) NOT NULL,
   long_desc text NOT NULL DEFAULT '',
   short_desc text NOT NULL DEFAULT '',
