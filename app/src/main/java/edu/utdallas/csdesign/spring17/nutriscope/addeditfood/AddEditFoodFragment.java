@@ -23,8 +23,6 @@ import butterknife.ButterKnife;
 import edu.utdallas.csdesign.spring17.nutriscope.FoodNutrients;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 
-import static android.R.attr.visibility;
-
 /**
  * Created by john on 2/20/17.
  */

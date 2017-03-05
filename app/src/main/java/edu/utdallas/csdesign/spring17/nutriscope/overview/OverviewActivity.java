@@ -3,6 +3,8 @@ package edu.utdallas.csdesign.spring17.nutriscope.overview;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
 import edu.utdallas.csdesign.spring17.nutriscope.Injection;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 
@@ -17,6 +19,7 @@ public class OverviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidThreeTen.init(this);
         setContentView(R.layout.activity_single_fragment);
 
         OverviewFragment fragment = (OverviewFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);

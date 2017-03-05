@@ -22,6 +22,10 @@ public class FoodConsumed implements Trackable {
 
     }
 
+    public Food getFood() {
+        return food;
+    }
+
     @Override
     public String getTitle() {
         return food.getName();

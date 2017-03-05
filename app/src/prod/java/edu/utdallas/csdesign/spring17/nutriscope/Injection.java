@@ -3,7 +3,7 @@ package edu.utdallas.csdesign.spring17.nutriscope;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.HistoryRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.TrackableRepository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -14,9 +14,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Injection {
 
-    public static HistoryRepository provideHistoryRepository(@NonNull Context context) {
+    public static TrackableRepository provideHistoryRepository(@NonNull Context context) {
         checkNotNull(context);
-        return HistoryRepository.getInstance();
+        return TrackableRepository.getInstance();
     }
 }
 
