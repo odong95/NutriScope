@@ -6,7 +6,6 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import okhttp3.OkHttpClient;
 
 /**
  * Created by john on 3/5/17.

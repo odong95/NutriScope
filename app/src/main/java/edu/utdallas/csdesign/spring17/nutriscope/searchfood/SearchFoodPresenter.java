@@ -2,8 +2,6 @@ package edu.utdallas.csdesign.spring17.nutriscope.searchfood;
 
 import android.util.Log;
 
-import java.util.List;
-
 import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.AutoSuggestService;
 import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.Search;
 import retrofit2.Call;

@@ -2,7 +2,6 @@ package edu.utdallas.csdesign.spring17.nutriscope.data.source.realm;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.Nutrient;
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by john on 3/5/17.

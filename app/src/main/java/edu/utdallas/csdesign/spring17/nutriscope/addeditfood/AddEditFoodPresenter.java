@@ -2,13 +2,9 @@ package edu.utdallas.csdesign.spring17.nutriscope.addeditfood;
 
 import java.util.List;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.Food;
-import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.FoodReportService;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRealmSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.Specification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFood;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmSpecification;
 
 /**
  * Created by john on 2/21/17.

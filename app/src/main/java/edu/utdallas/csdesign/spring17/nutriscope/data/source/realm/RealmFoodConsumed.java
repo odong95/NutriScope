@@ -5,7 +5,6 @@ import org.threeten.bp.ZoneOffset;
 
 import java.util.UUID;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 

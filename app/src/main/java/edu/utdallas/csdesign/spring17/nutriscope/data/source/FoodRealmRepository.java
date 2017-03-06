@@ -4,8 +4,6 @@ import android.util.Log;
 
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
-
 import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.FoodReport;
 import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.FoodReportClient;
 import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.FoodReportService;

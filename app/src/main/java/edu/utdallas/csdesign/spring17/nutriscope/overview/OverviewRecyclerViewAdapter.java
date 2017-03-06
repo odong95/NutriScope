@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import edu.utdallas.csdesign.spring17.nutriscope.R;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFoodConsumed;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFoodConsumed;
 
 /**
  * Created by john on 2/24/17.
