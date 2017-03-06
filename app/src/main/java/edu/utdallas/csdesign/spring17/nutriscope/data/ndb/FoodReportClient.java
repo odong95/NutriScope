@@ -9,6 +9,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -36,6 +37,7 @@ public class FoodReportClient {
                 Log.d(TAG, originalHttpUrl.encodedPath());
 
                 HttpUrl url = originalHttpUrl.newBuilder()
+                        .addQueryParameter("type", "b")
                         .addQueryParameter("format", "JSON")
                         .addQueryParameter("api_key", "14Ahlq8z1eROqsbWEI86M4klUkzsFh3du4j3FvuV")
                         .build();
@@ -65,6 +67,12 @@ public class FoodReportClient {
                 return response;
             }
         });
+
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        client.addInterceptor(interceptor);
+
         OkHttpClient httpClient = client.build();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -82,12 +90,9 @@ public class FoodReportClient {
 
     public static FoodReportClient getInstance() {
         if (INSTANCE == null) {
-            return new FoodReportClient();
+            INSTANCE = new FoodReportClient();
         }
-        else {
-            return null;
-        }
-
+        return INSTANCE;
     }
 
 

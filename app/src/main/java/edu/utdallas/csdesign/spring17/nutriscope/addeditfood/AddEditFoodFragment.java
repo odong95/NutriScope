@@ -81,7 +81,9 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_edit_food, container, false);
-        ButterKnife.bind(getActivity());
+        ButterKnife.bind(this, view);
+
+        /*
 
         ArrayList<FoodNutrients> defaultNutrients = Lists.newArrayList(FoodNutrients.CALORIE, FoodNutrients.FAT, FoodNutrients.PROTEIN);
 
@@ -99,6 +101,10 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
 
         ButterKnife.apply(activeTextEdits, ChangeVisibility, View.VISIBLE);
 
+        */
+
+        /*
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +112,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
             }
         });
 
+        */
         return view;
     }
 
@@ -123,6 +130,11 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         editTextFoodName.setText(name);
 
 
+    }
+
+    @Override
+    public void showFoodName(String name) {
+        editTextFoodName.setText(name);
     }
 
     @Override

@@ -4,7 +4,7 @@ import java.util.List;
 
 import edu.utdallas.csdesign.spring17.nutriscope.BasePresenter;
 import edu.utdallas.csdesign.spring17.nutriscope.BaseView;
-import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.ACResult;
+import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.Item;
 
 /**
  * Created by john on 3/5/17.
@@ -14,7 +14,8 @@ public class SearchFoodContract {
 
     interface View extends BaseView<SearchFoodContract.Presenter> {
 
-        void showResults(List<ACResult> results);
+        void showAddEditFood(String name, String id);
+        void showResults(List<Item> results);
         boolean isActive();
 
 
@@ -25,7 +26,7 @@ public class SearchFoodContract {
 
         void searchFood(String terms);
 
-        void chooseFood(String id);
+        void chooseFood(String name, String id);
 
         boolean isDataMissing();
 

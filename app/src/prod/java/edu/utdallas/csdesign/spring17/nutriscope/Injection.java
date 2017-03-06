@@ -4,8 +4,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.AutoSuggestClient;
 import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.AutoSuggestService;
 import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.FoodReportClient;
 import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.FoodReportService;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRealmRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmRepository;
 
 /**
  * Created by john on 2/10/17.
@@ -25,7 +25,7 @@ public class Injection {
     }
 
     public static Repository provideRepository() {
-        return RealmRepository.getInstance();
+        return FoodRealmRepository.getInstance();
     }
 }
 

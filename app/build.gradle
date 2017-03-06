@@ -65,5 +65,7 @@ dependencies {
     annotationProcessor         "com.google.auto.value:auto-value:1.2"
     provided "org.projectlombok:lombok:1.16.14"
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
+
 
 }

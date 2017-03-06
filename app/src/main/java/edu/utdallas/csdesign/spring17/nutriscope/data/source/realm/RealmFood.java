@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data;
+package edu.utdallas.csdesign.spring17.nutriscope.data.source.realm;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -8,19 +8,24 @@ import io.realm.annotations.PrimaryKey;
  * Created by john on 2/21/17.
  */
 
-public class Food extends RealmObject {
+public class RealmFood extends RealmObject {
 
     @PrimaryKey
     private String id;
 
     private String name;
-    private RealmList<NutrientValue> nutritionContent;
+    private RealmList<RealmNutrientValue> nutritionContent;
 
-    public Food() {
+    public RealmFood() {
 
     }
 
-    public Food(String name) {
+    public RealmFood(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public RealmFood(String name) {
         this.name = name;
 
 

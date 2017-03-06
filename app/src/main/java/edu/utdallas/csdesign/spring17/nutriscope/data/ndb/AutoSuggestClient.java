@@ -36,6 +36,9 @@ public class AutoSuggestClient {
                 Log.d(TAG, originalHttpUrl.encodedPath());
 
                 HttpUrl url = originalHttpUrl.newBuilder()
+                        .addQueryParameter("max", "50")
+                        .addQueryParameter("offset", "0")
+                        .addQueryParameter("sort", "r")
                         .addQueryParameter("format", "JSON")
                         .addQueryParameter("api_key", "14Ahlq8z1eROqsbWEI86M4klUkzsFh3du4j3FvuV")
                         .build();
@@ -68,7 +71,7 @@ public class AutoSuggestClient {
         OkHttpClient httpClient = client.build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://ndb.nal.usda.gov")
+                .baseUrl("https://api.nal.usda.gov")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
                 .build();

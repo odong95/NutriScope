@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import edu.utdallas.csdesign.spring17.nutriscope.R;
-import edu.utdallas.csdesign.spring17.nutriscope.data.FoodConsumed;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFoodConsumed;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 
 /**
@@ -36,7 +36,7 @@ public class OverviewRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     //Returns the view type of the item at position for the purposes of view recycling.
     @Override
     public int getItemViewType(int position) {
-        if (items.get(position) instanceof FoodConsumed) {
+        if (items.get(position) instanceof RealmFoodConsumed) {
             return FOOD;
         }
         return -1;
@@ -89,7 +89,7 @@ public class OverviewRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
 
     private void configureViewHolderFood(ViewHolderFood vhf, int position) {
-        FoodConsumed food = (FoodConsumed) items.get(position);
+        RealmFoodConsumed food = (RealmFoodConsumed) items.get(position);
         if (food != null) {
             vhf.getFoodName().setText("Name: " + food.getFood().getName());
         }

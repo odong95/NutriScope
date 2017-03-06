@@ -12,8 +12,7 @@ import retrofit2.http.Query;
 
 public interface FoodReportService {
 
-    // https://ndb.nal.usda.gov/ndb/search/autosuggest?manu=&amp;ingred=&amp;ds=&amp;fgcd=&term=big+mac&api_key=
-    @GET("/ndb/search/autosuggest")
-    Call<List<ACResult>> autoComplete(@Query("term") String term);
-
+    // https://api.nal.usda.gov
+    @GET("/ndb/V2/reports")
+    Call<FoodReport> listReport(@Query("ndbno") String ndbNo);
 }

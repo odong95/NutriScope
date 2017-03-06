@@ -2,17 +2,16 @@ package edu.utdallas.csdesign.spring17.nutriscope.data.source;
 
 import java.util.List;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 
 /**
  * Created by john on 2/21/17.
  */
 
-public interface Repository {
+public interface Repository<T> {
 
-    interface QueryCallback {
+    interface QueryCallback<T> {
 
-        void onQueryComplete(List<Trackable> items);
+        void onQueryComplete(List<T> items);
 
         void onDataNotAvailable();
 
@@ -45,13 +44,13 @@ public interface Repository {
 
 
 
-    void createTrackable(Trackable item, CreateCallback callback);
+    void createItem(T item, CreateCallback callback);
 
-    void updateTrackable(Trackable item, UpdateCallback callback);
+    void updateItem(T item, UpdateCallback callback);
 
-    void queryTrackable(Specification specification, QueryCallback callback);
+    void queryItem(Specification specification, QueryCallback callback);
 
-    void deleteTrackable(Trackable id, DeleteCallback callback);
+    void deleteItem(T id, DeleteCallback callback);
 
 
 }

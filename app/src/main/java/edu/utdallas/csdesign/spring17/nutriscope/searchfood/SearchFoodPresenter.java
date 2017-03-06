@@ -4,8 +4,8 @@ import android.util.Log;
 
 import java.util.List;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.ACResult;
 import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.AutoSuggestService;
+import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.Search;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,25 +34,27 @@ public class SearchFoodPresenter implements SearchFoodContract.Presenter {
 
     @Override
     public void searchFood(String terms) {
-        Call<List<ACResult>> call = service.autoComplete(terms);
 
-        call.enqueue(new Callback<List<ACResult>>() {
+        Call<Search> call = service.autoComplete(terms);
+
+        call.enqueue(new Callback<Search>() {
             @Override
-            public void onResponse(Call<List<ACResult>> call, Response<List<ACResult>> response) {
+            public void onResponse(Call<Search> call, Response<Search> response) {
                 //Log.d(TAG, response.toString());
-                List<ACResult> out = response.body();
+                Search out = response.body();
+
 
                 Log.d(TAG, "onResponse");
 
                 if (out != null) {
                     Log.d(TAG, "show results");
 
-                    searchFoodView.showResults(out);
+                    searchFoodView.showResults(out.getList().getItem());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<ACResult>> call, Throwable t) {
+            public void onFailure(Call<Search> call, Throwable t) {
                 Log.d(TAG, "failure" + t.getCause());
                 t.printStackTrace();
                 Log.d(TAG, t.toString());
@@ -62,8 +64,12 @@ public class SearchFoodPresenter implements SearchFoodContract.Presenter {
     }
 
     @Override
-    public void chooseFood(String ndbNo) {
-        Log.d(TAG, ndbNo);
+    public void chooseFood(String name, String ndbNo) {
+        Log.d(TAG, "User Selected " + name + " " + ndbNo);
+        searchFoodView.showAddEditFood(name, ndbNo);
+
+
+
     }
 
 

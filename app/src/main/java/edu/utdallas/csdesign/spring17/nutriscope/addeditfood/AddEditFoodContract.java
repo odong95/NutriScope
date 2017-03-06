@@ -11,6 +11,7 @@ public interface AddEditFoodContract {
 
     interface View extends BaseView<Presenter> {
 
+        void showFoodName(String name);
         void showFood(String name, String protein, String fat, String carb);
         boolean isActive();
 

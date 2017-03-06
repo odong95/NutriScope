@@ -1,5 +1,6 @@
 package edu.utdallas.csdesign.spring17.nutriscope.searchfood;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,7 +24,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
-import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.ACResult;
+import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
+import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.Item;
 
 /**
  * Created by john on 3/5/17.
@@ -44,7 +46,7 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
 
     RecyclerView searchFoodRecyclerView;
 
-    private ACResultAdapter resultAdapter;
+    private ItemAdapter resultAdapter;
 
     public SearchFoodFragment() {
 
@@ -95,9 +97,9 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
 
         searchFoodRecyclerView = (RecyclerView) view.findViewById(R.id.search_food_recycler_view);
 
-        List<ACResult> results = new ArrayList<>();
+        List<Item> results = new ArrayList<>();
 
-        resultAdapter = new ACResultAdapter(results);
+        resultAdapter = new ItemAdapter(results);
 
         searchFoodRecyclerView.setAdapter(resultAdapter);
 
@@ -116,10 +118,10 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
     }
 
     @Override
-    public void showResults(List<ACResult> results) {
+    public void showResults(List<Item> results) {
 
         if (resultAdapter == null) {
-            resultAdapter = new ACResultAdapter(results);
+            resultAdapter = new ItemAdapter(results);
             searchFoodRecyclerView.setAdapter(resultAdapter);
         }
         else {
@@ -134,53 +136,61 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
         return isAdded();
     }
 
+    @Override
+    public void showAddEditFood(String name, String id) {
+        Intent intent = new Intent(getActivity(), AddEditFoodActivity.class);
+        intent.putExtra(AddEditFoodActivity.EXTRA_FOOD_ID, name);
+        intent.putExtra(AddEditFoodActivity.EXTRA_NDB_ID, id);
+        startActivity(intent);
+    }
 
 
-    private class ACResultHolder extends RecyclerView.ViewHolder
+
+    private class ItemHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
 
         private TextView name;
 
-        private ACResult result;
+        private Item result;
 
-        public ACResultHolder(View itemView) {
+        public ItemHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
 
             name = (TextView) itemView.findViewById(R.id.list_item_result_name);
         }
 
-        public void bindACResult(ACResult result) {
+        public void bindItem(Item result) {
             this.result = result;
-            name.setText(result.getValue());
+            name.setText(result.getName());
 
         }
 
         @Override
         public void onClick(View v) {
-            presenter.chooseFood(result.getIdString());
+            presenter.chooseFood(result.getName(), result.getNdbno());
         }
     }
 
-    private class ACResultAdapter extends RecyclerView.Adapter<ACResultHolder> {
+    private class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
 
-        private List<ACResult> results;
+        private List<Item> results;
 
-        public ACResultAdapter(List<ACResult> results) {
+        public ItemAdapter(List<Item> results) {
             this.results = results;
         }
 
         @Override
-        public ACResultHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater.inflate(R.layout.list_item_search, parent, false);
-            return new ACResultHolder(view);
+            return new ItemHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(ACResultHolder holder, int position) {
-            holder.bindACResult(results.get(position));
+        public void onBindViewHolder(ItemHolder holder, int position) {
+            holder.bindItem(results.get(position));
         }
 
         @Override
@@ -188,7 +198,7 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
             return this.results.size();
         }
 
-        public void setResults(List<ACResult> results) {
+        public void setResults(List<Item> results) {
             this.results = results;
         }
     }
