@@ -4,21 +4,25 @@ import org.threeten.bp.LocalDateTime;
 
 import java.util.UUID;
 
+import io.realm.RealmObject;
+
 /**
  * Created by john on 2/21/17.
  */
 
-public class FoodConsumed implements Trackable {
-    private final String Id = UUID.randomUUID().toString();
-    private final Food food;
-    private final int weight;
-    private final LocalDateTime timeStamp;
+public class FoodConsumed  extends RealmObject implements Trackable {
+    private String Id = UUID.randomUUID().toString();
+    private Food food = null;
+    private int weight = 0;
+
+    public FoodConsumed() {
+
+    }
 
 
     public FoodConsumed (Food food, int weight, LocalDateTime timeStamp) {
         this.food = food;
         this.weight = weight;
-        this.timeStamp = timeStamp;
 
     }
 

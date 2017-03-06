@@ -8,7 +8,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
  * Created by john on 2/21/17.
  */
 
-public interface TrackableDataSource {
+public interface Repository {
 
     interface QueryCallback {
 
@@ -45,13 +45,13 @@ public interface TrackableDataSource {
 
 
 
-    void createTrackable(Trackable trackable, CreateCallback callback);
+    void createTrackable(Trackable item, CreateCallback callback);
 
-    void updateTrackable(String id, Trackable trackable, UpdateCallback callback);
+    void updateTrackable(Trackable item, UpdateCallback callback);
 
     void queryTrackable(Specification specification, QueryCallback callback);
 
-    void deleteTrackable(String id, DeleteCallback callback);
+    void deleteTrackable(Trackable id, DeleteCallback callback);
 
 
 }

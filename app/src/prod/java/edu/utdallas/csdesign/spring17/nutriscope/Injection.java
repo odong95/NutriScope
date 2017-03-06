@@ -1,11 +1,11 @@
 package edu.utdallas.csdesign.spring17.nutriscope;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
-
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.TrackableRepository;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.AutoSuggestClient;
+import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.AutoSuggestService;
+import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.FoodReportClient;
+import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.FoodReportService;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmRepository;
 
 /**
  * Created by john on 2/10/17.
@@ -14,9 +14,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Injection {
 
-    public static TrackableRepository provideHistoryRepository(@NonNull Context context) {
-        checkNotNull(context);
-        return TrackableRepository.getInstance();
+    public static FoodReportService provideFoodReportService() {
+
+        return FoodReportClient.getInstance().getFoodReportService();
+    }
+
+    public static AutoSuggestService provideAutoSuggestService() {
+
+        return AutoSuggestClient.getInstance().getAutoSuggestService();
+    }
+
+    public static Repository provideRepository() {
+        return RealmRepository.getInstance();
     }
 }
 

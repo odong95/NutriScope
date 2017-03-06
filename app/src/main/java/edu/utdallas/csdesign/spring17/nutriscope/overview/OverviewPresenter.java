@@ -2,11 +2,7 @@ package edu.utdallas.csdesign.spring17.nutriscope.overview;
 
 import android.support.annotation.NonNull;
 
-import java.util.List;
-
-import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.TrackableDataSource;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.TrackableRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -16,11 +12,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class OverviewPresenter implements OverviewContract.Presenter {
 
-    private final TrackableRepository trackableRepository;
+    private final Repository trackableRepository;
     private final OverviewContract.View overviewView;
 
 
-    public OverviewPresenter(@NonNull TrackableRepository trackableRepository, @NonNull OverviewContract.View overviewView) {
+    public OverviewPresenter(@NonNull Repository trackableRepository, @NonNull OverviewContract.View overviewView) {
         this.trackableRepository = checkNotNull(trackableRepository);
         this.overviewView = checkNotNull(overviewView);
         overviewView.setPresenter(this);
@@ -34,17 +30,7 @@ public class OverviewPresenter implements OverviewContract.Presenter {
 
     @Override
     public void loadHistory() {
-        trackableRepository.getHistory(new TrackableDataSource.LoadHistoryCallback() {
-            @Override
-            public void onHistoryLoaded(List<Trackable> history) {
-                overviewView.showHistory(history);
-            }
 
-            @Override
-            public void onDataNotAvailable() {
-
-            }
-        });
 
     }
 }
