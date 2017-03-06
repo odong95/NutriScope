@@ -1,44 +1,53 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.source.realm;
 
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneOffset;
 
 import java.util.UUID;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by john on 2/21/17.
  */
 
-public class RealmFoodConsumed extends RealmObject implements Trackable {
+public class RealmFoodConsumed extends RealmObject {
+    @PrimaryKey
     private String Id = UUID.randomUUID().toString();
+
     private RealmFood food = null;
-    private int weight = 0;
+
+    private long quantity = 0;
+
+    private long timeStamp;
 
     public RealmFoodConsumed() {
 
     }
 
-
-    public RealmFoodConsumed(RealmFood food, int weight, LocalDateTime timeStamp) {
+    public RealmFoodConsumed(RealmFood food, Long quantity) {
         this.food = food;
-        this.weight = weight;
+        this.timeStamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
+        this.quantity = quantity;
 
+
+    }
+
+    public String getId() {
+        return Id;
     }
 
     public RealmFood getFood() {
         return food;
     }
 
-    @Override
-    public String getTitle() {
-        return food.getName();
+    public long getQuantity() {
+        return quantity;
     }
 
-    @Override
-    public String getId()
-    {
-        return Id;
+    public long getTimeStamp() {
+        return timeStamp;
     }
 }

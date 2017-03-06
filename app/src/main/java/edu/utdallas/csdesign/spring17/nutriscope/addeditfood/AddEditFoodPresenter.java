@@ -21,6 +21,15 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     String foodName;
     String ndbId;
 
+    public RealmFood getRealmfood() {
+        return realmfood;
+    }
+
+    public void setRealmfood(RealmFood realmfood) {
+        this.realmfood = realmfood;
+    }
+
+    private RealmFood realmfood = null;
 
     public AddEditFoodPresenter(Repository repository, AddEditFoodContract.View view,
                                 String ndbId, String foodName) {
@@ -46,6 +55,7 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     @Override
     public void addFood() {
 
+
     }
 
     @Override
@@ -59,8 +69,8 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
             repository.queryItem(new FoodRealmSpecification(ndbId), new Repository.QueryCallback() {
                 @Override
                 public void onQueryComplete(List items) {
-                    RealmFood food = (RealmFood) items.get(0);
-                    view.showFoodName(food.getName());
+                    setRealmfood((RealmFood) items.get(0));
+                    view.showFoodName(getRealmfood().getName());
                 }
 
                 @Override

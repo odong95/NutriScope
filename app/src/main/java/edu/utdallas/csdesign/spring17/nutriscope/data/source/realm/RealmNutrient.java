@@ -1,5 +1,6 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.source.realm;
 
+import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.Nutrient;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -9,7 +10,32 @@ import io.realm.annotations.PrimaryKey;
 
 public class RealmNutrient extends RealmObject {
     @PrimaryKey
-    String name;
+    private String id;
+    private String name;
+
+    public RealmNutrient() {
 
 
+    }
+
+    public RealmNutrient(Nutrient nutrient) {
+        this.id = nutrient.getNutrientId();
+        this.name = nutrient.getName();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

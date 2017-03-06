@@ -5,6 +5,7 @@ import android.app.Application;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import okhttp3.OkHttpClient;
 
 /**
@@ -21,13 +22,6 @@ public class NutriscopeApplication extends Application {
     }
 
 
-    private OkHttpClient client = new OkHttpClient();
-
-
-    public OkHttpClient getClient() {
-        return client;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -35,11 +29,10 @@ public class NutriscopeApplication extends Application {
         AndroidThreeTen.init(this);
         Realm.init(this);
 
-
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .inMemory()
+                .build();
+        Realm.setDefaultConfiguration(config);
 
     }
-
-
-
-
 }

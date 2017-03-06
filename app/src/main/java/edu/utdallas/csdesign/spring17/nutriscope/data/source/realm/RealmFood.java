@@ -1,5 +1,7 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.source.realm;
 
+import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.Food_;
+import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.Nutrient;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -11,37 +13,46 @@ import io.realm.annotations.PrimaryKey;
 public class RealmFood extends RealmObject {
 
     @PrimaryKey
-    private String id;
-
+    private String ndbNo;
     private String name;
-    private RealmList<RealmNutrientValue> nutritionContent;
+    private int dataSource; // 1 sr 2 bp
+    private RealmList<RealmNutrition> nutritionContent = new RealmList<>();
+
 
     public RealmFood() {
 
     }
 
-    public RealmFood(String id, String name) {
-        this.id = id;
-        this.name = name;
+    public RealmFood(Food_ food) {
+        this.ndbNo = food.getDesc().getNdbno();
+        this.name = food.getDesc().getName();
+
+        if (food.getDesc().getDs().toLowerCase().startsWith("s")) {
+            this.dataSource = 1;
+        }
+        else {
+            this.dataSource = 2;
+        }
+
+        for(Nutrient nutrient: food.getNutrients()) {
+            nutritionContent.add(new RealmNutrition(nutrient));
+        }
+
     }
 
-    public RealmFood(String name) {
-        this.name = name;
-
-
+    public String getNdbNo() {
+        return ndbNo;
     }
-
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getDataSource() {
+        return dataSource;
     }
 
-
-
-
-
+    public RealmList<RealmNutrition> getNutritionContent() {
+        return nutritionContent;
+    }
 }

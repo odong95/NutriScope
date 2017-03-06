@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,14 +21,18 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.FoodNutrients;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
+import edu.utdallas.csdesign.spring17.nutriscope.R2;
 
 /**
  * Created by john on 2/20/17.
  */
 
 public class AddEditFoodFragment extends Fragment implements AddEditFoodContract.View {
+
+    final private static String TAG = "AddEditFoodFragment";
 
     private AddEditFoodContract.Presenter presenter;
 
@@ -114,6 +119,13 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
 
         */
         return view;
+    }
+
+    @OnClick(R2.id.fab)
+    public void submit() {
+        Log.d(TAG, "Submit");
+        presenter.addFood();
+
     }
 
     static final ButterKnife.Setter<View, Integer> ChangeVisibility

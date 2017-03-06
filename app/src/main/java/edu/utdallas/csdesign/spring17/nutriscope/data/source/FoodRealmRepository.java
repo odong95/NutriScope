@@ -19,7 +19,7 @@ import retrofit2.Response;
  * Created by john on 3/5/17.
  */
 
-public class FoodRealmRepository<Food> implements Repository<Food> {
+public class FoodRealmRepository implements Repository<RealmFood> {
 
     private final static String TAG = "FoodRealmRepository";
 
@@ -45,12 +45,12 @@ public class FoodRealmRepository<Food> implements Repository<Food> {
     }
 
     @Override
-    public void createItem(Food item, CreateCallback callback) {
+    public void createItem(RealmFood item, CreateCallback callback) {
 
     }
 
     @Override
-    public void updateItem(Food item, UpdateCallback callback) {
+    public void updateItem(RealmFood item, UpdateCallback callback) {
 
     }
 
@@ -101,7 +101,7 @@ public class FoodRealmRepository<Food> implements Repository<Food> {
     }
 
     @Override
-    public void deleteItem(Food id, DeleteCallback callback) {
+    public void deleteItem(RealmFood id, DeleteCallback callback) {
 
     }
 
