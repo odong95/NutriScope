@@ -29,6 +29,7 @@ public class FoodReportClient {
 
     private FoodReportClient() {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
+
         client.addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
@@ -47,9 +48,12 @@ public class FoodReportClient {
                 Request.Builder requestBuilder = original.newBuilder()
                         .url(url);
 
-                Request request = requestBuilder
-                        .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1").build();
-                return chain.proceed(request);
+                Request request = requestBuilder.build();
+
+                Response response = chain.proceed(request);
+                Log.d(TAG, response.headers().toString());
+
+                return response;
 
             }
         });
@@ -71,7 +75,7 @@ public class FoodReportClient {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        client.addInterceptor(interceptor);
+        //client.addNetworkInterceptor(interceptor);
 
         OkHttpClient httpClient = client.build();
 

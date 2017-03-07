@@ -9,6 +9,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -48,8 +49,7 @@ public class AutoSuggestClient {
                 Request.Builder requestBuilder = original.newBuilder()
                         .url(url);
 
-                Request request = requestBuilder
-                        .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1").build();
+                Request request = requestBuilder.build();
                 return chain.proceed(request);
 
             }
@@ -68,6 +68,12 @@ public class AutoSuggestClient {
                 return response;
             }
         });
+
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        client.addNetworkInterceptor(interceptor);
+
         OkHttpClient httpClient = client.build();
 
         Retrofit retrofit = new Retrofit.Builder()

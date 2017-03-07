@@ -41,12 +41,10 @@ public class SearchFoodPresenter implements SearchFoodContract.Presenter {
                 //Log.d(TAG, response.toString());
                 Search out = response.body();
 
-
                 Log.d(TAG, "onResponse");
 
-                if (out != null) {
+                if (out.getList() != null) {
                     Log.d(TAG, "show results");
-
                     searchFoodView.showResults(out.getList().getItem());
                 }
             }

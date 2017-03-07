@@ -5,6 +5,7 @@ import java.util.List;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRealmSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFood;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFoodConsumed;
 
 /**
  * Created by john on 2/21/17.
@@ -17,6 +18,9 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     String foodName;
     String ndbId;
 
+    private RealmFood realmfood = null;
+    private RealmFoodConsumed realmFoodConsumed = null;
+
     public RealmFood getRealmfood() {
         return realmfood;
     }
@@ -24,8 +28,6 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     public void setRealmfood(RealmFood realmfood) {
         this.realmfood = realmfood;
     }
-
-    private RealmFood realmfood = null;
 
     public AddEditFoodPresenter(Repository repository, AddEditFoodContract.View view,
                                 String ndbId, String foodName) {

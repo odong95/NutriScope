@@ -5,10 +5,10 @@ package edu.utdallas.csdesign.spring17.nutriscope;
  */
 
 public enum FoodNutrients {
-    FAT,
-    PROTEIN,
-    CARBOHYDRATE,
-    CALORIE,
+    FAT(204),
+    PROTEIN(203),
+    CARBOHYDRATE(205),
+    CALORIE(208);/*,
     FIBER,
     SUGARS,
     CALCIUM,
@@ -29,7 +29,17 @@ public enum FoodNutrients {
     VITAMIN_B12,
     VITAMIN_K,
     FOLIC_ACID,
-    CHOLESTEROL;
+    CHOLESTEROL;*/
+
+    int nutrientId;
+
+    FoodNutrients(int id) {
+        this.nutrientId = id;
+    }
+
+    public int getNutrientId() {
+        return this.nutrientId;
+    }
 
 
 }

@@ -72,7 +72,7 @@ public class FoodRealmRepository implements Repository<RealmFood> {
                 if (report != null) {
                     Food_ food = report.getFoods().get(0).getFood();
 
-                    RealmFood realmFood = new RealmFood(food.getDesc().getNdbno(), food.getDesc().getName());
+                    RealmFood realmFood = new RealmFood(food);
                     Log.d(TAG, food.getDesc().getName());
 
                     callback.onQueryComplete(Lists.newArrayList(realmFood));
