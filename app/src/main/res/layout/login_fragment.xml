@@ -1,50 +1,94 @@
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/login_fragment">
+    android:gravity="center_horizontal"
+    android:id="@+id/login_fragment"
+    android:focusableInTouchMode="true">
 
-    <EditText
+    <ProgressBar
+        android:id="@+id/sign_in_progress"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/passwordText"
-        android:hint="Password"
-        android:layout_marginTop="36dp"
-        android:layout_below="@+id/userText"
-        android:layout_centerHorizontal="true" />
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/userText"
-        android:hint="Username"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/passwordText"
-        android:layout_alignStart="@+id/passwordText" />
+    <ScrollView
+        android:id="@+id/sign_in_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <Button
-        android:text="Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/bLogin"
-        android:layout_alignRight="@+id/bRegister"
-        android:layout_alignEnd="@+id/bRegister"
-        android:layout_above="@+id/bRegister"
-        android:layout_alignLeft="@+id/bRegister"
-        android:layout_alignStart="@+id/bRegister" />
-
-    <Button
-        android:text="Register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/bRegister"
-        android:layout_marginBottom="49dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="48dp"
+            android:paddingBottom="16dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"
+            android:text="Login">
 
 
-</RelativeLayout>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="10"
+                android:id="@+id/userText"
+                android:hint="Username" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/passwordText"
+                android:hint="Password"
+                android:layout_marginTop="10dp" />
+
+            <Button
+                android:text="Login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bLogin"
+                android:layout_marginTop="20dp" />
+
+            <Button
+                android:text="Register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bRegister"
+                android:layout_marginTop="5dp" />
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="72dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:paddingLeft="12dp"
+                android:paddingStart="12dp"
+                android:paddingRight="0dp"
+                android:paddingEnd="0dp"
+                android:drawablePadding="40dp"
+                tools:text="Log" />
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/google_sign_in_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:buttonSize="wide"/>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

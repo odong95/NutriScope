@@ -3,8 +3,6 @@ package edu.utdallas.csdesign.spring17.nutriscope.login;
 
 import android.os.AsyncTask;
 
-import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
-import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,52 +18,20 @@ import javax.crypto.spec.PBEKeySpec;
 
 public class LoginModelSecurity {
 
-    private MobileServiceClient mClient;
-    private MobileServiceTable<User> userTable;
+
     private LoginModel model;
     private boolean isLoggedIn;
     private byte[] pepper = {8, -52, -61, 86, -55, -75, -94, 14, 99, -36, 100, 118, 74, 20, 101, 9, 49, 118, -62, 27, 121, -14, -97, -24, 45, -113, 107, 126, 94, -48, -81, 36, -55, -92, -34, -11};
 
-    public LoginModelSecurity(MobileServiceClient client, LoginModel model) {
+    public LoginModelSecurity(LoginModel model) {
         this.model = model;
-        connectDB(client);
     }
 
-    public void connectDB(MobileServiceClient client) {
-        mClient = client;
-        userTable = mClient.getTable(User.class);
-    }
 
     public void attemptLogin(final String username, final String password) {
         isLoggedIn = false;
         try {
-            AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... params) {
-                    try {
-                        List<User> result = userTable.where()
-                                .field("username").eq(username)
-                                .execute().get();
-                        if (result.size() > 0) {
-                            User user = result.get(0);
-                            if (checkPassword(password, user.password, user.salt.getBytes("ISO-8859-1"))) {
-                                isLoggedIn = true;
-                            }
-                        }
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(Void param) {
-                    model.presenter.onLoginResponse(isLoggedIn);
-                }
-
-            };
-            task.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,8 +42,7 @@ public class LoginModelSecurity {
             byte[] salt = generateSalt();
             byte[] hash = hashPassword(password, salt);
 
-            User user = new User(username, hash, salt);
-            userTable.insert(user);
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();

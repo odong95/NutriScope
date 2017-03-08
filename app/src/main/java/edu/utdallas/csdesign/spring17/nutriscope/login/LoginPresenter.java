@@ -1,18 +1,17 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
-
-import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
+import io.realm.ObjectServerError;
+import io.realm.SyncUser;
 
 public class LoginPresenter implements LoginContract.Presenter {
 
     private LoginModel model;
     private LoginContract.View view;
 
-    public LoginPresenter(LoginContract.View view, MobileServiceClient client) {
+    public LoginPresenter(LoginContract.View view) {
         this.view = view;
-        this.model = new LoginModel(this, client);
+        this.model = new LoginModel(this);
     }
-
 
     @Override
     public void login(String username, String password) {
@@ -26,12 +25,22 @@ public class LoginPresenter implements LoginContract.Presenter {
 
 
     @Override
-    public void onLoginResponse(boolean isLoggedIn) {
-        view.onLoginResponse(isLoggedIn);
+    public void onSuccess(SyncUser user) {
+        view.onSuccess(user);
     }
 
     @Override
-    public void onRegisterResponse(boolean isRegistered) {
+    public void onError(ObjectServerError error) {
+        view.onError(error);
+    }
+
+    @Override
+    public void errorInputResponse(Boolean isValid) {
+        view.errorInputResponse(isValid);
+    }
+
+    @Override
+    public void onRegisterResponse(Boolean isRegistered) {
         view.onRegisterResponse(isRegistered);
     }
 }

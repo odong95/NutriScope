@@ -1,10 +1,17 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
+import io.realm.ObjectServerError;
+import io.realm.SyncUser;
+
 public class LoginContract {
     public interface View {
-        void onLoginResponse(boolean isLoggedIn);
+        void onSuccess(SyncUser user);
 
-        void onRegisterResponse(boolean isRegistered);
+        void onError(ObjectServerError error);
+
+        void errorInputResponse(Boolean isValid);
+
+        void onRegisterResponse(Boolean isRegistered);
     }
 
     public interface Presenter {
@@ -13,9 +20,14 @@ public class LoginContract {
 
         void register(String username, String password);
 
-        void onLoginResponse(boolean isLoggedIn);
+        void onSuccess(SyncUser user);
 
-        void onRegisterResponse(boolean isRegistered);
+        void onError(ObjectServerError error);
+
+        void errorInputResponse(Boolean isValid);
+
+        void onRegisterResponse(Boolean isRegistered);
+
     }
 
     public interface Model {
@@ -25,6 +37,5 @@ public class LoginContract {
         void register(String username, String password);
 
     }
-
 
 }
