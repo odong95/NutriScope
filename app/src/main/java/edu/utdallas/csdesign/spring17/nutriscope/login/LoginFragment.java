@@ -67,6 +67,13 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
         register = (Button) view.findViewById(R.id.bRegister);
         LoginActivity act = (LoginActivity) getActivity();
         presenter = act.loginPresenter;
+
+        login.setOnClickListener(this);
+        register.setOnClickListener(this);
+
+        loginFormView = view.findViewById(R.id.sign_in_form);
+        progressView = view.findViewById(R.id.sign_in_progress);
+
         // Check if we already got a user, if yes, just continue automatically
         if (savedInstanceState == null) {
             if (!ACTION_IGNORE_CURRENT_USER.equals(getActivity().getIntent().getAction())) {
@@ -76,11 +83,6 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
                 }
             }
         }
-        login.setOnClickListener(this);
-        register.setOnClickListener(this);
-
-        loginFormView = view.findViewById(R.id.sign_in_form);
-        progressView = view.findViewById(R.id.sign_in_progress);
 
         facebookAuth = new FacebookAuth((LoginButton) view.findViewById(R.id.login_button)) {
             @Override

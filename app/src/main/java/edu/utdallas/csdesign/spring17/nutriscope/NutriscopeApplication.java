@@ -20,8 +20,8 @@ import io.realm.log.RealmLog;
 public class NutriscopeApplication extends Application {
 
     private static NutriscopeApplication INSTANCE;
-    public static final String AUTH_URL = "http://" + "192.168.1.105" + ":9080/auth";
-    public static final String REALM_URL = "realm://" + "192.168.1.105" + ":9080/~/realmInstance";
+    public static final String AUTH_URL = "http://" + "n.uzsy.download" + ":9080/auth";
+    public static final String REALM_URL = "realm://" + "n.uzsy.download" + ":9080/~/realmInstance";
 
     public static NutriscopeApplication getInstance() {
         return INSTANCE;
