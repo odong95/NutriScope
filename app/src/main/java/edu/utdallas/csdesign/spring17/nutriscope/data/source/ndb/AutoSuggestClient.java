@@ -1,9 +1,13 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.ndb;
+package edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb;
 
 import android.util.Log;
 
 import java.io.IOException;
 
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -17,17 +21,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by john on 3/3/17.
  */
 
+@Module
 public class AutoSuggestClient {
 
     final private static String TAG = "NDBClient";
-    private static AutoSuggestClient INSTANCE = null;
-
-    private AutoSuggestService service;
 
 
+    AutoSuggestService autoSuggestService;
 
 
-    private AutoSuggestClient() {
+
+
+    public AutoSuggestClient() {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(new Interceptor() {
             @Override
@@ -82,27 +87,19 @@ public class AutoSuggestClient {
                 .client(httpClient)
                 .build();
 
-        this.service = retrofit.create(AutoSuggestService.class);
+        this.autoSuggestService = retrofit.create(AutoSuggestService.class);
 
 
 
 
     }
 
-    public static AutoSuggestClient getInstance() {
-        if (INSTANCE == null) {
-            return new AutoSuggestClient();
-        }
-        else {
-            return null;
-        }
-
+    @Provides
+    @Singleton
+    public AutoSuggestService getInstance() {
+        return autoSuggestService;
     }
 
-
-    public AutoSuggestService getAutoSuggestService() {
-        return service;
-    }
 
 
 }

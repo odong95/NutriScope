@@ -1,8 +1,14 @@
 package edu.utdallas.csdesign.spring17.nutriscope.addeditfood;
 
+import android.util.Log;
+
 import java.util.List;
 
+import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
+import edu.utdallas.csdesign.spring17.nutriscope.data.FoodClass;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ConsumedFoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRealmSpecification;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFoodConsumed;
@@ -13,25 +19,30 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFoodCons
 
 public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
 
-    Repository repository;
-    AddEditFoodContract.View view;
-    String foodName;
-    String ndbId;
+    private static final String TAG = "AddEditFoodPresenter";
 
-    private RealmFood realmfood = null;
+    private ConsumedFoodRepository consumedFoodRepository;
+    private FoodRepository foodRepository;
+    private AddEditFoodContract.View view;
+    private String foodName;
+    private String ndbId;
+
+    private FoodClass foodClass = null;
     private RealmFoodConsumed realmFoodConsumed = null;
 
-    public RealmFood getRealmfood() {
-        return realmfood;
+
+    public FoodClass getFoodClass() {
+        return foodClass;
     }
 
-    public void setRealmfood(RealmFood realmfood) {
-        this.realmfood = realmfood;
+    public void setFoodClass(FoodClass foodClass) {
+        this.foodClass = foodClass;
     }
 
-    public AddEditFoodPresenter(Repository repository, AddEditFoodContract.View view,
+    public AddEditFoodPresenter(ConsumedFoodRepository consumedFoodRepository, FoodRepository foodRepository, AddEditFoodContract.View view,
                                 String ndbId, String foodName) {
-        this.repository = repository;
+        this.consumedFoodRepository = consumedFoodRepository;
+        this.foodRepository = foodRepository;
         this.view = view;
         this.ndbId = ndbId;
         this.foodName = foodName;
@@ -64,11 +75,12 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
         }
 
         if (ndbId != null) {
-            repository.queryItem(new FoodRealmSpecification(ndbId), new Repository.QueryCallback() {
+            Log.d(TAG, "ndbid null");
+            foodRepository.queryItem(new FoodRealmSpecification(ndbId), new Repository.QueryCallback() {
                 @Override
                 public void onQueryComplete(List items) {
-                    setRealmfood((RealmFood) items.get(0));
-                    view.showFoodName(getRealmfood().getName());
+                    setFoodClass((FoodClass) items.get(0));
+                    view.showFoodName(getFoodClass().getName());
                 //    view.makeNutrientsActive(getRealmfood().getNutritionContent());
                 }
 

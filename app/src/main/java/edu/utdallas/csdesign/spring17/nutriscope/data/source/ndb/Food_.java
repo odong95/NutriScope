@@ -1,20 +1,20 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.ndb;
+package edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb;
 
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Food {
+public class Food_ {
 
     @SerializedName("food")
     @Expose
-    private Food_ food;
+    private Food food;
 
-    public Food_ getFood() {
+    public Food getFood() {
         return food;
     }
 
-    public void setFood(Food_ food) {
+    public void setFood(Food food) {
         this.food = food;
     }
 

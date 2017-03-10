@@ -1,6 +1,6 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.source.realm;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.Nutrient;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Nutrient;
 import io.realm.RealmObject;
 
 /**

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="edu.utdallas.csdesign.spring17.nutriscope">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".NutriscopeApplication"
@@ -14,19 +14,31 @@
         <activity
             android:name=".overview.OverviewActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".addeditfood.AddEditFoodActivity"
-                  android:parentActivityName=".overview.OverviewActivity"/>
-        <activity android:name=".searchfood.SearchFoodActivity"
-                  android:parentActivityName=".addeditfood.AddEditFoodActivity">
+        <activity
+            android:name=".addeditfood.AddEditFoodActivity"
+            android:parentActivityName=".overview.OverviewActivity"/>
+        <activity
+
+            android:name=".searchfood.SearchFoodActivity"
+            android:parentActivityName=".addeditfood.AddEditFoodActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".login.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+
     </application>
 
 </manifest>

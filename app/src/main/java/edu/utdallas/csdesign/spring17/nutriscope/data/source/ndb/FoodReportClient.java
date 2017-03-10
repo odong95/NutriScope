@@ -1,9 +1,13 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.ndb;
+package edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb;
 
 import android.util.Log;
 
 import java.io.IOException;
 
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -17,17 +21,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by john on 3/3/17.
  */
 
+@Module
 public class FoodReportClient {
 
-    final private static String TAG = "NDBClient";
-    private static FoodReportClient INSTANCE = null;
-
-    private FoodReportService service;
+    final private static String TAG = "FoodReportClient";
 
 
+    FoodReportService foodReportService;
 
 
-    private FoodReportClient() {
+
+
+    public FoodReportClient() {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
 
         client.addInterceptor(new Interceptor() {
@@ -79,30 +84,26 @@ public class FoodReportClient {
 
         OkHttpClient httpClient = client.build();
 
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.nal.usda.gov")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
                 .build();
 
-        this.service = retrofit.create(FoodReportService.class);
+        this.foodReportService = retrofit.create(FoodReportService.class);
 
 
 
 
     }
 
-    public static FoodReportClient getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new FoodReportClient();
-        }
-        return INSTANCE;
-    }
-
-
+    @Provides
+    @Singleton
     public FoodReportService getFoodReportService() {
-        return service;
+        return foodReportService;
     }
+
 
 
 }

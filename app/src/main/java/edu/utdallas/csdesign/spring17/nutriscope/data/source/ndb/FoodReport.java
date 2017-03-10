@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.ndb;
+package edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb;
 
 
 import com.google.gson.annotations.Expose;
@@ -10,7 +10,7 @@ public class FoodReport {
 
     @SerializedName("foods")
     @Expose
-    private List<Food> foods = null;
+    private List<Food_> foods = null;
     @SerializedName("count")
     @Expose
     private Integer count;
@@ -21,11 +21,11 @@ public class FoodReport {
     @Expose
     private Double api;
 
-    public List<Food> getFoods() {
+    public List<Food_> getFoods() {
         return foods;
     }
 
-    public void setFoods(List<Food> foods) {
+    public void setFoods(List<Food_> foods) {
         this.foods = foods;
     }
 

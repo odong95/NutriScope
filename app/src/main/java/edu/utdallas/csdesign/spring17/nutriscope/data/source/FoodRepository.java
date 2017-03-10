@@ -4,55 +4,52 @@ import android.util.Log;
 
 import com.google.common.collect.Lists;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReport;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportClient;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportService;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
+import edu.utdallas.csdesign.spring17.nutriscope.Injector;
+import edu.utdallas.csdesign.spring17.nutriscope.data.FoodClass;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Food;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFood;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReport;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by john on 3/5/17.
+ * Created by john on 3/10/17.
  */
 
-public class FoodRealmRepository{
-/*
-    private final static String TAG = "FoodRealmRepository";
+@Module
+public class FoodRepository implements Repository<Food> {
 
-    private FoodReportService service = null;
+    private final static String TAG = "FoodRepository";
 
-    private static FoodRealmRepository INSTANCE = null;
 
-    private FoodRealmRepository() {
+    FoodReportService foodReportService;
+
+    public FoodRepository() {
+
+    }
+
+    @Inject
+    public FoodRepository(FoodReportService foodReportService) {
+        this.foodReportService = foodReportService;
 
 
     }
 
-    private FoodRealmRepository(FoodReportService service) {
-        this.service = service;
-    }
 
-    public static FoodRealmRepository getInstance() {
-        if(INSTANCE == null) {
-            INSTANCE = new FoodRealmRepository(FoodReportClient.getInstance().getFoodReportService());
-        }
-
-        return INSTANCE;
-    }
 
     @Override
-    public void createItem(RealmFood item, CreateCallback callback) {
-
-
-
-
+    public void createItem(Food item, CreateCallback callback) {
 
     }
 
     @Override
-    public void updateItem(RealmFood item, UpdateCallback callback) {
+    public void updateItem(Food item, UpdateCallback callback) {
 
     }
 
@@ -64,9 +61,8 @@ public class FoodRealmRepository{
         String id = spec.toRealmQuery();
         //check realm for id if doesn't exit
 
-
         // get new data
-        Call<FoodReport> call = service.listReport(id);
+        Call<FoodReport> call = foodReportService.listReport(id);
 
         call.enqueue(new Callback<FoodReport>() {
             @Override
@@ -74,12 +70,13 @@ public class FoodRealmRepository{
                 FoodReport report = response.body();
 
                 if (report != null) {
-                    FoodClass food = report.getFoods().get(0).getFood();
+                    Food food = report.getFoods().get(0).getFood();
 
-                    RealmFood realmFood = new RealmFood(food);
+                    FoodClass foodClass = new FoodClass(food);
                     Log.d(TAG, food.getDesc().getName());
 
-                    callback.onQueryComplete(Lists.newArrayList(realmFood));
+
+                    callback.onQueryComplete(Lists.newArrayList(foodClass));
                 }
 
                 else {
@@ -103,9 +100,10 @@ public class FoodRealmRepository{
     }
 
     @Override
-    public void deleteItem(RealmFood id, DeleteCallback callback) {
+    public void deleteItem(Food id, DeleteCallback callback) {
 
     }
-*/
-
+    
+    
+    
 }

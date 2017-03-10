@@ -3,8 +3,13 @@ package edu.utdallas.csdesign.spring17.nutriscope.searchfood;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import javax.inject.Inject;
+
 import edu.utdallas.csdesign.spring17.nutriscope.Injection;
+import edu.utdallas.csdesign.spring17.nutriscope.Injector;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.AutoSuggestClient;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.AutoSuggestService;
 
 /**
  * Created by john on 3/5/17.
@@ -16,9 +21,14 @@ public class SearchFoodActivity extends AppCompatActivity{
 
     private SearchFoodPresenter searchFoodPresenter;
 
+    @Inject
+    AutoSuggestService autoSuggestService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Injector.get().inject(this);
 
         setContentView(R.layout.activity_single_fragment);
 
@@ -41,7 +51,7 @@ public class SearchFoodActivity extends AppCompatActivity{
         }
 
         searchFoodPresenter = new SearchFoodPresenter(
-                Injection.provideAutoSuggestService(),
+                autoSuggestService,
                 searchFoodFragment
         );
 

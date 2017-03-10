@@ -1,9 +1,9 @@
 package edu.utdallas.csdesign.spring17.nutriscope;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.AutoSuggestClient;
-import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.AutoSuggestService;
-import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.FoodReportClient;
-import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.FoodReportService;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.AutoSuggestClient;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.AutoSuggestService;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportClient;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportService;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRealmRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
 
@@ -13,10 +13,11 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
 
 
 public class Injection {
+    /*
 
     public static FoodReportService provideFoodReportService() {
 
-        return FoodReportClient.getInstance().getFoodReportService();
+        return FoodReportClient.get
     }
 
     public static AutoSuggestService provideAutoSuggestService() {
@@ -28,7 +29,7 @@ public class Injection {
         return FoodRealmRepository.getInstance();
     }
 
-
+*/
 
 }
 

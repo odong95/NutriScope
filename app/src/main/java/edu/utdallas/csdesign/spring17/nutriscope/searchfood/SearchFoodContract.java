@@ -4,7 +4,7 @@ import java.util.List;
 
 import edu.utdallas.csdesign.spring17.nutriscope.BasePresenter;
 import edu.utdallas.csdesign.spring17.nutriscope.BaseView;
-import edu.utdallas.csdesign.spring17.nutriscope.data.ndb.Item;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Item;
 
 /**
  * Created by john on 3/5/17.

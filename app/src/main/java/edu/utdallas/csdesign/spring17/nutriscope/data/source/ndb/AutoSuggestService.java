@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.ndb;
+package edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
