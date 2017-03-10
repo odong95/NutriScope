@@ -25,6 +25,7 @@ import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.FoodNutrients;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmNutrition;
 
 /**
  * Created by john on 2/20/17.
@@ -100,7 +101,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
                 .put(FoodNutrients.CARBOHYDRATE, editTextCarb)
                 .build();
 
-        makeNutrientsActive(defaultNutrients);
+      //  makeNutrientsActive(defaultNutrients);
 
         return view;
     }
@@ -138,15 +139,15 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         return isAdded();
     }
 
-    @Override
-    public void makeNutrientsActive(List<FoodNutrients> nutrients) {
+ /*   @Override
+    public void makeNutrientsActive(List<RealmNutrition> nutrition) {
         List<EditText> activeTextEdits = new ArrayList<>();
-        for(FoodNutrients foodNutrient: nutrients) {
-            activeTextEdits.add(this.editTextBoxes.get(foodNutrient));
+        for(RealmNutrition foodNutrient: nutrition) {
+            activeTextEdits.add(this.editTextBoxes.get(FoodNutrients(Integer.parseInt(foodNutrient.getNutrient().getId()))));
         }
         ButterKnife.apply(editTextBoxes.values().asList(), ChangeVisibility, View.GONE);
         ButterKnife.apply(activeTextEdits, ChangeVisibility, View.VISIBLE);
 
-    }
+    }*/
 
 }

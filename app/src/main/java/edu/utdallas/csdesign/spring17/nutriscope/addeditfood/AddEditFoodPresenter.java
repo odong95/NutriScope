@@ -69,6 +69,7 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
                 public void onQueryComplete(List items) {
                     setRealmfood((RealmFood) items.get(0));
                     view.showFoodName(getRealmfood().getName());
+                //    view.makeNutrientsActive(getRealmfood().getNutritionContent());
                 }
 
                 @Override

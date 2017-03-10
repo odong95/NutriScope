@@ -39,5 +39,6 @@ captures/
 
 # Keystore files
 *.jks
+google-services.json
 
 # db
