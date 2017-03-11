@@ -4,11 +4,13 @@ import android.util.Log;
 
 import com.google.common.collect.Lists;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
-import edu.utdallas.csdesign.spring17.nutriscope.data.FoodClass;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Food;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReport;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportService;
@@ -41,6 +43,8 @@ public class FoodRepository implements Repository<Food> {
 
     }
 
+    Map<String, Food> foodCache = new HashMap<>();
+
 
 
     @Override
@@ -72,11 +76,9 @@ public class FoodRepository implements Repository<Food> {
                 if (report != null) {
                     Food food = report.getFoods().get(0).getFood();
 
-                    FoodClass foodClass = new FoodClass(food);
                     Log.d(TAG, food.getDesc().getName());
 
-
-                    callback.onQueryComplete(Lists.newArrayList(foodClass));
+                    callback.onQueryComplete(Lists.newArrayList(food));
                 }
 
                 else {

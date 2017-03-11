@@ -14,6 +14,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
 
 public class OverviewActivity extends AppCompatActivity {
 
+    public static final String EXTRA_CONSUMED_FOOD_KEY = "CONSUMED_FOOD_KEY";
+
     private OverviewPresenter overviewPresenter;
 
     @Inject
@@ -38,8 +40,7 @@ public class OverviewActivity extends AppCompatActivity {
 
 
         // Create the presenter
-        overviewPresenter = new OverviewPresenter(
-                repository, fragment);
+        overviewPresenter = new OverviewPresenter(fragment);
 
     }
 

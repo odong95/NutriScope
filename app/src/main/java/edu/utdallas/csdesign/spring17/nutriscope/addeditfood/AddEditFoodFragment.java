@@ -1,5 +1,6 @@
 package edu.utdallas.csdesign.spring17.nutriscope.addeditfood;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +26,8 @@ import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.FoodNutrients;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Nutrient;
+import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 
 /**
  * Created by john on 2/20/17.
@@ -38,6 +42,8 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
     ImmutableMap<FoodNutrients, EditText> editTextBoxes;
 
     @BindView(R.id.foodname) EditText editTextFoodName;
+    @BindView(R.id.foodquantity) EditText editTextQuantity;
+
     @BindView(R.id.foodEnergy) EditText editTextEnergy;
     @BindView(R.id.foodNutrientFat) EditText editTextFat;
     @BindView(R.id.foodNutrientProtein) EditText editTextProtein;
@@ -107,7 +113,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
     @OnClick(R2.id.fab)
     public void submit() {
         Log.d(TAG, "fab clicked");
-        presenter.addFood();
+        presenter.addFood(Integer.parseInt(editTextQuantity.getText().toString()));
 
     }
 
@@ -137,15 +143,27 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         return isAdded();
     }
 
- /*   @Override
-    public void makeNutrientsActive(List<RealmNutrition> nutrition) {
+    @Override
+    public void makeNutrientsActive(List<Nutrient> nutrients) {
+        FoodNutrients key;
         List<EditText> activeTextEdits = new ArrayList<>();
-        for(RealmNutrition foodNutrient: nutrition) {
-            activeTextEdits.add(this.editTextBoxes.get(FoodNutrients(Integer.parseInt(foodNutrient.getNutrient().getId()))));
+        for(Nutrient foodNutrient: nutrients) {
+            key = FoodNutrients.getValue(Integer.parseInt(foodNutrient.getNutrientId()));
+            if (this.editTextBoxes.containsKey(key)) {
+                this.editTextBoxes.get(key).setText(foodNutrient.getValue());
+                activeTextEdits.add(this.editTextBoxes.get(key));   //get(FoodNutrients(Integer.parseInt(foodNutrient.getNutrientId()))));
+            }
         }
         ButterKnife.apply(editTextBoxes.values().asList(), ChangeVisibility, View.GONE);
         ButterKnife.apply(activeTextEdits, ChangeVisibility, View.VISIBLE);
 
-    }*/
+    }
+
+    @Override
+    public void showOverview(String key) {
+        Intent intent = new Intent(getActivity(), OverviewActivity.class);
+        intent.putExtra(OverviewActivity.EXTRA_CONSUMED_FOOD_KEY, key);
+        startActivity(intent);
+    }
 
 }

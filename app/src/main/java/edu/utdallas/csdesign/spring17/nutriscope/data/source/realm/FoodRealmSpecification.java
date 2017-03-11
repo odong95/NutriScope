@@ -1,7 +1,5 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.source.realm;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmSpecification;
-
 /**
  * Created by john on 3/5/17.
  */

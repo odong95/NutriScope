@@ -5,12 +5,11 @@ import android.util.Log;
 import java.util.List;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
-import edu.utdallas.csdesign.spring17.nutriscope.data.FoodClass;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ConsumedFoodRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.FoodRealmSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFoodConsumed;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Food;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.FoodRealmSpecification;
 
 /**
  * Created by john on 2/21/17.
@@ -26,17 +25,8 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     private String foodName;
     private String ndbId;
 
-    private FoodClass foodClass = null;
-    private RealmFoodConsumed realmFoodConsumed = null;
+    private Food food;
 
-
-    public FoodClass getFoodClass() {
-        return foodClass;
-    }
-
-    public void setFoodClass(FoodClass foodClass) {
-        this.foodClass = foodClass;
-    }
 
     public AddEditFoodPresenter(ConsumedFoodRepository consumedFoodRepository, FoodRepository foodRepository, AddEditFoodContract.View view,
                                 String ndbId, String foodName) {
@@ -53,18 +43,6 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     public void start() {
         populateFood();
 
-        consumedFoodRepository.createItem(new ConsumedFood("01002", "lots"), new Repository.CreateCallback() {
-            @Override
-            public void onCreateComplete() {
-                Log.d(TAG, "firebase success");
-            }
-
-            @Override
-            public void onCreateFailed() {
-                Log.d(TAG, "firebase fail");
-            }
-        });
-
     }
 
     @Override
@@ -73,7 +51,27 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     }
 
     @Override
-    public void addFood() {
+    public void addFood(int quantity) {
+
+
+        ConsumedFood consumedFood = new ConsumedFood(getFood().getDesc().getNdbno(), String.valueOf(quantity));
+
+        consumedFoodRepository.createItem(consumedFood, new Repository.CreateCallback() {
+            @Override
+            public void onCreateComplete() {
+                Log.d(TAG, "firebase success");
+                view.showOverview("key");
+            }
+
+            @Override
+            public void onCreateFailed() {
+                Log.d(TAG, "firebase fail");
+            }
+        });
+
+
+
+
 
 
     }
@@ -90,9 +88,11 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
             foodRepository.queryItem(new FoodRealmSpecification(ndbId), new Repository.QueryCallback() {
                 @Override
                 public void onQueryComplete(List items) {
-                    setFoodClass((FoodClass) items.get(0));
-                    view.showFoodName(getFoodClass().getName());
-                //    view.makeNutrientsActive(getRealmfood().getNutritionContent());
+                    Food food = (Food) items.get(0);
+                    setFood(food);
+
+                    view.showFoodName(food.getDesc().getName());
+                    view.makeNutrientsActive(((Food) items.get(0)).getNutrients());
                 }
 
                 @Override
@@ -112,6 +112,11 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
         return false;
     }
 
+    public Food getFood() {
+        return food;
+    }
 
-
+    public void setFood(Food food) {
+        this.food = food;
+    }
 }

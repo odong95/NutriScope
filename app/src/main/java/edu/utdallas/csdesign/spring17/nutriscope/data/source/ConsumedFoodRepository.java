@@ -4,7 +4,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
-import dagger.Provides;
 import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
 
 /**

@@ -2,8 +2,6 @@ package edu.utdallas.csdesign.spring17.nutriscope.overview;
 
 import android.support.annotation.NonNull;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -12,12 +10,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class OverviewPresenter implements OverviewContract.Presenter {
 
-    private final Repository trackableRepository;
+
     private final OverviewContract.View overviewView;
 
 
-    public OverviewPresenter(@NonNull Repository trackableRepository, @NonNull OverviewContract.View overviewView) {
-        this.trackableRepository = checkNotNull(trackableRepository);
+    public OverviewPresenter(@NonNull OverviewContract.View overviewView) {
         this.overviewView = checkNotNull(overviewView);
         overviewView.setPresenter(this);
     }

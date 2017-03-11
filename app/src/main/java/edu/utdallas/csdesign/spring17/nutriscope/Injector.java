@@ -1,7 +1,5 @@
 package edu.utdallas.csdesign.spring17.nutriscope;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ConsumedFoodRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.AutoSuggestClient;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportClient;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportService;
