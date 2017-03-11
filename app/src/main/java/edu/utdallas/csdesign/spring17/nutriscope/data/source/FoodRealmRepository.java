@@ -1,18 +1,5 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.source;
 
-import android.util.Log;
-
-import com.google.common.collect.Lists;
-
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReport;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportClient;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportService;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Food;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFood;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 /**
  * Created by john on 3/5/17.
  */

@@ -7,10 +7,9 @@ import java.util.List;
 import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.FoodClass;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ConsumedFoodRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRealmSpecification;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.FoodRealmSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmFoodConsumed;
 
 /**
@@ -53,6 +52,18 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     @Override
     public void start() {
         populateFood();
+
+        consumedFoodRepository.createItem(new ConsumedFood("01002", "lots"), new Repository.CreateCallback() {
+            @Override
+            public void onCreateComplete() {
+                Log.d(TAG, "firebase success");
+            }
+
+            @Override
+            public void onCreateFailed() {
+                Log.d(TAG, "firebase fail");
+            }
+        });
 
     }
 

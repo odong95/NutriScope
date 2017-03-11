@@ -22,9 +22,6 @@ public enum Injector {
         Component component = DaggerComponent.builder()
                 .autoSuggestClient(new AutoSuggestClient())
                 .foodReportClient(new FoodReportClient())
-                .consumedFoodRepository(new ConsumedFoodRepository())
-                .foodRepository(new FoodRepository())
-                .consumedFoodRepository(new ConsumedFoodRepository())
                 .build();
 
         FoodReportService service = component.foodReportService();

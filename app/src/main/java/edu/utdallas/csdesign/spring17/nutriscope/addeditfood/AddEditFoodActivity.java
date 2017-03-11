@@ -5,13 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
-import edu.utdallas.csdesign.spring17.nutriscope.Injection;
 import edu.utdallas.csdesign.spring17.nutriscope.Injector;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
-import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ConsumedFoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
 
 /**
  * Created by john on 2/21/17.

@@ -1,5 +1,6 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.source;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -11,26 +12,36 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
  */
 
 @Module
+@Singleton
 public class ConsumedFoodRepository implements Repository<ConsumedFood> {
+
+
+    ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository;
 
     ConsumedFoodRepository consumedFoodRepository;
 
-    public ConsumedFoodRepository() {
+    @Inject
+    public ConsumedFoodRepository(ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository) {
+        this.consumedFoodFirebaseRepository = consumedFoodFirebaseRepository;
 
     }
 
+    /*
     @Provides
     @Singleton
     public ConsumedFoodRepository getConsumedFoodRepository() {
         consumedFoodRepository = new ConsumedFoodRepository();
+
         return consumedFoodRepository;
     }
+    */
 
 
 
 
     @Override
     public void createItem(ConsumedFood item, CreateCallback callback) {
+        consumedFoodFirebaseRepository.createItem(item, callback);
 
     }
 

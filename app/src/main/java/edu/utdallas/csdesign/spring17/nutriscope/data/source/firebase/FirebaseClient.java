@@ -1,10 +1,5 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase;
 
-import android.util.Log;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 /**
  * Created by john on 3/10/17.
  */

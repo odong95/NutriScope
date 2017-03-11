@@ -8,12 +8,11 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
-import dagger.Provides;
-import edu.utdallas.csdesign.spring17.nutriscope.Injector;
 import edu.utdallas.csdesign.spring17.nutriscope.data.FoodClass;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Food;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReport;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportService;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.FoodRealmSpecification;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,6 +22,7 @@ import retrofit2.Response;
  */
 
 @Module
+@Singleton
 public class FoodRepository implements Repository<Food> {
 
     private final static String TAG = "FoodRepository";

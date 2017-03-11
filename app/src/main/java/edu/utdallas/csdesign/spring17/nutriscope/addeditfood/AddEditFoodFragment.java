@@ -17,7 +17,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +24,6 @@ import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.FoodNutrients;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmNutrition;
 
 /**
  * Created by john on 2/20/17.

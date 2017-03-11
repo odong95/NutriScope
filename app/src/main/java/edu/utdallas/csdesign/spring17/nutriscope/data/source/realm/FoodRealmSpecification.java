@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.source;
+package edu.utdallas.csdesign.spring17.nutriscope.data.source.realm;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.RealmSpecification;
 

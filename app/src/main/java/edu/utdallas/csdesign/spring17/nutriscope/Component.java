@@ -2,7 +2,6 @@ package edu.utdallas.csdesign.spring17.nutriscope;
 
 import javax.inject.Singleton;
 
-
 import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ConsumedFoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRepository;
@@ -23,6 +22,7 @@ public interface Component {
 
     FoodReportService foodReportService();
     FoodRepository foodRepository();
+    ConsumedFoodRepository consumedFoodRepository();
 
 
 }

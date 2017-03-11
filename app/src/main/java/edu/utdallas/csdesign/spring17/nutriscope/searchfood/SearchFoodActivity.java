@@ -5,10 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
-import edu.utdallas.csdesign.spring17.nutriscope.Injection;
 import edu.utdallas.csdesign.spring17.nutriscope.Injector;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.AutoSuggestClient;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.AutoSuggestService;
 
 /**
