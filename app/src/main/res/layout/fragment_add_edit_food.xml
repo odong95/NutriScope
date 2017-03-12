@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:hint="@string/fat"/>
+            android:hint="@string/kcalorie"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:hint="@string/kcalorie"/>
+            android:hint="@string/fat"/>
 
     </android.support.design.widget.TextInputLayout>
 

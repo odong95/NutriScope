@@ -3,6 +3,7 @@ package edu.utdallas.csdesign.spring17.nutriscope.overview;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -39,9 +42,14 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
     private OverviewRecyclerViewAdapter adapter;
 
     private OverviewContract.Presenter presenter;
+    private BottomSheetBehavior behavior;
 
     @BindView(R2.id.fab_add_overview)
     FloatingActionButton fab;
+
+
+
+
 
 
     public OverviewFragment() {
@@ -73,14 +81,40 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         overviewRecyclerView = (RecyclerView) view.findViewById(R.id.overview_recycler_view);
         overviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        LinearLayout bottomSheet = (LinearLayout) view.findViewById(R.id.overview_bottom_sheet);
+        this.behavior = BottomSheetBehavior.from(bottomSheet);
+        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    fab.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
 
         return view;
     }
 
-    @OnClick(R2.id.fab_add_overview)
+    @OnClick(R2.id.overview_bottom_sheet_add_food)
     public void submit() {
         Log.d(TAG, "overview fab clicked");
         showAddEditFood();
+
+    }
+
+    @OnClick(R2.id.fab_add_overview)
+    public void showBottomSheet() {
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        fab.setVisibility(View.INVISIBLE);
 
     }
 
