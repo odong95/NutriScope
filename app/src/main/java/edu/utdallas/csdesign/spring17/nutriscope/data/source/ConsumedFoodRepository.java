@@ -1,5 +1,9 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.source;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -12,7 +16,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
 
 @Module
 @Singleton
-public class ConsumedFoodRepository implements Repository<ConsumedFood> {
+public class ConsumedFoodRepository extends Observable implements Repository<ConsumedFood> {
 
 
     ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository;
@@ -20,8 +24,9 @@ public class ConsumedFoodRepository implements Repository<ConsumedFood> {
     ConsumedFoodRepository consumedFoodRepository;
 
     @Inject
-    public ConsumedFoodRepository(ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository) {
+    public ConsumedFoodRepository(ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository, HistoryRepository historyRepository) {
         this.consumedFoodFirebaseRepository = consumedFoodFirebaseRepository;
+        this.addObserver(historyRepository);
 
     }
 
@@ -36,11 +41,17 @@ public class ConsumedFoodRepository implements Repository<ConsumedFood> {
     */
 
 
+    List<ConsumedFood> consumedFoodCache = new ArrayList<>();
 
 
     @Override
     public void createItem(ConsumedFood item, CreateCallback callback) {
-        consumedFoodFirebaseRepository.createItem(item, callback);
+       // consumedFoodFirebaseRepository.createItem(item, callback);
+
+        consumedFoodCache.add(item);
+        setChanged();
+        notifyObservers(item);
+        callback.onCreateComplete();
 
     }
 

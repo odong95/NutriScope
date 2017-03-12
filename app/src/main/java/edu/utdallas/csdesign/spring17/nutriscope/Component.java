@@ -5,9 +5,11 @@ import javax.inject.Singleton;
 import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ConsumedFoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.HistoryRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.AutoSuggestClient;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportClient;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportService;
+import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.searchfood.SearchFoodActivity;
 
 /**
@@ -15,10 +17,18 @@ import edu.utdallas.csdesign.spring17.nutriscope.searchfood.SearchFoodActivity;
  */
 
 @Singleton
-@dagger.Component(modules={AutoSuggestClient.class, FoodReportClient.class, ConsumedFoodRepository.class, FoodRepository.class})
+@dagger.Component(
+        modules = {
+                AutoSuggestClient.class,
+                FoodReportClient.class,
+                ConsumedFoodRepository.class,
+                FoodRepository.class,
+                HistoryRepository.class
+        })
 public interface Component {
     void inject(SearchFoodActivity searchFoodActivity);
     void inject(AddEditFoodActivity addEditFoodActivity);
+    void inject(OverviewActivity overviewActivity);
 
     FoodReportService foodReportService();
     FoodRepository foodRepository();

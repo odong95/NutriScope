@@ -5,11 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
+import edu.utdallas.csdesign.spring17.nutriscope.Injector;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.HistoryRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
 
 /**
- * Created by john on 2/10/17.
+ *
+
+ *
  */
 
 public class OverviewActivity extends AppCompatActivity {
@@ -19,12 +23,12 @@ public class OverviewActivity extends AppCompatActivity {
     private OverviewPresenter overviewPresenter;
 
     @Inject
-    Repository repository;
+    HistoryRepository historyRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Injector.get().inject(this);
 
 
         setContentView(R.layout.activity_single_fragment);
@@ -40,7 +44,9 @@ public class OverviewActivity extends AppCompatActivity {
 
 
         // Create the presenter
-        overviewPresenter = new OverviewPresenter(fragment);
+        overviewPresenter = new OverviewPresenter(fragment, historyRepository);
+
+        fragment.setPresenter(overviewPresenter);
 
     }
 

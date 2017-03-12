@@ -2,6 +2,9 @@ package edu.utdallas.csdesign.spring17.nutriscope.addeditfood;
 
 import android.util.Log;
 
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneId;
+
 import java.util.List;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
@@ -55,6 +58,7 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
 
 
         ConsumedFood consumedFood = new ConsumedFood(getFood().getDesc().getNdbno(), String.valueOf(quantity));
+        consumedFood.setDateTimeConsumed(LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond());
 
         consumedFoodRepository.createItem(consumedFood, new Repository.CreateCallback() {
             @Override

@@ -13,10 +13,11 @@ import java.util.Map;
 
 @AutoValue
 @IgnoreExtraProperties
-public class ConsumedFood {
+public class ConsumedFood implements Trackable {
 
     private String ndbNo;
     private String quantity;
+    private long dateTimeConsumed;
 
     public ConsumedFood() {
 
@@ -36,11 +37,25 @@ public class ConsumedFood {
         return quantity;
     }
 
+    public long getDateTimeConsumed() {
+        return dateTimeConsumed;
+    }
+
+    public void setDateTimeConsumed(long dateTimeConsumed) {
+        this.dateTimeConsumed = dateTimeConsumed;
+    }
+
+    @Override
+    public long getTimeStamp() {
+        return getDateTimeConsumed();
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("ndbNo", ndbNo);
         result.put("quantity", quantity);
+        result.put("dateTimeConsumed", dateTimeConsumed);
 
         return result;
 

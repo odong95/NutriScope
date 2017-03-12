@@ -48,7 +48,7 @@ public interface Repository<T> {
 
     void updateItem(T item, UpdateCallback callback);
 
-    void queryItem(Specification specification, QueryCallback callback);
+    void queryItem(Specification specification, QueryCallback<T> callback);
 
     void deleteItem(T id, DeleteCallback callback);
 
