@@ -6,6 +6,8 @@ import android.content.Context;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
+import java.lang.ref.WeakReference;
+
 import dagger.Module;
 
 /**
@@ -19,14 +21,17 @@ public class NutriscopeApplication extends Application {
 
     FirebaseAuth auth;
 
-    private Context getContext() {
+    private static WeakReference<Context> context;
 
-        return getApplicationContext();
+    public static Context getContext() {
+
+        return context.get();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        context = new WeakReference<Context>(this);
 
         Injector.initialize(this);
         AndroidThreeTen.init(this);
@@ -34,6 +39,8 @@ public class NutriscopeApplication extends Application {
         auth = FirebaseAuth.getInstance();
 
         auth.signInWithEmailAndPassword("test@user.com", "password");
+
+
 
 
 
