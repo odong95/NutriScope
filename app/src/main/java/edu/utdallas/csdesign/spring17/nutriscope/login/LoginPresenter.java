@@ -1,7 +1,5 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
-import io.realm.ObjectServerError;
-import io.realm.SyncUser;
 
 public class LoginPresenter implements LoginContract.Presenter {
 
@@ -23,16 +21,6 @@ public class LoginPresenter implements LoginContract.Presenter {
         model.register(username, password);
     }
 
-
-    @Override
-    public void onSuccess(SyncUser user) {
-        view.onSuccess(user);
-    }
-
-    @Override
-    public void onError(ObjectServerError error) {
-        view.onError(error);
-    }
 
     @Override
     public void errorInputResponse(Boolean isValid) {

@@ -141,7 +141,7 @@ public class OverviewActivity extends AppCompatActivity {
         realm.close();
         realm = null;
         if (logoutAfterClose) {
-            UserManager.logoutActiveUser();
+            
             logoutAfterClose = false;
         }
 
