@@ -14,35 +14,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.SignInButton;
 
-import edu.utdallas.csdesign.spring17.nutriscope.OverviewActivity;
+
 import edu.utdallas.csdesign.spring17.nutriscope.R;
-import edu.utdallas.csdesign.spring17.nutriscope.UserManager;
-import edu.utdallas.csdesign.spring17.nutriscope.auth.facebook.FacebookAuth;
-import edu.utdallas.csdesign.spring17.nutriscope.auth.google.GoogleAuth;
-import io.realm.ObjectServerError;
-import io.realm.SyncCredentials;
-import io.realm.SyncUser;
-
-import static edu.utdallas.csdesign.spring17.nutriscope.NutriscopeApplication.AUTH_URL;
-import static edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity.ACTION_IGNORE_CURRENT_USER;
 
 
-public class LoginFragment extends Fragment implements LoginContract.View, View.OnClickListener, SyncUser.Callback {
+
+
+public class LoginFragment extends Fragment implements LoginContract.View, View.OnClickListener{
 
     private EditText userText;
     private EditText passwordText;
     private View progressView;
     private View loginFormView;
     private Button register, login;
-    private FacebookAuth facebookAuth;
-    private GoogleAuth googleAuth;
     private LoginContract.Presenter presenter;
 
     public LoginFragment() {
@@ -76,33 +61,10 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
 
         // Check if we already got a user, if yes, just continue automatically
         if (savedInstanceState == null) {
-            if (!ACTION_IGNORE_CURRENT_USER.equals(getActivity().getIntent().getAction())) {
-                final SyncUser user = SyncUser.currentUser();
-                if (user != null) {
-                    onSuccess(user);
-                }
-            }
+
         }
 
-        facebookAuth = new FacebookAuth((LoginButton) view.findViewById(R.id.login_button)) {
-            @Override
-            public void onRegistrationComplete(final LoginResult loginResult) {
-                UserManager.setAuthMode(UserManager.AUTH_MODE.FACEBOOK);
-                SyncCredentials credentials = SyncCredentials.facebook(loginResult.getAccessToken().getToken());
-                SyncUser.loginAsync(credentials, AUTH_URL, LoginFragment.this);
-            }
-        };
 
-        googleAuth = new GoogleAuth((SignInButton) view.findViewById(R.id.google_sign_in_button), this.getActivity()) {
-            @Override
-            public void onRegistrationComplete(GoogleSignInResult result) {
-                UserManager.setAuthMode(UserManager.AUTH_MODE.GOOGLE);
-                GoogleSignInAccount acct = result.getSignInAccount();
-                SyncCredentials credentials = SyncCredentials.google(acct.getIdToken());
-                SyncUser.loginAsync(credentials, AUTH_URL, LoginFragment.this);
-            }
-
-        };
 
 
     }
@@ -124,22 +86,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     }
 
 
-    @Override
-    public void onSuccess(SyncUser user) {
-        showProgress(false);
-        UserManager.setActiveUser(user);
-        Intent intent = new Intent(getActivity(), OverviewActivity.class);
-        startActivity(intent);
-        getActivity().finish();
 
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        googleAuth.onActivityResult(requestCode, resultCode, data);
-        facebookAuth.onActivityResult(requestCode, resultCode, data);
-    }
     private void showProgress(final boolean show) {
         final int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -161,25 +108,8 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
             }
         });
     }
-    @Override
-    public void onError(ObjectServerError error) {
-        showProgress(false);
-        String errorMsg;
-        switch (error.getErrorCode()) {
-            case EXISTING_ACCOUNT:
-                errorMsg = "Account already exists";
-                break;
-            case UNKNOWN_ACCOUNT:
-                errorMsg = "Account does not exists";
-                break;
-            case INVALID_CREDENTIALS:
-                errorMsg = "The provided credentials are invalid or a user already exists";
-                break;
-            default:
-                errorMsg = error.toString();
-        }
-        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
-    }
+
+
 
     @Override
     public void errorInputResponse(Boolean isNotValid) {

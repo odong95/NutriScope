@@ -41,10 +41,8 @@
     <string name="custom_token">Custom Token</string>
     <string name="signed_out">Signed Out</string>
     <string name="token_null">Token: null</string>
-    <string name="hint_email">Email</string>
-    <string name="hint_password">Password</string>
     <string name="desc_firebase_lockup">Firebase logo and name</string>
-    <string name="auth_failed">Authentication failed</string>
+
 
     <string name="firebase_status_fmt">Firebase User: %s</string>
     <string name="firebase_user_management">Firebase User Management</string>
@@ -66,4 +64,14 @@
 
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
+
+    <string name="action_sign_in_short">Register</string>
+    <string name="email">Email</string>
+    <string name="auth_failed">Sign in failed, please check your email and/or password</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirmpassword">Comfirm Password</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_link_to_register">Don\'t have an account? Click here to sign up!</string>
+    <string name="btn_link_to_login">Already registered? Login here. </string>
 </resources>
