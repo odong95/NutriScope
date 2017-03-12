@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 package edu.utdallas.csdesign.spring17.nutriscope;
 
@@ -13,23 +12,11 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.log.LogLevel;
 import io.realm.log.RealmLog;
-=======
-package edu.utdallas.csdesign.spring17.nutriscope;
-
-import android.app.Application;
-import android.content.Context;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.jakewharton.threetenabp.AndroidThreeTen;
-
-import dagger.Module;
->>>>>>> refs/remotes/jtexp/john-nightly
 
 /**
  * Created by john on 3/5/17.
  */
 
-<<<<<<< HEAD
 public class NutriscopeApplication extends Application {
 
     private static NutriscopeApplication INSTANCE;
@@ -41,25 +28,11 @@ public class NutriscopeApplication extends Application {
 
     }
 
-=======
-@Module
-public class NutriscopeApplication extends Application {
-
-    final private static String TAG = "NutriscopeApplication";
-
-    FirebaseAuth auth;
-
-    private Context getContext() {
-
-        return getApplicationContext();
-    }
->>>>>>> refs/remotes/jtexp/john-nightly
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-<<<<<<< HEAD
         AndroidThreeTen.init(this);
         Realm.init(this);
         FacebookSdk.sdkInitialize(this);
@@ -73,26 +46,4 @@ public class NutriscopeApplication extends Application {
                         .build());*/
 
     }
-=======
-        Injector.initialize(this);
-        AndroidThreeTen.init(this);
-
-        auth = FirebaseAuth.getInstance();
-
-        auth.signInWithEmailAndPassword("test@user.com", "password");
-
-
-
-    }
-
-
-
-    public String getUid() {
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
-    }
-
-
-
-
->>>>>>> refs/remotes/jtexp/john-nightly
 }
