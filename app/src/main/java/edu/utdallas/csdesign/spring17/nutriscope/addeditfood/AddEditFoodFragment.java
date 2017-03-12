@@ -28,6 +28,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Nutrient;
 import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
+import edu.utdallas.csdesign.spring17.nutriscope.searchfood.SearchFoodActivity;
 
 /**
  * Created by john on 2/20/17.
@@ -41,15 +42,15 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
 
     ImmutableMap<FoodNutrients, EditText> editTextBoxes;
 
-    @BindView(R.id.foodname) EditText editTextFoodName;
-    @BindView(R.id.foodquantity) EditText editTextQuantity;
+    @BindView(R2.id.foodname) EditText editTextFoodName;
+    @BindView(R2.id.foodquantity) EditText editTextQuantity;
 
-    @BindView(R.id.foodEnergy) EditText editTextEnergy;
-    @BindView(R.id.foodNutrientFat) EditText editTextFat;
-    @BindView(R.id.foodNutrientProtein) EditText editTextProtein;
-    @BindView(R.id.foodNutrientCarbohydrate) EditText editTextCarb;
+    @BindView(R2.id.foodEnergy) EditText editTextEnergy;
+    @BindView(R2.id.foodNutrientFat) EditText editTextFat;
+    @BindView(R2.id.foodNutrientProtein) EditText editTextProtein;
+    @BindView(R2.id.foodNutrientCarbohydrate) EditText editTextCarb;
 
-    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R2.id.fab_add_food) FloatingActionButton fab;
 
     public AddEditFoodFragment() {
 
@@ -84,6 +85,9 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_item_search_food:
+                showSearch("");
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -110,7 +114,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         return view;
     }
 
-    @OnClick(R2.id.fab)
+    @OnClick(R2.id.fab_add_food)
     public void submit() {
         Log.d(TAG, "fab clicked");
         presenter.addFood(Integer.parseInt(editTextQuantity.getText().toString()));
@@ -156,6 +160,15 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         }
         ButterKnife.apply(editTextBoxes.values().asList(), ChangeVisibility, View.GONE);
         ButterKnife.apply(activeTextEdits, ChangeVisibility, View.VISIBLE);
+
+    }
+
+    public void showSearch(String foodName) {
+        Intent intent = new Intent(getActivity(), SearchFoodActivity.class);
+        intent.putExtra(SearchFoodActivity.EXTRA_FOOD_ID, foodName);
+        startActivity(intent);
+
+
 
     }
 
