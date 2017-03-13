@@ -27,11 +27,15 @@ import edu.utdallas.csdesign.spring17.nutriscope.searchfood.SearchFoodActivity;
         })
 public interface Component {
     void inject(SearchFoodActivity searchFoodActivity);
+
     void inject(AddEditFoodActivity addEditFoodActivity);
+
     void inject(OverviewActivity overviewActivity);
 
     FoodReportService foodReportService();
+
     FoodRepository foodRepository();
+
     ConsumedFoodRepository consumedFoodRepository();
 
 

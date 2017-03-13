@@ -24,7 +24,6 @@ public interface OverviewContract {
         void loadHistory();
 
 
-
     }
 
 }

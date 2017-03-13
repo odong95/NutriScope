@@ -43,7 +43,6 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     }
 
 
-
     @Override
     public void start() {
         populateFood();
@@ -76,10 +75,6 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
         });
 
 
-
-
-
-
     }
 
     private List<Object> contentList;
@@ -103,7 +98,7 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
                     contentList = new LinkedList<Object>();
                     contentList.add(new FoodName(food.getDesc().getName()));
                     contentList.add(new Quantity(""));
-                    for(Nutrient nutrient: ((Food) items.get(0)).getNutrients()) {
+                    for (Nutrient nutrient : ((Food) items.get(0)).getNutrients()) {
                         contentList.add(nutrient);
 
                     }
@@ -118,7 +113,6 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
                 }
             });
         }
-
 
 
     }

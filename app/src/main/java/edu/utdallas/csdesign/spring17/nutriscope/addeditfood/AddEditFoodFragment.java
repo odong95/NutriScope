@@ -7,8 +7,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,13 +51,16 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
     private RecyclerView recyclerView;
     private AddEditFoodRecyclerViewAdapter adapter;
 
+    @BindView(R2.id.toolbar) Toolbar toolbar;
     @BindView(R2.id.fab_add_food) FloatingActionButton fab;
 
     public AddEditFoodFragment() {
 
     }
 
-    public static AddEditFoodFragment newInstance() { return new AddEditFoodFragment(); }
+    public static AddEditFoodFragment newInstance() {
+        return new AddEditFoodFragment();
+    }
 
     @Override
     public void setPresenter(AddEditFoodContract.Presenter presenter) {
@@ -84,6 +89,9 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+                return true;
             case R.id.menu_item_search_food:
                 showSearch("");
                 return true;
@@ -99,7 +107,9 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         ButterKnife.bind(this, view);
         Log.d(TAG, "addeditfoodfragment onCreateView");
 
-
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         ArrayList<Object> defaultNutrients = Lists.newArrayList(new FoodName(""), new Quantity(""), FoodNutrients.CALORIE, FoodNutrients.FAT, FoodNutrients.PROTEIN);
 
@@ -108,7 +118,6 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
 
         recyclerView.setAdapter(new AddEditFoodRecyclerViewAdapter(defaultNutrients));
 
-      //  makeNutrientsActive(defaultNutrients);
 
         return view;
     }
@@ -134,30 +143,11 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         return isAdded();
     }
 
-    /*@Override
-    public void makeNutrientsActive(List<Nutrient> nutrients) {
-        FoodNutrients key;
-        List<EditText> activeTextEdits = new ArrayList<>();
-        for(Nutrient foodNutrient: nutrients) {
-            key = FoodNutrients.getValue(Integer.parseInt(foodNutrient.getNutrientId()));
-            if (this.editTextBoxes.containsKey(key)) {
-                this.editTextBoxes.get(key).setText(foodNutrient.getValue());
-                activeTextEdits.add(this.editTextBoxes.get(key));   //get(FoodNutrientsNames(Integer.parseInt(foodNutrient.getNutrientId()))));
-            }
-        }
-        ButterKnife.apply(editTextBoxes.values().asList(), ChangeVisibility, View.GONE);
-        ButterKnife.apply(activeTextEdits, ChangeVisibility, View.VISIBLE);
-
-    }*/
-
     public void showSearch(String foodName) {
         Log.d(TAG, "show search");
         Intent intent = new Intent(getActivity(), SearchFoodActivity.class);
         intent.putExtra(SearchFoodActivity.EXTRA_FOOD_ID, foodName);
         startActivity(intent);
-
-
-
     }
 
     @Override
@@ -173,8 +163,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         if (adapter == null) {
             adapter = new AddEditFoodRecyclerViewAdapter(list);
             recyclerView.setAdapter(adapter);
-        }
-        else {
+        } else {
             adapter.setList(list);
             adapter.notifyDataSetChanged();
         }
@@ -202,7 +191,6 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         }
 
     }
-
 
 
     class ViewHolderQuantity extends RecyclerView.ViewHolder {
@@ -300,14 +288,11 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         public int getItemViewType(int position) {
             if (items.get(position) instanceof FoodNutrients) {
                 return FOODNUTRIENT;
-            }
-            else if (items.get(position) instanceof Nutrient) {
+            } else if (items.get(position) instanceof Nutrient) {
                 return NUTRIENT;
-            }
-            else if (items.get(position) instanceof Quantity) {
+            } else if (items.get(position) instanceof Quantity) {
                 return QUANTITY;
-            }
-            else if (items.get(position) instanceof FoodName) {
+            } else if (items.get(position) instanceof FoodName) {
                 return NAME;
             }
             return -1;
@@ -317,7 +302,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
          * This method creates different RecyclerView.ViewHolder objects based on the item view type.\
          *
          * @param viewGroup ViewGroup container for the item
-         * @param viewType type of view to be inflated
+         * @param viewType  type of view to be inflated
          * @return viewHolder to be inflated
          */
         @Override
@@ -356,7 +341,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
          * and also sets up some private fields to be used by RecyclerView.
          *
          * @param viewHolder The type of RecyclerView.ViewHolder to populate
-         * @param position Item position in the viewgroup.
+         * @param position   Item position in the viewgroup.
          */
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
@@ -387,7 +372,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
             FoodNutrients nutrient = (FoodNutrients) items.get(position);
             if (nutrient != null) {
                 viewHolderFoodNutrient
-                    .setHint(nutrient.getNutrientString());
+                        .setHint(nutrient.getNutrientString());
             }
         }
 
@@ -397,7 +382,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
             if (nutrient != null) {
                 viewHolderNutrient
                         .setHint(FoodNutrients.getValue(
-                        Integer.parseInt(nutrient.getNutrientId())).getNutrientString());
+                                Integer.parseInt(nutrient.getNutrientId())).getNutrientString());
                 viewHolderNutrient.setNutrient(nutrient.getValue());
             }
         }
@@ -421,7 +406,9 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         }
 
 
-        public void setList(List<Object> items) { this.items = items; }
+        public void setList(List<Object> items) {
+            this.items = items;
+        }
 
     }
 

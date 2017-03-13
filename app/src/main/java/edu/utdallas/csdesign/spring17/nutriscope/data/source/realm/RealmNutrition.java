@@ -7,7 +7,7 @@ import io.realm.RealmObject;
  * Created by john on 3/5/17.
  */
 
-public class RealmNutrition extends RealmObject{
+public class RealmNutrition extends RealmObject {
     private RealmNutrient nutrient;
     private Double amount;
     private int unit; // 0 unknown 1 g 2 mg 3 ml 4 kcal
@@ -22,17 +22,13 @@ public class RealmNutrition extends RealmObject{
         this.amount = Double.parseDouble(nutrient.getValue());
         if (nutrient.getUnit().toLowerCase().startsWith("g")) {
             this.unit = 1;
-        }
-        else if (nutrient.getUnit().toLowerCase().startsWith("mg")) {
+        } else if (nutrient.getUnit().toLowerCase().startsWith("mg")) {
             this.unit = 2;
-        }
-        else if (nutrient.getUnit().toLowerCase().startsWith("ml")) {
+        } else if (nutrient.getUnit().toLowerCase().startsWith("ml")) {
             this.unit = 3;
-        }
-        else if (nutrient.getUnit().toLowerCase().startsWith("kcal")) {
+        } else if (nutrient.getUnit().toLowerCase().startsWith("kcal")) {
             this.unit = 4;
-        }
-        else {
+        } else {
             this.unit = 0;
         }
 

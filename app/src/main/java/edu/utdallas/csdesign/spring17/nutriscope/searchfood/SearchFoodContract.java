@@ -15,9 +15,10 @@ public class SearchFoodContract {
     interface View extends BaseView<SearchFoodContract.Presenter> {
 
         void showAddEditFood(String name, String id);
-        void showResults(List<Item> results);
-        boolean isActive();
 
+        void showResults(List<Item> results);
+
+        boolean isActive();
 
 
     }
@@ -29,8 +30,6 @@ public class SearchFoodContract {
         void chooseFood(String name, String id);
 
         boolean isDataMissing();
-
-
 
 
     }

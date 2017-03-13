@@ -27,7 +27,7 @@ public class HistoryRepository implements Repository<Trackable>, Observer {
     @Override
     public void update(Observable observable, Object arg) {
         Log.d(TAG, "update called");
-        historyCache.add((Trackable)arg);
+        historyCache.add((Trackable) arg);
 
     }
 
@@ -57,15 +57,12 @@ public class HistoryRepository implements Repository<Trackable>, Observer {
         callback.onQueryComplete(historyCache);
 
 
-
-
-
     }
 
     @Override
     public void deleteItem(Trackable id, DeleteCallback callback) {
 
     }
-    
-    
+
+
 }

@@ -1,7 +1,6 @@
 package edu.utdallas.csdesign.spring17.nutriscope.overview;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.List;
 import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.HistoryRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -36,7 +34,7 @@ public class OverviewPresenter implements OverviewContract.Presenter {
 
         List<Trackable> test = new ArrayList<>();
 
-        for(int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             test.add(new ConsumedFood(i));
 
         }

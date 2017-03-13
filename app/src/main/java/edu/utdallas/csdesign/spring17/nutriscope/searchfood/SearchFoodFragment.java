@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,7 +25,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
@@ -40,8 +41,8 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
     FirebaseAuth auth;
     private SearchFoodContract.Presenter presenter;
 
-    @BindView(R2.id.search_food_text)
-    EditText searchFoodEditText;
+    @BindView(R2.id.toolbar) Toolbar toolbar;
+    @BindView(R2.id.search_food_text) EditText searchFoodEditText;
 
 /*    @BindView(R2.id.search_food_button)
     Button searchFoodButton;*/
@@ -55,7 +56,9 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
 
     }
 
-    public static SearchFoodFragment newInstance() { return new SearchFoodFragment(); }
+    public static SearchFoodFragment newInstance() {
+        return new SearchFoodFragment();
+    }
 
     @Override
     public void setPresenter(SearchFoodContract.Presenter presenter) {
@@ -84,6 +87,12 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+                return true;
+            case R.id.menu_item_search_food:
+                submit();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -94,8 +103,11 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_food, container, false);
         ButterKnife.bind(this, view);
-
         Log.d(TAG, "onCreateView");
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         searchFoodRecyclerView = (RecyclerView) view.findViewById(R.id.search_food_recycler_view);
 
@@ -108,11 +120,10 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
         searchFoodRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-
         return view;
     }
 
-    @OnClick(R2.id.search_food_button)
+
     public void submit() {
         Log.d(TAG, searchFoodEditText.getText().toString());
         presenter.searchFood(searchFoodEditText.getText().toString());
@@ -125,8 +136,7 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
         if (resultAdapter == null) {
             resultAdapter = new ItemAdapter(results);
             searchFoodRecyclerView.setAdapter(resultAdapter);
-        }
-        else {
+        } else {
             resultAdapter.setResults(results);
             resultAdapter.notifyDataSetChanged();
         }
@@ -145,7 +155,6 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
         intent.putExtra(AddEditFoodActivity.EXTRA_NDB_ID, id);
         startActivity(intent);
     }
-
 
 
     private class ItemHolder extends RecyclerView.ViewHolder

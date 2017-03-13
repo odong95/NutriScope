@@ -9,7 +9,6 @@ import java.util.List;
 public interface Searchable {
 
 
-
     interface SearchCallback {
 
         void onSearchComplete(List<Integer> results);
@@ -19,8 +18,7 @@ public interface Searchable {
     }
 
 
-     void search(String keywords, SearchCallback callback);
-
+    void search(String keywords, SearchCallback callback);
 
 
 }

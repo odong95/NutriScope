@@ -20,6 +20,7 @@
         </activity>
         <activity
             android:name=".addeditfood.AddEditFoodActivity"
+            android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".overview.OverviewActivity"/>
         <activity
 

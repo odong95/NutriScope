@@ -14,9 +14,10 @@ public interface AddEditFoodContract {
     interface View extends BaseView<Presenter> {
 
         void showOverview(String key);
-        void populateContent(List<Object> content);
-        boolean isActive();
 
+        void populateContent(List<Object> content);
+
+        boolean isActive();
 
 
     }
@@ -24,12 +25,12 @@ public interface AddEditFoodContract {
     interface Presenter extends BasePresenter {
 
         void populateFood();
+
         void deleteFood();
+
         void addFood(int quantity);
 
         boolean isDataMissing();
-
-
 
 
     }

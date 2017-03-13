@@ -53,7 +53,9 @@ public enum FoodNutrients {
         return nutrientName;
     }
 
-    public boolean equal(int i) { return nutrientId == i; }
+    public boolean equal(int i) {
+        return nutrientId == i;
+    }
 
     public static FoodNutrients getValue(int id) {
         FoodNutrients[] foodNutrients = FoodNutrients.values();
@@ -69,8 +71,6 @@ public enum FoodNutrients {
     private static String getString(int id) {
         return NutriscopeApplication.getContext().getString(id);
     }
-
-
 
 
 }

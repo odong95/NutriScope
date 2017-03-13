@@ -67,5 +67,4 @@ public class ConsumedFood implements Trackable {
     }
 
 
-
 }

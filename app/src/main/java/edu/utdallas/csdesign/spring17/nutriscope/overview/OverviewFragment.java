@@ -56,6 +56,9 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
     @BindView(R2.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.overview_bottom_sheet)
+    LinearLayout bottomSheet;
+
     public OverviewFragment() {
 
     }
@@ -96,15 +99,15 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if(tabLayout.getSelectedTabPosition() == 0){
+                if (tabLayout.getSelectedTabPosition() == 0) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                }else if(tabLayout.getSelectedTabPosition() == 1){
+                } else if (tabLayout.getSelectedTabPosition() == 1) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                }else if(tabLayout.getSelectedTabPosition() == 2){
+                } else if (tabLayout.getSelectedTabPosition() == 2) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                }else if(tabLayout.getSelectedTabPosition() == 3){
+                } else if (tabLayout.getSelectedTabPosition() == 3) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                }else if(tabLayout.getSelectedTabPosition() == 4){
+                } else if (tabLayout.getSelectedTabPosition() == 4) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                 }
             }
@@ -123,7 +126,20 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         overviewRecyclerView = (RecyclerView) view.findViewById(R.id.overview_recycler_view);
         overviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        LinearLayout bottomSheet = (LinearLayout) view.findViewById(R.id.overview_bottom_sheet);
+        overviewRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+                }
+
+            }
+        });
+
+
         this.behavior = BottomSheetBehavior.from(bottomSheet);
         behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
@@ -160,7 +176,12 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
     }
 
+    private void hideBottomSheet() {
+        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
     public void showAddEditFood() {
+        hideBottomSheet();
         Intent intent = new Intent(getActivity(), AddEditFoodActivity.class);
         startActivity(intent);
 
@@ -173,8 +194,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
             adapter = new OverviewRecyclerViewAdapter(list);
             overviewRecyclerView.setAdapter(adapter);
-        }
-        else {
+        } else {
             adapter.setList(list);
             adapter.notifyDataSetChanged();
         }
@@ -232,7 +252,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
          * This method creates different RecyclerView.ViewHolder objects based on the item view type.\
          *
          * @param viewGroup ViewGroup container for the item
-         * @param viewType type of view to be inflated
+         * @param viewType  type of view to be inflated
          * @return viewHolder to be inflated
          */
         @Override
@@ -259,7 +279,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
          * and also sets up some private fields to be used by RecyclerView.
          *
          * @param viewHolder The type of RecyclerView.ViewHolder to populate
-         * @param position Item position in the viewgroup.
+         * @param position   Item position in the viewgroup.
          */
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
@@ -282,7 +302,9 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         }
 
 
-        public void setList(List<Trackable> trackable) { this.items = trackable; }
+        public void setList(List<Trackable> trackable) {
+            this.items = trackable;
+        }
 
     }
 

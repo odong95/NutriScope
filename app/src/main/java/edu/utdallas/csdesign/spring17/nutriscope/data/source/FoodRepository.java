@@ -46,7 +46,6 @@ public class FoodRepository implements Repository<Food> {
     Map<String, Food> foodCache = new HashMap<>();
 
 
-
     @Override
     public void createItem(Food item, CreateCallback callback) {
 
@@ -79,9 +78,7 @@ public class FoodRepository implements Repository<Food> {
                     Log.d(TAG, food.getDesc().getName());
 
                     callback.onQueryComplete(Lists.newArrayList(food));
-                }
-
-                else {
+                } else {
                     callback.onDataNotAvailable();
                 }
 
@@ -96,16 +93,12 @@ public class FoodRepository implements Repository<Food> {
         });
 
 
-
-
-
     }
 
     @Override
     public void deleteItem(Food id, DeleteCallback callback) {
 
     }
-    
-    
-    
+
+
 }

@@ -29,12 +29,11 @@ public class RealmFood extends RealmObject {
 
         if (food.getDesc().getDs().toLowerCase().startsWith("s")) {
             this.dataSource = 1;
-        }
-        else {
+        } else {
             this.dataSource = 2;
         }
 
-        for(Nutrient nutrient: food.getNutrients()) {
+        for (Nutrient nutrient : food.getNutrients()) {
             nutritionContent.add(new RealmNutrition(nutrient));
         }
 

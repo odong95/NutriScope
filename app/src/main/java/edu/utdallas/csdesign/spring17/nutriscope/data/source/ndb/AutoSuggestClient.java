@@ -30,8 +30,6 @@ public class AutoSuggestClient {
     AutoSuggestService autoSuggestService;
 
 
-
-
     public AutoSuggestClient() {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(new Interceptor() {
@@ -69,7 +67,7 @@ public class AutoSuggestClient {
 
 
                 Response response = chain.proceed(original);
-              //  Log.d(TAG, response. response.body().string());
+                //  Log.d(TAG, response. response.body().string());
                 return response;
             }
         });
@@ -90,8 +88,6 @@ public class AutoSuggestClient {
         this.autoSuggestService = retrofit.create(AutoSuggestService.class);
 
 
-
-
     }
 
     @Provides
@@ -99,7 +95,6 @@ public class AutoSuggestClient {
     public AutoSuggestService getInstance() {
         return autoSuggestService;
     }
-
 
 
 }

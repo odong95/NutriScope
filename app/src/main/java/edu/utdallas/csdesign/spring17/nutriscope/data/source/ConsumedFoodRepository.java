@@ -46,7 +46,7 @@ public class ConsumedFoodRepository extends Observable implements Repository<Con
 
     @Override
     public void createItem(ConsumedFood item, CreateCallback callback) {
-       // consumedFoodFirebaseRepository.createItem(item, callback);
+        // consumedFoodFirebaseRepository.createItem(item, callback);
 
         consumedFoodCache.add(item);
         setChanged();

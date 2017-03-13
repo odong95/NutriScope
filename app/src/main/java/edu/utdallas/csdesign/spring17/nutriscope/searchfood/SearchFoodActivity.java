@@ -13,7 +13,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.AutoSuggestServ
  * Created by john on 3/5/17.
  */
 
-public class SearchFoodActivity extends AppCompatActivity{
+public class SearchFoodActivity extends AppCompatActivity {
 
     public static final String EXTRA_FOOD_ID = "FOOD_ID";
 
