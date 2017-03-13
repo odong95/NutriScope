@@ -5,15 +5,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -46,10 +50,11 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
     @BindView(R2.id.fab_add_overview)
     FloatingActionButton fab;
 
+    @BindView(R2.id.overview_tabs)
+    TabLayout tabLayout;
 
-
-
-
+    @BindView(R2.id.toolbar)
+    Toolbar toolbar;
 
     public OverviewFragment() {
 
@@ -76,6 +81,44 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
         ButterKnife.bind(this, view);
+
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
+
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_hamburger));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_graph));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_calendar));
+        tabLayout.addTab(tabLayout.newTab().setText("Send"));
+        tabLayout.addTab(tabLayout.newTab().setText("Send & Post"));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tabLayout.getSelectedTabPosition() == 0){
+                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                }else if(tabLayout.getSelectedTabPosition() == 1){
+                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                }else if(tabLayout.getSelectedTabPosition() == 2){
+                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                }else if(tabLayout.getSelectedTabPosition() == 3){
+                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                }else if(tabLayout.getSelectedTabPosition() == 4){
+                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         overviewRecyclerView = (RecyclerView) view.findViewById(R.id.overview_recycler_view);
         overviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -234,7 +277,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         private void configureViewHolderFood(ViewHolderFood vhf, int position) {
             ConsumedFood food = (ConsumedFood) items.get(position);
             if (food != null) {
-                vhf.getFoodName().setText("Name: " + food.getNdbNo());
+                vhf.getFoodName().setText("Name: " + food.getTimeStamp());
             }
         }
 
