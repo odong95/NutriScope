@@ -47,17 +47,10 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
     private OverviewContract.Presenter presenter;
     private BottomSheetBehavior behavior;
 
-    @BindView(R2.id.fab_add_overview)
-    FloatingActionButton fab;
-
-    @BindView(R2.id.overview_tabs)
-    TabLayout tabLayout;
-
-    @BindView(R2.id.toolbar)
-    Toolbar toolbar;
-
-    @BindView(R.id.overview_bottom_sheet)
-    LinearLayout bottomSheet;
+    @BindView(R2.id.fab_add_overview) FloatingActionButton fab;
+    @BindView(R2.id.overview_tabs) TabLayout tabLayout;
+    @BindView(R2.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.overview_bottom_sheet) LinearLayout bottomSheet;
 
     public OverviewFragment() {
 

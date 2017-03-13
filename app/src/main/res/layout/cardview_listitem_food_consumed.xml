@@ -17,7 +17,7 @@
         android:layout_marginBottom="1dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="2dp"
         card_view:cardCornerRadius="2dp"
         card_view:cardElevation="1dp"
         android:layout_weight="1">
