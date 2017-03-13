@@ -118,7 +118,6 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
 
         recyclerView.setAdapter(new AddEditFoodRecyclerViewAdapter(defaultNutrients));
 
-
         return view;
     }
 

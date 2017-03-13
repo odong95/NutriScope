@@ -169,7 +169,7 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
             super(itemView);
             itemView.setOnClickListener(this);
 
-            name = (TextView) itemView.findViewById(R.id.list_item_result_name);
+            name = (TextView) itemView.findViewById(R.id.food_name);
         }
 
         public void bindItem(Item result) {
@@ -195,7 +195,7 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
         @Override
         public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(R.layout.list_item_search, parent, false);
+            View view = layoutInflater.inflate(R.layout.list_item_search_result, parent, false);
             return new ItemHolder(view);
         }
 

@@ -260,7 +260,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
             switch (viewType) {
                 case FOOD:
-                    View v1 = inflater.inflate(R.layout.cardview_listitem_food_consumed, viewGroup, false);
+                    View v1 = inflater.inflate(R.layout.list_item_food_consumed, viewGroup, false);
                     viewHolder = new ViewHolderFood(v1);
                     break;
                 default:
