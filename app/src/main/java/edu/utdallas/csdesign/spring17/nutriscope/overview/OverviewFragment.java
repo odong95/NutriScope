@@ -93,8 +93,9 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_hamburger));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_graph));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_calendar));
-        tabLayout.addTab(tabLayout.newTab().setText("Send"));
-        tabLayout.addTab(tabLayout.newTab().setText("Send & Post"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_recipe));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_gear));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_search));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -108,6 +109,8 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
                 } else if (tabLayout.getSelectedTabPosition() == 3) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                 } else if (tabLayout.getSelectedTabPosition() == 4) {
+                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                } else if (tabLayout.getSelectedTabPosition() == 5) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                 }
             }
@@ -201,13 +204,14 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
     }
 
-    private class ViewHolderFood extends RecyclerView.ViewHolder {
+    class ViewHolderFood extends RecyclerView.ViewHolder {
 
-        private TextView foodName;
+        @BindView(R.id.food_consumed_name)
+        TextView foodName;
 
         public ViewHolderFood(View v) {
             super(v);
-            foodName = (TextView) v.findViewById(R.id.list_item_food_name);
+            ButterKnife.bind(this, v);
         }
 
         public TextView getFoodName() {
@@ -263,7 +267,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
             switch (viewType) {
                 case FOOD:
-                    View v1 = inflater.inflate(R.layout.list_item_food, viewGroup, false);
+                    View v1 = inflater.inflate(R.layout.cardview_listitem_food_consumed, viewGroup, false);
                     viewHolder = new ViewHolderFood(v1);
                     break;
                 default:
