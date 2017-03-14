@@ -2,6 +2,7 @@ package edu.utdallas.csdesign.spring17.nutriscope;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 import io.realm.Realm;
@@ -68,27 +75,7 @@ public class OverviewActivity extends AppCompatActivity {
 
     private void saveToDB(final String name, final int age)
     {
-        realm.executeTransactionAsync(new Realm.Transaction() {
-            @Override
-            public void execute(Realm bgRealm) {
-                Person person = bgRealm.createObject(Person.class);
-                person.setName(name);
-                person.setAge(age);
-            }
-        }, new Realm.Transaction.OnSuccess() {
-            @Override
-            public void onSuccess() {
-                // Transaction was a success.
-                System.out.println("saved to db");
-                refreshView();
-            }
-        }, new Realm.Transaction.OnError() {
-            @Override
-            public void onError(Throwable error) {
-                // Transaction failed and was automatically canceled.
-                System.out.println("Error, not saved to db");
-            }
-        });
+
     }
 
     //read from db, show to textview log
@@ -106,44 +93,18 @@ public class OverviewActivity extends AppCompatActivity {
 
     private void deletePerson(final String name) {
 
-        final RealmResults<Person> result = realm.where(Person.class)
-                .equalTo("name", name)
-                .findAll();
 
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                // remove single match
-                result.deleteLastFromRealm();
-
-            }
-        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        realm = Realm.getDefaultInstance();
+
 
     }
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-
-    }
-
-
 
     @Override
     protected void onStop() {
-        realm.removeAllChangeListeners();
-        realm.close();
-        realm = null;
-        if (logoutAfterClose) {
-            
-            logoutAfterClose = false;
-        }
 
         super.onStop();
     }
@@ -159,11 +120,10 @@ public class OverviewActivity extends AppCompatActivity {
         switch(item.getItemId()) {
 
             case R.id.logout:
-                Intent intent = new Intent(this, LoginActivity.class);
-                intent.setAction(LoginActivity.ACTION_IGNORE_CURRENT_USER);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                logoutAfterClose = true;
+                FirebaseAuth.getInstance().signOut();
+                LoginManager.getInstance().logOut();
+                startActivity(new Intent(OverviewActivity.this, LoginActivity.class));
+                finish();
                 return true;
 
             default:

@@ -4,17 +4,10 @@ package edu.utdallas.csdesign.spring17.nutriscope;
 import android.app.Application;
 
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
-
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import io.realm.log.LogLevel;
-import io.realm.log.RealmLog;
-
-/**
- * Created by john on 3/5/17.
- */
 
 public class NutriscopeApplication extends Application {
 
@@ -30,12 +23,8 @@ public class NutriscopeApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         AndroidThreeTen.init(this);
-        Realm.init(this);
-
-        RealmLog.setLevel(LogLevel.TRACE);
-
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
     }
 }
