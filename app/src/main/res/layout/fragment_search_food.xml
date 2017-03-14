@@ -32,7 +32,11 @@
                 android:id="@+id/search_food_text"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:imeOptions="actionSearch"
+                android:inputType="text"/><!--
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"/>-->
 
         </LinearLayout>
         </android.support.v7.widget.Toolbar>

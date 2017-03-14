@@ -9,12 +9,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -118,6 +120,16 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
         searchFoodRecyclerView.setAdapter(resultAdapter);
 
         searchFoodRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        searchFoodEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    Log.i(TAG,"Enter pressed");
+                    submit();
+                }
+                return false;
+            }
+        });
 
 
         return view;

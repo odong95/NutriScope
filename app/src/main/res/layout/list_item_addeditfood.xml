@@ -3,7 +3,9 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:padding="12dp">
+              android:padding="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="2dp">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/text_input_wrapper_add_edit_food"
@@ -15,6 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionNext"
+            android:paddingTop="2dp"
             android:hint="@string/food_name"/>
 
     </android.support.design.widget.TextInputLayout>
