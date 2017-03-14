@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Item;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Item;
 
 /**
  * Created by john on 3/5/17.

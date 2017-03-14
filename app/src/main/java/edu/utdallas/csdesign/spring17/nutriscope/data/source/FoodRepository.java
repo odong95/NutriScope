@@ -11,8 +11,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Food;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReport;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodReport;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportService;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.FoodRealmSpecification;
 import retrofit2.Call;

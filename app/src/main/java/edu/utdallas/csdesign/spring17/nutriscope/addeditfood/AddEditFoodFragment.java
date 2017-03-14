@@ -31,8 +31,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodNutrients;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Nutrient;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Nutrient;
 import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.searchfood.SearchFoodActivity;
 

@@ -12,8 +12,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ConsumedFoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Food;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Nutrient;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Nutrient;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.FoodRealmSpecification;
 
 /**

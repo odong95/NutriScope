@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb;
+package edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json;
 
 import edu.utdallas.csdesign.spring17.nutriscope.NutriscopeApplication;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
