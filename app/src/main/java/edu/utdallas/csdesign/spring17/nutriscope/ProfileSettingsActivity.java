@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,12 +23,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 
-import static java.security.AccessController.getContext;
 
 
 public class ProfileSettingsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -176,7 +175,6 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int which) {
-
                 if (!TextUtils.isEmpty(p0.getText().toString().trim())) {
                     showLoadingDialog();
                     AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), p0.getText().toString().trim());
@@ -237,50 +235,56 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
         p1.setVisibility(promptView.GONE);
         final EditText p2 = (EditText) promptView.findViewById(R.id.edittext_input_dialog2);
 
+        if(isFBLoggedIn())
+        {
+            TextView t2 = (TextView) promptView.findViewById(R.id.input_dialog_text_msg2);
+            t2.setVisibility(promptView.GONE);
+            p2.setVisibility(promptView.GONE);
+        }
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (!TextUtils.isEmpty(p2.getText().toString().trim())) {
-                    showLoadingDialog();
-                    AuthCredential credential = null;
-                    AccessToken token = null;
-                    if(!isFBLoggedIn()) {
-                       credential = EmailAuthProvider.getCredential(user.getEmail(), p2.getText().toString().trim());
-                    }
-                    else
+                if (!isFBLoggedIn()) {
+                    if(!TextUtils.isEmpty(p2.getText().toString().trim()))
                     {
-                        token = AccessToken.getCurrentAccessToken();
-                    }
+                        showLoadingDialog();
+                        AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), p2.getText().toString().trim());
+                        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (!task.isSuccessful()) {
+                                    Log.w("AUTH", "reAuthentication:failed", task.getException());
+                                    onErrorResponse("Error, please check password and try again");
+                                } else {
+                                    Log.w("AUTH", "reAuthentication:success - " + auth.getCurrentUser().getEmail());
+                                    showLoadingDialog();
+                                    user.delete()
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Toast.makeText(ProfileSettingsActivity.this, "Account deleted.", Toast.LENGTH_LONG).show();
+                                                        auth.signOut();
+                                                    } else {
+                                                        Log.w("AUTH", "accountDelete:failed", task.getException());
+                                                        Toast.makeText(ProfileSettingsActivity.this, "Failed to delete account, please try again", Toast.LENGTH_LONG).show();
+                                                    }
+                                                    hideProgressDialog();
 
-                    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (!task.isSuccessful()) {
-                                Log.w("AUTH", "reAuthentication:failed", task.getException());
-                                onErrorResponse("Error, please check password and try again");
-                            } else {
-                                Log.w("AUTH", "reAuthentication:success - " + auth.getCurrentUser().getEmail());
-                                showLoadingDialog();
-                                user.delete()
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    Toast.makeText(ProfileSettingsActivity.this, "Account deleted.", Toast.LENGTH_LONG).show();
-                                                    auth.signOut();
-                                                } else {
-                                                    Log.w("AUTH", "accountDelete:failed", task.getException());
-                                                    Toast.makeText(ProfileSettingsActivity.this, "Failed to delete account, please try again", Toast.LENGTH_LONG).show();
                                                 }
-                                                hideProgressDialog();
+                                            });
 
-                                            }
-                                        });
-
+                                }
+                                hideProgressDialog();
                             }
-                            hideProgressDialog();
-                        }
-                    });
+                        });
+                    }
+                }
+                else
+                {
+                    showLoadingDialog();
+                    handleFacebookAccessToken( AccessToken.getCurrentAccessToken());
+
                 }
                 dialog.dismiss();
             }
@@ -335,6 +339,41 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
         return accessToken != null;
     }
 
+    public void handleFacebookAccessToken(AccessToken accessToken) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("", "signInWithCredentialFailed", task.getException());
+                        }
+                        else
+                        {
+                            Log.d("", "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                            showLoadingDialog();
+                            user.delete()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(ProfileSettingsActivity.this, "Account deleted.", Toast.LENGTH_LONG).show();
+                                                auth.signOut();
+                                                LoginManager.getInstance().logOut();
+                                            } else {
+                                                Log.w("AUTH", "accountDelete:failed", task.getException());
+                                                Toast.makeText(ProfileSettingsActivity.this, "Failed to delete account, please try again", Toast.LENGTH_LONG).show();
+                                            }
+                                            hideProgressDialog();
+
+                                        }
+                                    });
+                            hideProgressDialog();
+                        }
+                    }
+                });
+    }
 
     @Override
     public void onStart() {
