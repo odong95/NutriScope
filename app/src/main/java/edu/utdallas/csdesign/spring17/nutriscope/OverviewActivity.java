@@ -125,7 +125,9 @@ public class OverviewActivity extends AppCompatActivity {
                 startActivity(new Intent(OverviewActivity.this, LoginActivity.class));
                 finish();
                 return true;
-
+            case R.id.profile_settings:
+                startActivity(new Intent(OverviewActivity.this, ProfileSettingsActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -8,14 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-
-
-
-
     <item name = "visible" type = "id" />
     <item name = "masked" type = "id" />
-
-    
 
     <!-- Activity with no Title -->
     <style name="ThemeOverlay.MyNoTitleActivity" parent="AppTheme">

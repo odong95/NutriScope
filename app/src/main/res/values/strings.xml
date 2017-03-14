@@ -77,4 +77,9 @@
 
     <string name="facebook_app_id">1448817125162558</string>
     <string name="fb_login_protocol_scheme">fb1448817125162558</string>
+
+    <string name="change_email">Change Email</string>
+    <string name="change_password">Change Password</string>
+    <string name="new_pass">New Password</string>
+    <string name="hint_new_email">New Email</string>
 </resources>

@@ -127,6 +127,8 @@ public class RegisterFragment extends Fragment implements RegisterContract.View,
     @Override
     public void onErrorResponse(String error) {
             hideProgressDialog();
+            passwordText.setText("");
+            confirmPasswordText.setText("");
             Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 
@@ -146,16 +148,11 @@ public class RegisterFragment extends Fragment implements RegisterContract.View,
         if(!passwordText.getText().toString().trim().equals(confirmPasswordText.getText().toString().trim()))
         {
             onErrorResponse("Passwords do not match");
-            passwordText.setText("");
-            confirmPasswordText.setText("");
             return false;
         }
-
-        if(passwordText.getText().toString().trim().length() < 8)
+        else if(passwordText.getText().toString().trim().length() < 8)
         {
             onErrorResponse("Password must be at least 8 chars.");
-            passwordText.setText("");
-            confirmPasswordText.setText("");
             return false;
         }
 

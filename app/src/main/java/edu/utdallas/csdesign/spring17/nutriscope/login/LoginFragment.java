@@ -134,6 +134,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     @Override
     public void onErrorResponse(String error) {
         hideProgressDialog();
+        passwordText.setText("");
         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 

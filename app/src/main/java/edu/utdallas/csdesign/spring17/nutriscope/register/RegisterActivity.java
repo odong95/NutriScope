@@ -38,7 +38,6 @@ public class RegisterActivity extends AppCompatActivity {
                     hideProgressDialog();
                     Log.w("AUTH", "User registered: " + user.getEmail());
                     startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-
                     finish();
                 } else {
                     Log.w("AUTH", "SIGNED OUT");
