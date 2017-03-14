@@ -1,13 +1,12 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
 
-
-import android.app.ProgressDialog;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,29 +15,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 
-
-import edu.utdallas.csdesign.spring17.nutriscope.OverviewActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
-import edu.utdallas.csdesign.spring17.nutriscope.register.RegisterActivity;
+
+
 
 
 public class LoginFragment extends Fragment implements LoginContract.View, View.OnClickListener{
 
-    private EditText emailText;
+    private EditText userText;
     private EditText passwordText;
-    private Button goToRegister, login;
-    private LoginButton fbButton;
+    private View progressView;
+    private View loginFormView;
+    private Button register, login;
     private LoginContract.Presenter presenter;
-    private ProgressDialog mProgressDialog;
 
-    private CallbackManager callbackManager;
     public LoginFragment() {
 
     }
@@ -50,116 +41,102 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        return inflater.inflate(R.layout.login_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        emailText = (EditText) view.findViewById(R.id.email);
-        passwordText = (EditText) view.findViewById(R.id.password);
-        login = (Button) view.findViewById(R.id.login_button);
-        goToRegister = (Button) view.findViewById(R.id.goToRegister);
-        fbButton = (LoginButton) view.findViewById(R.id.fb_login);
-        callbackManager = CallbackManager.Factory.create();
-        fbButton.setReadPermissions("email", "public_profile");
-        fbButton.setFragment(this);
+        userText = (EditText) view.findViewById(R.id.userText);
+        passwordText = (EditText) view.findViewById(R.id.passwordText);
+        login = (Button) view.findViewById(R.id.bLogin);
+        register = (Button) view.findViewById(R.id.bRegister);
+        LoginActivity act = (LoginActivity) getActivity();
+        presenter = act.loginPresenter;
 
         login.setOnClickListener(this);
-        goToRegister.setOnClickListener(this);
-        setupFBLogin();
+        register.setOnClickListener(this);
 
-    }
+        loginFormView = view.findViewById(R.id.sign_in_form);
+        progressView = view.findViewById(R.id.sign_in_progress);
 
-    @Override
-    public void setPresenter(LoginContract.Presenter presenter) {
+        // Check if we already got a user, if yes, just continue automatically
+        if (savedInstanceState == null) {
 
-        this.presenter = presenter;
-    }
+        }
 
-    public void setDialog(ProgressDialog d)
-    {
-        this.mProgressDialog = d;
+
+
+
     }
 
     @Override
     public void onClick(View view) {
+        if (checkEmpty())
+            return;
         switch (view.getId()) {
-            case R.id.login_button:
-                if(!checkEmpty()) {
-                    showProgressDialog();
-                    presenter.login(emailText.getText().toString().trim(), passwordText.getText().toString().trim());
-                }
+            case R.id.bLogin:
+                showProgress(true);
+                presenter.login(userText.getText().toString(), passwordText.getText().toString());
                 break;
-            case R.id.goToRegister:
-                startActivity(new Intent(this.getActivity(), RegisterActivity.class));
+            case R.id.bRegister:
+                showProgress(true);
+                presenter.register(userText.getText().toString(), passwordText.getText().toString());
                 break;
         }
     }
 
-    public void setupFBLogin(){
-        fbButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                showProgressDialog();
-                presenter.handleFacebookAccessToken(loginResult.getAccessToken());
-            }
 
-            @Override
-            public void onCancel() {
-                Log.d("TAG", "facebook:onCancel");
-            }
 
+    private void showProgress(final boolean show) {
+        final int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+        loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        loginFormView.animate().setDuration(shortAnimTime).alpha(
+                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
             @Override
-            public void onError(FacebookException exception) {
-                Log.d("TAG", "facebook:onError", exception);
+            public void onAnimationEnd(Animator animation) {
+                loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
+        });
+
+        progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        progressView.animate().setDuration(shortAnimTime).alpha(
+                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                progressView.setVisibility(show ? View.VISIBLE : View.GONE);
             }
         });
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
 
+    @Override
+    public void errorInputResponse(Boolean isNotValid) {
+        showProgress(false);
+        if (isNotValid) {
+            String errorMsg = "Login failed, invalid input";
+            Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
-    public void onStop()
-    {
-        super.onStop();
-        hideProgressDialog();
+    public void onRegisterResponse(Boolean isRegistered) {
+        if (isRegistered) {
+            showProgress(false);
+            String errorMsg = "Registration Successful";
+            Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+        }
     }
 
-    @Override
-    public void onErrorResponse(String error) {
-        hideProgressDialog();
-        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-    }
 
     public boolean checkEmpty() {
-        if (TextUtils.isEmpty(emailText.getText().toString().trim()) || TextUtils.isEmpty(passwordText.getText().toString().trim())) {
-            onErrorResponse("Please fill out both fields");
+        if (userText.getText().toString().isEmpty() || passwordText.getText().toString().isEmpty()) {
+            userText.setText("");
+            passwordText.setText("");
             return true;
         }
-
         return false;
-    }
-
-    public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this.getContext());
-            mProgressDialog.setMessage("Logging in...");
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
-
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
     }
 
 }

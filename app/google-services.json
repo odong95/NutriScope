@@ -1,35 +1,33 @@
 {
   "project_info": {
-    "project_number": "177297997857",
-    "firebase_url": "https://nutriscope-492ef.firebaseio.com",
-    "project_id": "nutriscope-492ef",
-    "storage_bucket": "nutriscope-492ef.appspot.com"
+    "project_number": "299391824375",
+    "project_id": "firebase-realmtasks"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:177297997857:android:16b545e2cf24d1bc",
+        "mobilesdk_app_id": "1:299391824375:android:d438bbcf1f2b335e",
         "android_client_info": {
           "package_name": "edu.utdallas.csdesign.spring17.nutriscope"
         }
       },
       "oauth_client": [
         {
-          "client_id": "177297997857-285noeem18qif3fjp99mq478u0pjugjt.apps.googleusercontent.com",
+          "client_id": "299391824375-g4uqk1em1uu2fnvev9gouu3fpn4f9no2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "edu.utdallas.csdesign.spring17.nutriscope",
-            "certificate_hash": "cfe1673f6332506e8c94b51fc6970fc7e9d75768"
+            "certificate_hash": "DA57E5CD19E5D1E3271C9CAB7BB59E3237E0C2AB"
           }
         },
         {
-          "client_id": "177297997857-ivc74mjs40h198lqs82674ahm13jp94v.apps.googleusercontent.com",
+          "client_id": "299391824375-k3hdrdtq8g4rkh1i0pvomn397ehk92nl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCdKRZgAst37WES5hrx1wFRDMOPLI2B-Qg"
+          "current_key": "AIzaSyBTVLTzKITPYtL46PH5L69U8KsAQMBPdec"
         }
       ],
       "services": {
@@ -37,16 +35,11 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "177297997857-ivc74mjs40h198lqs82674ahm13jp94v.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
-          "status": 2
+          "status": 1
         }
       }
     }

@@ -1,27 +1,33 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
 
-import com.facebook.AccessToken;
 
-import edu.utdallas.csdesign.spring17.nutriscope.BasePresenter;
-import edu.utdallas.csdesign.spring17.nutriscope.BaseView;
+public class LoginContract {
+    public interface View {
 
-public interface LoginContract {
-    interface View extends BaseView<Presenter> {
+        void errorInputResponse(Boolean isValid);
 
-        void onErrorResponse(String error);
+        void onRegisterResponse(Boolean isRegistered);
+    }
+
+    public interface Presenter {
+
+        void login(String username, String password);
+
+        void register(String username, String password);
+
+        void errorInputResponse(Boolean isValid);
+
+        void onRegisterResponse(Boolean isRegistered);
 
     }
 
-    interface Presenter extends BasePresenter {
+    public interface Model {
 
-        void login(String email, String password);
+        void login(String username, String password);
 
-        void handleFacebookAccessToken(AccessToken accessToken);
-
-        void onErrorResponse(String error);
+        void register(String username, String password);
 
     }
-
 
 }

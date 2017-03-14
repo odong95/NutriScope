@@ -74,7 +74,4 @@
     <string name="btn_login">Login</string>
     <string name="btn_link_to_register">Don\'t have an account? Click here to sign up!</string>
     <string name="btn_link_to_login">Already registered? Login here. </string>
-
-    <string name="facebook_app_id">1448817125162558</string>
-    <string name="fb_login_protocol_scheme">fb1448817125162558</string>
 </resources>
