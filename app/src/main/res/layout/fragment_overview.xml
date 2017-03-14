@@ -229,7 +229,7 @@
             app:layout_constraintRight_toLeftOf="@+id/overview_bottom_sheet_add_food"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_fork_plate_and_knife"/>
+            app:srcCompat="@drawable/ic_menu_recipe"/>
 
         <ImageView
             android:id="@+id/overview_bottom_sheet_add_personal"
@@ -247,7 +247,7 @@
             app:layout_constraintLeft_toRightOf="@+id/overview_bottom_sheet_add_recipe"
             app:layout_constraintRight_toLeftOf="@+id/overview_bottom_sheet_add_personal"
             app:layout_constraintTop_toTopOf="@+id/overview_bottom_sheet_add_recipe"
-            app:srcCompat="@drawable/ic_menu_recipe"/>
+            app:srcCompat="@drawable/ic_fork_plate_and_knife"/>
     </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 
