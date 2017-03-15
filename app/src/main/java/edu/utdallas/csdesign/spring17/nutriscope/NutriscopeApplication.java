@@ -7,6 +7,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
+import java.lang.ref.WeakReference;
+
 
 public class NutriscopeApplication extends Application {
 
@@ -32,6 +34,5 @@ public class NutriscopeApplication extends Application {
     }
 
 
-
-    }
 }
+
