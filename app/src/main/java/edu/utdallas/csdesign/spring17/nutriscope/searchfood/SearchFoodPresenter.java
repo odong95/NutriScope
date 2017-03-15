@@ -65,7 +65,6 @@ public class SearchFoodPresenter implements SearchFoodContract.Presenter {
         searchFoodView.showAddEditFood(name, ndbNo);
 
 
-
     }
 
 

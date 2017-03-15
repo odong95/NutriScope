@@ -1,5 +1,6 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb;
 
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodReport;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

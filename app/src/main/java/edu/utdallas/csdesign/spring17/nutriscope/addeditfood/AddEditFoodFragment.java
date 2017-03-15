@@ -4,7 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,10 +29,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import edu.utdallas.csdesign.spring17.nutriscope.FoodNutrients;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Nutrient;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Nutrient;
 import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.searchfood.SearchFoodActivity;
 
@@ -42,21 +48,19 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
 
     ImmutableMap<FoodNutrients, EditText> editTextBoxes;
 
-    @BindView(R2.id.foodname) EditText editTextFoodName;
-    @BindView(R2.id.foodquantity) EditText editTextQuantity;
+    private RecyclerView recyclerView;
+    private AddEditFoodRecyclerViewAdapter adapter;
 
-    @BindView(R2.id.foodEnergy) EditText editTextEnergy;
-    @BindView(R2.id.foodNutrientFat) EditText editTextFat;
-    @BindView(R2.id.foodNutrientProtein) EditText editTextProtein;
-    @BindView(R2.id.foodNutrientCarbohydrate) EditText editTextCarb;
-
+    @BindView(R2.id.toolbar) Toolbar toolbar;
     @BindView(R2.id.fab_add_food) FloatingActionButton fab;
 
     public AddEditFoodFragment() {
 
     }
 
-    public static AddEditFoodFragment newInstance() { return new AddEditFoodFragment(); }
+    public static AddEditFoodFragment newInstance() {
+        return new AddEditFoodFragment();
+    }
 
     @Override
     public void setPresenter(AddEditFoodContract.Presenter presenter) {
@@ -85,6 +89,9 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+                return true;
             case R.id.menu_item_search_food:
                 showSearch("");
                 return true;
@@ -98,18 +105,18 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_edit_food, container, false);
         ButterKnife.bind(this, view);
+        Log.d(TAG, "addeditfoodfragment onCreateView");
 
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        ArrayList<FoodNutrients> defaultNutrients = Lists.newArrayList(FoodNutrients.CALORIE, FoodNutrients.FAT, FoodNutrients.PROTEIN);
+        ArrayList<Object> defaultNutrients = Lists.newArrayList(new FoodName(""), new Quantity(""), FoodNutrients.CALORIE, FoodNutrients.FAT, FoodNutrients.PROTEIN);
 
-        this.editTextBoxes = ImmutableMap.<FoodNutrients, EditText>builder()
-                .put(FoodNutrients.CALORIE, editTextEnergy)
-                .put(FoodNutrients.FAT, editTextFat)
-                .put(FoodNutrients.PROTEIN, editTextProtein)
-                .put(FoodNutrients.CARBOHYDRATE, editTextCarb)
-                .build();
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_add_edit_food);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-      //  makeNutrientsActive(defaultNutrients);
+        recyclerView.setAdapter(new AddEditFoodRecyclerViewAdapter(defaultNutrients));
 
         return view;
     }
@@ -117,7 +124,8 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
     @OnClick(R2.id.fab_add_food)
     public void submit() {
         Log.d(TAG, "fab clicked");
-        presenter.addFood(Integer.parseInt(editTextQuantity.getText().toString()));
+        // FIXME: 3/12/17
+        presenter.addFood(Integer.parseInt("0"));
 
     }
 
@@ -129,47 +137,16 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         }
     };
 
-
-    @Override
-    public void showFood(String name, String protein, String fat, String carb) {
-        editTextFoodName.setText(name);
-
-
-    }
-
-    @Override
-    public void showFoodName(String name) {
-        editTextFoodName.setText(name);
-    }
-
     @Override
     public boolean isActive() {
         return isAdded();
     }
 
-    @Override
-    public void makeNutrientsActive(List<Nutrient> nutrients) {
-        FoodNutrients key;
-        List<EditText> activeTextEdits = new ArrayList<>();
-        for(Nutrient foodNutrient: nutrients) {
-            key = FoodNutrients.getValue(Integer.parseInt(foodNutrient.getNutrientId()));
-            if (this.editTextBoxes.containsKey(key)) {
-                this.editTextBoxes.get(key).setText(foodNutrient.getValue());
-                activeTextEdits.add(this.editTextBoxes.get(key));   //get(FoodNutrients(Integer.parseInt(foodNutrient.getNutrientId()))));
-            }
-        }
-        ButterKnife.apply(editTextBoxes.values().asList(), ChangeVisibility, View.GONE);
-        ButterKnife.apply(activeTextEdits, ChangeVisibility, View.VISIBLE);
-
-    }
-
     public void showSearch(String foodName) {
+        Log.d(TAG, "show search");
         Intent intent = new Intent(getActivity(), SearchFoodActivity.class);
         intent.putExtra(SearchFoodActivity.EXTRA_FOOD_ID, foodName);
         startActivity(intent);
-
-
-
     }
 
     @Override
@@ -178,5 +155,261 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         intent.putExtra(OverviewActivity.EXTRA_CONSUMED_FOOD_KEY, key);
         startActivity(intent);
     }
+
+
+    @Override
+    public void populateContent(List<Object> list) {
+        if (adapter == null) {
+            adapter = new AddEditFoodRecyclerViewAdapter(list);
+            recyclerView.setAdapter(adapter);
+        } else {
+            adapter.setList(list);
+            adapter.notifyDataSetChanged();
+        }
+
+    }
+
+    class ViewHolderFoodName extends RecyclerView.ViewHolder {
+
+        @BindView(R2.id.edit_text_add_edit_food) TextInputEditText foodName;
+        @BindView(R2.id.text_input_wrapper_add_edit_food) TextInputLayout textInputLayout;
+
+
+        ViewHolderFoodName(View v) {
+            super(v);
+            ButterKnife.bind(this, v);
+
+        }
+
+        private void setFoodName(String name) {
+            foodName.setText(name);
+        }
+
+        private void setHint(String hint) {
+            textInputLayout.setHint(hint);
+        }
+
+    }
+
+
+    class ViewHolderQuantity extends RecyclerView.ViewHolder {
+
+        @BindView(R2.id.edit_text_add_edit_food) TextInputEditText quantity;
+        @BindView(R2.id.text_input_wrapper_add_edit_food) TextInputLayout textInputLayout;
+
+
+        ViewHolderQuantity(View v) {
+            super(v);
+            ButterKnife.bind(this, v);
+
+        }
+
+        private void setQuantity(String quantity) {
+            this.quantity.setText(quantity);
+        }
+
+        private void setHint(String hint) {
+            textInputLayout.setHint(hint);
+        }
+
+    }
+
+    class ViewHolderFoodNutrient extends RecyclerView.ViewHolder {
+
+        @BindView(R2.id.edit_text_add_edit_food) TextInputEditText nutrient;
+        @BindView(R2.id.text_input_wrapper_add_edit_food) TextInputLayout textInputLayout;
+
+
+        ViewHolderFoodNutrient(View v) {
+            super(v);
+            ButterKnife.bind(this, v);
+
+        }
+
+        private void setNutrient(String nutrient) {
+            this.nutrient.setText(nutrient);
+        }
+
+        private void setHint(String hint) {
+            textInputLayout.setHint(hint);
+        }
+
+    }
+
+
+    class ViewHolderNutrient extends RecyclerView.ViewHolder {
+
+        @BindView(R2.id.edit_text_add_edit_food) TextInputEditText nutrient;
+        @BindView(R2.id.text_input_wrapper_add_edit_food) TextInputLayout textInputLayout;
+
+
+        ViewHolderNutrient(View v) {
+            super(v);
+            ButterKnife.bind(this, v);
+
+        }
+
+        private void setNutrient(String nutrient) {
+            this.nutrient.setText(nutrient);
+        }
+
+        private void setHint(String hint) {
+            textInputLayout.setHint(hint);
+        }
+
+
+    }
+
+
+    private class AddEditFoodRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        // The items to display in your RecyclerView
+        private List<Object> items;
+
+        private final int NUTRIENT = 0;
+        private final int QUANTITY = 1;
+        private final int NAME = 2;
+        private final int FOODNUTRIENT = 3;
+
+        // Provide a suitable constructor (depends on the kind of dataset)
+        public AddEditFoodRecyclerViewAdapter(List<Object> items) {
+            this.items = items;
+        }
+
+        // Return the size of your dataset (invoked by the layout manager)
+        @Override
+        public int getItemCount() {
+            return this.items.size();
+        }
+
+        //Returns the view type of the item at position for the purposes of view recycling.
+        @Override
+        public int getItemViewType(int position) {
+            if (items.get(position) instanceof FoodNutrients) {
+                return FOODNUTRIENT;
+            } else if (items.get(position) instanceof Nutrient) {
+                return NUTRIENT;
+            } else if (items.get(position) instanceof Quantity) {
+                return QUANTITY;
+            } else if (items.get(position) instanceof FoodName) {
+                return NAME;
+            }
+            return -1;
+        }
+
+        /**
+         * This method creates different RecyclerView.ViewHolder objects based on the item view type.\
+         *
+         * @param viewGroup ViewGroup container for the item
+         * @param viewType  type of view to be inflated
+         * @return viewHolder to be inflated
+         */
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
+            RecyclerView.ViewHolder viewHolder;
+            LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+
+            switch (viewType) {
+                case FOODNUTRIENT:
+                    View v0 = inflater.inflate(R.layout.list_item_addeditfood, viewGroup, false);
+                    viewHolder = new ViewHolderFoodNutrient(v0);
+                    break;
+                case NUTRIENT:
+                    View v1 = inflater.inflate(R.layout.list_item_addeditfood, viewGroup, false);
+                    viewHolder = new ViewHolderNutrient(v1);
+                    break;
+                case QUANTITY:
+                    View v2 = inflater.inflate(R.layout.list_item_addeditfood, viewGroup, false);
+                    viewHolder = new ViewHolderQuantity(v2);
+                    break;
+                case NAME:
+                    View v3 = inflater.inflate(R.layout.list_item_addeditfood, viewGroup, false);
+                    viewHolder = new ViewHolderFoodName(v3);
+                    break;
+                default:
+                    viewHolder = null;
+                    break;
+            }
+            return viewHolder;
+        }
+
+        /**
+         * This method internally calls onBindViewHolder(ViewHolder, int) to update the
+         * RecyclerView.ViewHolder contents with the item at the given position
+         * and also sets up some private fields to be used by RecyclerView.
+         *
+         * @param viewHolder The type of RecyclerView.ViewHolder to populate
+         * @param position   Item position in the viewgroup.
+         */
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+            switch (viewHolder.getItemViewType()) {
+                case FOODNUTRIENT:
+                    ViewHolderFoodNutrient vh0 = (ViewHolderFoodNutrient) viewHolder;
+                    configureViewHolderFoodNutrient(vh0, position);
+                    break;
+                case NUTRIENT:
+                    ViewHolderNutrient vh1 = (ViewHolderNutrient) viewHolder;
+                    configureViewHolderNutrient(vh1, position);
+                    break;
+                case QUANTITY:
+                    ViewHolderQuantity vh2 = (ViewHolderQuantity) viewHolder;
+                    configureViewHolderQuantity(vh2, position);
+                    break;
+                case NAME:
+                    ViewHolderFoodName vh3 = (ViewHolderFoodName) viewHolder;
+                    configureViewHolderFoodName(vh3, position);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void configureViewHolderFoodNutrient(
+                ViewHolderFoodNutrient viewHolderFoodNutrient, int position) {
+            FoodNutrients nutrient = (FoodNutrients) items.get(position);
+            if (nutrient != null) {
+                viewHolderFoodNutrient
+                        .setHint(nutrient.getNutrientString());
+            }
+        }
+
+        private void configureViewHolderNutrient(
+                ViewHolderNutrient viewHolderNutrient, int position) {
+            Nutrient nutrient = (Nutrient) items.get(position);
+            if (nutrient != null) {
+                viewHolderNutrient
+                        .setHint(FoodNutrients.getValue(
+                                Integer.parseInt(nutrient.getNutrientId())).getNutrientString());
+                viewHolderNutrient.setNutrient(nutrient.getValue());
+            }
+        }
+
+        private void configureViewHolderFoodName(
+                ViewHolderFoodName viewHolderFoodName, int position) {
+            FoodName foodName = (FoodName) items.get(position);
+            if (foodName != null) {
+                viewHolderFoodName.setHint(foodName.label);
+                viewHolderFoodName.setFoodName(foodName.name);
+            }
+        }
+
+        private void configureViewHolderQuantity(
+                ViewHolderQuantity viewHolderQuantity, int position) {
+            Quantity quantity = (Quantity) items.get(position);
+            if (quantity != null) {
+                viewHolderQuantity.setHint(quantity.label);
+                viewHolderQuantity.setQuantity(quantity.quantity);
+            }
+        }
+
+
+        public void setList(List<Object> items) {
+            this.items = items;
+        }
+
+    }
+
 
 }

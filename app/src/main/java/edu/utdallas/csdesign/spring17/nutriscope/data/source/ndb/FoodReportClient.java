@@ -30,8 +30,6 @@ public class FoodReportClient {
     FoodReportService foodReportService;
 
 
-
-
     public FoodReportClient() {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
 
@@ -72,7 +70,7 @@ public class FoodReportClient {
 
 
                 Response response = chain.proceed(original);
-              //  Log.d(TAG, response. response.body().string());
+                //  Log.d(TAG, response. response.body().string());
                 return response;
             }
         });
@@ -94,8 +92,6 @@ public class FoodReportClient {
         this.foodReportService = retrofit.create(FoodReportService.class);
 
 
-
-
     }
 
     @Provides
@@ -103,7 +99,6 @@ public class FoodReportClient {
     public FoodReportService getFoodReportService() {
         return foodReportService;
     }
-
 
 
 }

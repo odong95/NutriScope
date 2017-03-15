@@ -12,7 +12,6 @@ public class RealmFoodConsumedRepository implements Repository<RealmFoodConsumed
     private final static String TAG = "FoodRealmRepository";
 
 
-
     private static RealmFoodConsumedRepository INSTANCE = null;
 
     private RealmFoodConsumedRepository() {
@@ -20,7 +19,7 @@ public class RealmFoodConsumedRepository implements Repository<RealmFoodConsumed
     }
 
     public static RealmFoodConsumedRepository getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new RealmFoodConsumedRepository();
         }
 
@@ -47,7 +46,6 @@ public class RealmFoodConsumedRepository implements Repository<RealmFoodConsumed
     public void deleteItem(RealmFoodConsumed id, DeleteCallback callback) {
 
     }
-
 
 
 }

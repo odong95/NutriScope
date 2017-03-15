@@ -3,15 +3,21 @@ package edu.utdallas.csdesign.spring17.nutriscope.overview;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -39,10 +45,12 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
     private OverviewRecyclerViewAdapter adapter;
 
     private OverviewContract.Presenter presenter;
+    private BottomSheetBehavior behavior;
 
-    @BindView(R2.id.fab_add_overview)
-    FloatingActionButton fab;
-
+    @BindView(R2.id.fab_add_overview) FloatingActionButton fab;
+    @BindView(R2.id.overview_tabs) TabLayout tabLayout;
+    @BindView(R2.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.overview_bottom_sheet) LinearLayout bottomSheet;
 
     public OverviewFragment() {
 
@@ -70,21 +78,106 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
         ButterKnife.bind(this, view);
 
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
+
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_hamburger));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_graph));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_calendar));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_recipe));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_gear));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_search));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tabLayout.getSelectedTabPosition() == 0) {
+                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                } else if (tabLayout.getSelectedTabPosition() == 1) {
+                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                } else if (tabLayout.getSelectedTabPosition() == 2) {
+                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                } else if (tabLayout.getSelectedTabPosition() == 3) {
+                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                } else if (tabLayout.getSelectedTabPosition() == 4) {
+                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                } else if (tabLayout.getSelectedTabPosition() == 5) {
+                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         overviewRecyclerView = (RecyclerView) view.findViewById(R.id.overview_recycler_view);
         overviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        overviewRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+                }
+
+            }
+        });
+
+
+        this.behavior = BottomSheetBehavior.from(bottomSheet);
+        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    fab.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
 
 
         return view;
     }
 
-    @OnClick(R2.id.fab_add_overview)
+    @OnClick(R2.id.overview_bottom_sheet_add_food)
     public void submit() {
         Log.d(TAG, "overview fab clicked");
         showAddEditFood();
 
     }
 
+    @OnClick(R2.id.fab_add_overview)
+    public void showBottomSheet() {
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        fab.setVisibility(View.INVISIBLE);
+
+    }
+
+    private void hideBottomSheet() {
+        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
     public void showAddEditFood() {
+        hideBottomSheet();
         Intent intent = new Intent(getActivity(), AddEditFoodActivity.class);
         startActivity(intent);
 
@@ -97,21 +190,21 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
             adapter = new OverviewRecyclerViewAdapter(list);
             overviewRecyclerView.setAdapter(adapter);
-        }
-        else {
+        } else {
             adapter.setList(list);
             adapter.notifyDataSetChanged();
         }
 
     }
 
-    private class ViewHolderFood extends RecyclerView.ViewHolder {
+    class ViewHolderFood extends RecyclerView.ViewHolder {
 
-        private TextView foodName;
+        @BindView(R.id.food_consumed_name)
+        TextView foodName;
 
         public ViewHolderFood(View v) {
             super(v);
-            foodName = (TextView) v.findViewById(R.id.list_item_food_name);
+            ButterKnife.bind(this, v);
         }
 
         public TextView getFoodName() {
@@ -156,7 +249,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
          * This method creates different RecyclerView.ViewHolder objects based on the item view type.\
          *
          * @param viewGroup ViewGroup container for the item
-         * @param viewType type of view to be inflated
+         * @param viewType  type of view to be inflated
          * @return viewHolder to be inflated
          */
         @Override
@@ -167,7 +260,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
             switch (viewType) {
                 case FOOD:
-                    View v1 = inflater.inflate(R.layout.list_item_food, viewGroup, false);
+                    View v1 = inflater.inflate(R.layout.list_item_food_consumed, viewGroup, false);
                     viewHolder = new ViewHolderFood(v1);
                     break;
                 default:
@@ -183,7 +276,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
          * and also sets up some private fields to be used by RecyclerView.
          *
          * @param viewHolder The type of RecyclerView.ViewHolder to populate
-         * @param position Item position in the viewgroup.
+         * @param position   Item position in the viewgroup.
          */
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
@@ -201,12 +294,14 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         private void configureViewHolderFood(ViewHolderFood vhf, int position) {
             ConsumedFood food = (ConsumedFood) items.get(position);
             if (food != null) {
-                vhf.getFoodName().setText("Name: " + food.getNdbNo());
+                vhf.getFoodName().setText("Name: " + food.getTimeStamp());
             }
         }
 
 
-        public void setList(List<Trackable> trackable) { this.items = trackable; }
+        public void setList(List<Trackable> trackable) {
+            this.items = trackable;
+        }
 
     }
 

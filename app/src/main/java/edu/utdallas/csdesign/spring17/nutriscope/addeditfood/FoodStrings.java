@@ -1,7 +1,7 @@
 package edu.utdallas.csdesign.spring17.nutriscope.addeditfood;
 
-import edu.utdallas.csdesign.spring17.nutriscope.FoodNutrients;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
 
 /**
  * Created by john on 2/23/17.

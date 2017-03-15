@@ -24,6 +24,10 @@ public class ConsumedFood implements Trackable {
 
     }
 
+    public ConsumedFood(long ts) {
+        this.dateTimeConsumed = ts;
+    }
+
     public ConsumedFood(String ndbNo, String quantity) {
         this.ndbNo = ndbNo;
         this.quantity = quantity;
@@ -61,7 +65,6 @@ public class ConsumedFood implements Trackable {
 
 
     }
-
 
 
 }

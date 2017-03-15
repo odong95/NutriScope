@@ -13,7 +13,7 @@ public enum Injector {
 
     Component component;
 
-    private Injector(){
+    private Injector() {
     }
 
     static void initialize(NutriscopeApplication nutriscopeApplication) {

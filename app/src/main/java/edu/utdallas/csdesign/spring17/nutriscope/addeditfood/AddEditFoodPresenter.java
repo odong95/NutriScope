@@ -5,13 +5,15 @@ import android.util.Log;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ConsumedFoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.Repository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Food;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Nutrient;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.FoodRealmSpecification;
 
 /**
@@ -39,7 +41,6 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
         this.ndbId = ndbId;
         this.foodName = foodName;
     }
-
 
 
     @Override
@@ -74,18 +75,16 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
         });
 
 
-
-
-
-
     }
+
+    private List<Object> contentList;
 
     @Override
     public void populateFood() {
-        if (foodName != null) {
+/*        if (foodName != null) {
             view.showFoodName(foodName);
 
-        }
+        }*/
 
         if (ndbId != null) {
             Log.d(TAG, "ndbid null");
@@ -95,8 +94,17 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
                     Food food = (Food) items.get(0);
                     setFood(food);
 
-                    view.showFoodName(food.getDesc().getName());
-                    view.makeNutrientsActive(((Food) items.get(0)).getNutrients());
+
+                    contentList = new LinkedList<Object>();
+                    contentList.add(new FoodName(food.getDesc().getName()));
+                    contentList.add(new Quantity(""));
+                    for (Nutrient nutrient : ((Food) items.get(0)).getNutrients()) {
+                        contentList.add(nutrient);
+
+                    }
+
+                    view.populateContent(contentList);
+
                 }
 
                 @Override
@@ -105,7 +113,6 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
                 }
             });
         }
-
 
 
     }

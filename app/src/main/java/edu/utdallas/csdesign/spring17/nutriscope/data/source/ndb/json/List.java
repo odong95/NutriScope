@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb;
+package edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json;
 
 
 import com.google.gson.annotations.Expose;
@@ -107,7 +107,6 @@ public class List {
     public void setItem(java.util.List<Item> item) {
         this.item = item;
     }
-
 
 
 }

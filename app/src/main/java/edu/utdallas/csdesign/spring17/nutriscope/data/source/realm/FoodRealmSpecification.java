@@ -19,6 +19,5 @@ public class FoodRealmSpecification implements RealmSpecification {
     }
 
 
-
 }
 

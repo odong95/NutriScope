@@ -1,6 +1,6 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Food;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
 
 /**
  * Created by john on 3/10/17.
@@ -23,8 +23,7 @@ public class FoodClass {
 
         if (food.getDesc().getDs().toLowerCase().startsWith("s")) {
             this.dataSource = 1;
-        }
-        else {
+        } else {
             this.dataSource = 2;
         }
 /*
@@ -45,7 +44,6 @@ public class FoodClass {
     public int getDataSource() {
         return dataSource;
     }
-
 
 
 }

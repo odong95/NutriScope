@@ -41,11 +41,7 @@ public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
 
-
-
     }
-
-
 
 
     @Override
@@ -56,7 +52,7 @@ public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> 
         String key = databaseReference.child("foodconsumed").child(auth.getCurrentUser().getUid()).push().getKey();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/foodconsumed/"+auth.getCurrentUser().getUid() + "/" + key, item.toMap());
+        childUpdates.put("/foodconsumed/" + auth.getCurrentUser().getUid() + "/" + key, item.toMap());
 
         databaseReference.updateChildren(childUpdates);
         callback.onCreateComplete();
@@ -73,7 +69,7 @@ public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> nodes = dataSnapshot.getChildren();
-                for(DataSnapshot data: nodes) {
+                for (DataSnapshot data : nodes) {
                     consumedFood = (ConsumedFood) data.getValue();
 
                     if (item.equals(consumedFood)) {
@@ -90,14 +86,10 @@ public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> 
         });
 
 
-
-
     }
 
     @Override
     public void queryItem(Specification specification, QueryCallback callback) {
-
-
 
 
     }

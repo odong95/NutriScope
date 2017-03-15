@@ -11,8 +11,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Food;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReport;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodReport;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportService;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.FoodRealmSpecification;
 import retrofit2.Call;
@@ -44,7 +44,6 @@ public class FoodRepository implements Repository<Food> {
     }
 
     Map<String, Food> foodCache = new HashMap<>();
-
 
 
     @Override
@@ -79,9 +78,7 @@ public class FoodRepository implements Repository<Food> {
                     Log.d(TAG, food.getDesc().getName());
 
                     callback.onQueryComplete(Lists.newArrayList(food));
-                }
-
-                else {
+                } else {
                     callback.onDataNotAvailable();
                 }
 
@@ -96,16 +93,12 @@ public class FoodRepository implements Repository<Food> {
         });
 
 
-
-
-
     }
 
     @Override
     public void deleteItem(Food id, DeleteCallback callback) {
 
     }
-    
-    
-    
+
+
 }
