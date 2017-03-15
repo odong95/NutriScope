@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "177297997857",
-    "firebase_url": "https://nutriscope-492ef.firebaseio.com",
-    "project_id": "nutriscope-492ef",
-    "storage_bucket": "nutriscope-492ef.appspot.com"
+    "project_number": "895438277951",
+    "firebase_url": "https://nutriscope-d2b3a.firebaseio.com",
+    "project_id": "nutriscope-d2b3a",
+    "storage_bucket": "nutriscope-d2b3a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:177297997857:android:16b545e2cf24d1bc",
+        "mobilesdk_app_id": "1:895438277951:android:16b545e2cf24d1bc",
         "android_client_info": {
           "package_name": "edu.utdallas.csdesign.spring17.nutriscope"
         }
       },
       "oauth_client": [
         {
-          "client_id": "177297997857-285noeem18qif3fjp99mq478u0pjugjt.apps.googleusercontent.com",
+          "client_id": "895438277951-t8vhuove2r96p9pvfpf39tm2f0dfhks4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "edu.utdallas.csdesign.spring17.nutriscope",
-            "certificate_hash": "cfe1673f6332506e8c94b51fc6970fc7e9d75768"
+            "certificate_hash": "d36a9d7d6cb646cf8e324350fdbd70b5cbd12e30"
           }
         },
         {
-          "client_id": "177297997857-ivc74mjs40h198lqs82674ahm13jp94v.apps.googleusercontent.com",
+          "client_id": "895438277951-0gu9kckoajmq0osotcmdth8m37mdsna7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCdKRZgAst37WES5hrx1wFRDMOPLI2B-Qg"
+          "current_key": "AIzaSyDlgwwkImDi0muWHgoXOChHXt8DooJU6v4"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "177297997857-ivc74mjs40h198lqs82674ahm13jp94v.apps.googleusercontent.com",
+              "client_id": "895438277951-0gu9kckoajmq0osotcmdth8m37mdsna7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
