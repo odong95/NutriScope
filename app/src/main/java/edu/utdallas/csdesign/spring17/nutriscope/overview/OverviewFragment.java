@@ -9,26 +9,34 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import edu.utdallas.csdesign.spring17.nutriscope.ProfileSettingsActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
+import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -72,11 +80,17 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         this.presenter = checkNotNull(presenter);
     }
 
+    PopupMenu popup;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
         ButterKnife.bind(this, view);
+
+        popup = new PopupMenu(getActivity(), view);
+
+        // This activity implements OnMenuItemClickListener
 
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -102,6 +116,10 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
                 } else if (tabLayout.getSelectedTabPosition() == 3) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                 } else if (tabLayout.getSelectedTabPosition() == 4) {
+
+                    showPopup(tabLayout);
+
+
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                 } else if (tabLayout.getSelectedTabPosition() == 5) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
@@ -157,6 +175,51 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
         return view;
     }
+
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(getActivity(), v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu_activity, popup.getMenu());
+        popup.show();
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.login:
+
+                    case R.id.logout:
+                        FirebaseAuth.getInstance().signOut();
+                        LoginManager.getInstance().logOut();
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        getActivity().finish();
+                        return true;
+                    case R.id.profile_settings:
+                        startActivity(new Intent(getActivity(), ProfileSettingsActivity.class));
+                        return true;
+                    default:
+
+                        return true;
+                }
+            }
+        });
+
+        popup.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu){
+
+                TabLayout.Tab tab =tabLayout.getTabAt(0);
+                tab.select();
+
+
+            }
+        });
+
+
+    }
+
+
+
+
 
     @OnClick(R2.id.overview_bottom_sheet_add_food)
     public void submit() {

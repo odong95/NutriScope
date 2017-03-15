@@ -28,7 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
-
+import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 
 
 public class ProfileSettingsActivity extends AppCompatActivity implements View.OnClickListener {

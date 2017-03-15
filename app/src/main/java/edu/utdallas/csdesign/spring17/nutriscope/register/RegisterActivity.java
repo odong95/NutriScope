@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-import edu.utdallas.csdesign.spring17.nutriscope.OverviewActivity;
+import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 

@@ -5,4 +5,5 @@ package edu.utdallas.csdesign.spring17.nutriscope.data.source;
  */
 
 public interface Specification {
+
 }

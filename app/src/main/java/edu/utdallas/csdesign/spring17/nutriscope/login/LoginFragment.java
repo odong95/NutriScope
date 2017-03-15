@@ -24,7 +24,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 
-import edu.utdallas.csdesign.spring17.nutriscope.OverviewActivity;
+import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.register.RegisterActivity;
 
