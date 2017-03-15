@@ -27,7 +27,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
 @Module
 @Singleton
 public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> {
-    private final static String TAG = "FoodRealmRepository";
+    private final static String TAG = "CFFirebaseRepo";
 
     DatabaseReference databaseReference;
     FirebaseAuth.AuthStateListener authStateListener;
@@ -40,7 +40,6 @@ public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> 
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-
     }
 
 
@@ -48,11 +47,15 @@ public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> 
     public void createItem(ConsumedFood item, CreateCallback callback) {
 
         Log.d(TAG, auth.getCurrentUser().getUid());
+        Log.d(TAG, item.toString());
 
         String key = databaseReference.child("foodconsumed").child(auth.getCurrentUser().getUid()).push().getKey();
 
+        Log.d(TAG, key);
+
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/foodconsumed/" + auth.getCurrentUser().getUid() + "/" + key, item.toMap());
+
 
         databaseReference.updateChildren(childUpdates);
         callback.onCreateComplete();

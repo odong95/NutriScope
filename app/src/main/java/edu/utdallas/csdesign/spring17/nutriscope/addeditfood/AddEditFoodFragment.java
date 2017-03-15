@@ -125,7 +125,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
     public void submit() {
         Log.d(TAG, "fab clicked");
         // FIXME: 3/12/17
-        presenter.addFood(Integer.parseInt("0"));
+        presenter.addFood(3);
 
     }
 

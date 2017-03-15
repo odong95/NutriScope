@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
@@ -36,6 +37,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (user != null) {
                     Log.w("AUTH", "User signed in: " + user.getEmail());
                     hideProgressDialog();
+
+                    FirebaseDatabase.getInstance().getReference().child("user").child(auth.getCurrentUser().getUid()).push();
+
                     startActivity(new Intent(LoginActivity.this, OverviewActivity.class));
                     finish();
                 }

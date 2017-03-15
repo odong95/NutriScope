@@ -87,7 +87,7 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
         }*/
 
         if (ndbId != null) {
-            Log.d(TAG, "ndbid null");
+            Log.d(TAG, "ndbid not null");
             foodRepository.queryItem(new FoodRealmSpecification(ndbId), new Repository.QueryCallback() {
                 @Override
                 public void onQueryComplete(List items) {
