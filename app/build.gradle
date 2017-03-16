@@ -25,17 +25,20 @@ android {
     // If you need to add more flavors, consider using flavor dimensions.
     productFlavors {
         mock {
-
+          //  applicationIdSuffix = ".mock"
         }
         prod {
 
+        }
+        sandbox {
+         //   applicationIdSuffix = ".sandbox"
         }
     }
 
     // Remove mockRelease as it's not needed.
     android.variantFilter { variant ->
         if(variant.buildType.name.equals('release')
-                && variant.getFlavors().get(0).name.equals('mock')) {
+                && (variant.getFlavors().get(0).name.equals('mock') || variant.getFlavors().get(0).name.equals('sandbox'))) {
             variant.setIgnore(true);
         }
     }
