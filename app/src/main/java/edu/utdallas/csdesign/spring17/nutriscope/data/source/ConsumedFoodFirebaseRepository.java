@@ -49,7 +49,7 @@ public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> 
         Log.d(TAG, auth.getCurrentUser().getUid());
         Log.d(TAG, item.toString());
 
-        String key = databaseReference.child("foodconsumed").child(auth.getCurrentUser().getUid()).push().getKey();
+/*        String key = databaseReference.child("foodconsumed").child(auth.getCurrentUser().getUid()).push().getKey();
 
         Log.d(TAG, key);
 
@@ -58,7 +58,7 @@ public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> 
 
 
         databaseReference.updateChildren(childUpdates);
-        callback.onCreateComplete();
+        callback.onCreateComplete();*/
 
     }
 
