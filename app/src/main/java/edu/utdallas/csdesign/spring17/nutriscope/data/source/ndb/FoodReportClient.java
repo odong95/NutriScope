@@ -4,10 +4,6 @@ import android.util.Log;
 
 import java.io.IOException;
 
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -21,13 +17,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by john on 3/3/17.
  */
 
-@Module
+
 public class FoodReportClient {
 
     final private static String TAG = "FoodReportClient";
 
 
-    FoodReportService foodReportService;
+    private FoodReportService foodReportService;
 
 
     public FoodReportClient() {
@@ -94,8 +90,6 @@ public class FoodReportClient {
 
     }
 
-    @Provides
-    @Singleton
     public FoodReportService getFoodReportService() {
         return foodReportService;
     }

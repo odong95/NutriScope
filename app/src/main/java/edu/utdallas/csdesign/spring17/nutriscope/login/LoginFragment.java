@@ -1,19 +1,25 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
 
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import edu.utdallas.csdesign.spring17.nutriscope.R;
+import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
+import edu.utdallas.csdesign.spring17.nutriscope.register.RegisterActivity;
+
+/*
 
 
 import com.facebook.CallbackManager;
@@ -22,23 +28,23 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+*/
 
 
-import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
-import edu.utdallas.csdesign.spring17.nutriscope.R;
-import edu.utdallas.csdesign.spring17.nutriscope.register.RegisterActivity;
+public class LoginFragment extends Fragment implements LoginContract.View, View.OnClickListener {
 
 
-public class LoginFragment extends Fragment implements LoginContract.View, View.OnClickListener{
+    @BindView(R.id.email) EditText emailText;
+    @BindView(R.id.password) EditText passwordText;
+    @BindView(R.id.goToRegister) Button goToRegister;
+    @BindView(R.id.login_button) Button login;
+/*    @BindView(R.id.fb_login) LoginButton fbButton;*/
 
-    private EditText emailText;
-    private EditText passwordText;
-    private Button goToRegister, login;
-    private LoginButton fbButton;
     private LoginContract.Presenter presenter;
     private ProgressDialog mProgressDialog;
 
-    private CallbackManager callbackManager;
+/*    private CallbackManager callbackManager;*/
+
     public LoginFragment() {
 
     }
@@ -48,36 +54,48 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     }
 
     @Override
+    public void setPresenter(LoginContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.start();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+
+        ButterKnife.bind(this, view);
+
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        emailText = (EditText) view.findViewById(R.id.email);
-        passwordText = (EditText) view.findViewById(R.id.password);
-        login = (Button) view.findViewById(R.id.login_button);
-        goToRegister = (Button) view.findViewById(R.id.goToRegister);
-        fbButton = (LoginButton) view.findViewById(R.id.fb_login);
-        callbackManager = CallbackManager.Factory.create();
+
+
+/*        callbackManager = CallbackManager.Factory.create();
         fbButton.setReadPermissions("email", "public_profile");
-        fbButton.setFragment(this);
+        fbButton.setFragment(this);*/
 
         login.setOnClickListener(this);
         goToRegister.setOnClickListener(this);
-        setupFBLogin();
+/*        setupFBLogin();*/
 
     }
 
     @Override
-    public void setPresenter(LoginContract.Presenter presenter) {
-
-        this.presenter = presenter;
+    public void loginSuccessful() {
+        Intent intent = new Intent(getActivity(), OverviewActivity.class);
+        startActivity(intent);
     }
 
-    public void setDialog(ProgressDialog d)
-    {
+
+    public void setDialog(ProgressDialog d) {
         this.mProgressDialog = d;
     }
 
@@ -85,7 +103,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_button:
-                if(!checkEmpty()) {
+                if (!checkEmpty()) {
                     showProgressDialog();
                     presenter.login(emailText.getText().toString().trim(), passwordText.getText().toString().trim());
                 }
@@ -95,7 +113,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
                 break;
         }
     }
-
+/*
     public void setupFBLogin(){
         fbButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -114,22 +132,16 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
                 Log.d("TAG", "facebook:onError", exception);
             }
         });
-    }
+    }*/
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
 
-    }
-
-    @Override
+/*    @Override
     public void onStop()
     {
         super.onStop();
         hideProgressDialog();
-    }
+    }*/
 
     @Override
     public void onErrorResponse(String error) {

@@ -41,17 +41,13 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
     private final static String TAG = "SearchFoodFragment";
 
     FirebaseAuth auth;
-    private SearchFoodContract.Presenter presenter;
-
     @BindView(R2.id.toolbar) Toolbar toolbar;
     @BindView(R2.id.search_food_text) EditText searchFoodEditText;
+    RecyclerView searchFoodRecyclerView;
 
 /*    @BindView(R2.id.search_food_button)
     Button searchFoodButton;*/
-
-
-    RecyclerView searchFoodRecyclerView;
-
+    private SearchFoodContract.Presenter presenter;
     private ItemAdapter resultAdapter;
 
     public SearchFoodFragment() {
@@ -124,7 +120,7 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
         searchFoodEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    Log.i(TAG,"Enter pressed");
+                    Log.i(TAG, "Enter pressed");
                     submit();
                 }
                 return false;

@@ -45,18 +45,6 @@ public enum FoodNutrients {
         this.nutrientName = name;
     }
 
-    public int getNutrientId() {
-        return this.nutrientId;
-    }
-
-    public String getNutrientString() {
-        return nutrientName;
-    }
-
-    public boolean equal(int i) {
-        return nutrientId == i;
-    }
-
     public static FoodNutrients getValue(int id) {
         FoodNutrients[] foodNutrients = FoodNutrients.values();
         for (int i = 0; i < foodNutrients.length; i++) {
@@ -70,6 +58,18 @@ public enum FoodNutrients {
 
     private static String getString(int id) {
         return NutriscopeApplication.getContext().getString(id);
+    }
+
+    public int getNutrientId() {
+        return this.nutrientId;
+    }
+
+    public String getNutrientString() {
+        return nutrientName;
+    }
+
+    public boolean equal(int i) {
+        return nutrientId == i;
     }
 
 

@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.source;
+package edu.utdallas.csdesign.spring17.nutriscope.data;
 
 /**
  * Created by john on 3/5/17.

@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.source;
+package edu.utdallas.csdesign.spring17.nutriscope.data.food;
 
 import android.util.Log;
 
@@ -8,13 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-import dagger.Module;
+import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportService;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodReport;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.FoodReportService;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.realm.FoodRealmSpecification;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,14 +22,14 @@ import retrofit2.Response;
  * Created by john on 3/10/17.
  */
 
-@Module
-@Singleton
+
 public class FoodRepository implements Repository<Food> {
 
     private final static String TAG = "FoodRepository";
 
 
     FoodReportService foodReportService;
+    Map<String, Food> foodCache = new HashMap<>();
 
     public FoodRepository() {
 
@@ -42,9 +41,6 @@ public class FoodRepository implements Repository<Food> {
 
 
     }
-
-    Map<String, Food> foodCache = new HashMap<>();
-
 
     @Override
     public void createItem(Food item, CreateCallback callback) {
@@ -59,7 +55,7 @@ public class FoodRepository implements Repository<Food> {
     @Override
     public void queryItem(Specification specification, final QueryCallback callback) {
 
-        FoodRealmSpecification spec = (FoodRealmSpecification) specification;
+        FoodSpecification spec = (FoodSpecification) specification;
 
         String id = spec.toRealmQuery();
         //check realm for id if doesn't exit

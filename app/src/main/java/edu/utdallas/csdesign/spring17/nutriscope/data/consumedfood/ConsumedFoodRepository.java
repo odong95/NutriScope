@@ -1,38 +1,37 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.source;
+package edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-import dagger.Module;
-import dagger.Provides;
-import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
+import edu.utdallas.csdesign.spring17.nutriscope.ApplicationScope;
+import edu.utdallas.csdesign.spring17.nutriscope.data.Remote;
+import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
+import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
 
 /**
  * Created by john on 3/10/17.
  */
 
-@Module
-@Singleton
+
+@ApplicationScope
 public class ConsumedFoodRepository extends Observable implements Repository<ConsumedFood> {
 
 
     ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository;
+    List<ConsumedFood> consumedFoodCache = new ArrayList<>();
+
 
     @Inject
-    public ConsumedFoodRepository(ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository, HistoryRepository historyRepository) {
+    public ConsumedFoodRepository(@Remote ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository, @ApplicationScope HistoryRepository historyRepository) {
         this.consumedFoodFirebaseRepository = consumedFoodFirebaseRepository;
+
         this.addObserver(historyRepository);
 
     }
-
-
-
-    List<ConsumedFood> consumedFoodCache = new ArrayList<>();
-
 
     @Override
     public void createItem(ConsumedFood item, CreateCallback callback) {

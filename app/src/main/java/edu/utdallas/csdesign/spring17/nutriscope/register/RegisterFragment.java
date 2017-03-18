@@ -1,9 +1,9 @@
 package edu.utdallas.csdesign.spring17.nutriscope.register;
 
-import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +24,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 
 
 public class RegisterFragment extends Fragment implements RegisterContract.View, View.OnClickListener {
+    public ProgressDialog mProgressDialog;
     private EditText emailText;
     private EditText passwordText;
     private EditText confirmPasswordText;
@@ -31,7 +32,6 @@ public class RegisterFragment extends Fragment implements RegisterContract.View,
     private LoginButton fbButton;
     private CallbackManager callbackManager;
     private RegisterContract.Presenter presenter;
-    public ProgressDialog mProgressDialog;
 
     public RegisterFragment() {
 
@@ -70,15 +70,15 @@ public class RegisterFragment extends Fragment implements RegisterContract.View,
         this.presenter = presenter;
     }
 
-    public void setDialog(ProgressDialog d)
-    {
+    public void setDialog(ProgressDialog d) {
         this.mProgressDialog = d;
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.register_button:
-                if(!checkEmpty() && checkPasswords()) {
+                if (!checkEmpty() && checkPasswords()) {
                     showProgressDialog();
                     presenter.register(emailText.getText().toString().trim(), passwordText.getText().toString().trim());
                 }
@@ -89,7 +89,7 @@ public class RegisterFragment extends Fragment implements RegisterContract.View,
         }
     }
 
-    public void setupFBLogin(){
+    public void setupFBLogin() {
         fbButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -117,8 +117,7 @@ public class RegisterFragment extends Fragment implements RegisterContract.View,
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
         hideProgressDialog();
     }
@@ -126,10 +125,10 @@ public class RegisterFragment extends Fragment implements RegisterContract.View,
 
     @Override
     public void onErrorResponse(String error) {
-            hideProgressDialog();
-            passwordText.setText("");
-            confirmPasswordText.setText("");
-            Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+        hideProgressDialog();
+        passwordText.setText("");
+        confirmPasswordText.setText("");
+        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -143,15 +142,11 @@ public class RegisterFragment extends Fragment implements RegisterContract.View,
         return false;
     }
 
-    private boolean checkPasswords()
-    {
-        if(!passwordText.getText().toString().trim().equals(confirmPasswordText.getText().toString().trim()))
-        {
+    private boolean checkPasswords() {
+        if (!passwordText.getText().toString().trim().equals(confirmPasswordText.getText().toString().trim())) {
             onErrorResponse("Passwords do not match");
             return false;
-        }
-        else if(passwordText.getText().toString().trim().length() < 8)
-        {
+        } else if (passwordText.getText().toString().trim().length() < 8) {
             onErrorResponse("Password must be at least 8 chars.");
             return false;
         }

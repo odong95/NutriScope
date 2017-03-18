@@ -4,10 +4,6 @@ import android.util.Log;
 
 import java.io.IOException;
 
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -21,13 +17,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by john on 3/3/17.
  */
 
-@Module
+
 public class AutoSuggestClient {
 
     final private static String TAG = "NDBClient";
 
 
-    AutoSuggestService autoSuggestService;
+    private AutoSuggestService autoSuggestService;
 
 
     public AutoSuggestClient() {
@@ -90,11 +86,8 @@ public class AutoSuggestClient {
 
     }
 
-    @Provides
-    @Singleton
-    public AutoSuggestService getInstance() {
+    public AutoSuggestService getAutoSuggestService() {
         return autoSuggestService;
     }
-
 
 }

@@ -2,6 +2,8 @@ package edu.utdallas.csdesign.spring17.nutriscope.searchfood;
 
 import android.util.Log;
 
+import javax.inject.Inject;
+
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.AutoSuggestService;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.Search;
 import retrofit2.Call;
@@ -14,15 +16,19 @@ import retrofit2.Response;
 
 public class SearchFoodPresenter implements SearchFoodContract.Presenter {
     private final static String TAG = "SearchFoodPresenter";
-
+    SearchFoodContract.View searchFoodView;
     private AutoSuggestService service;
 
-    SearchFoodContract.View searchFoodView;
-
+    @Inject
     public SearchFoodPresenter(AutoSuggestService service, SearchFoodContract.View view) {
         this.service = service;
         this.searchFoodView = view;
 
+    }
+
+    @Inject
+    void setupListeners() {
+        searchFoodView.setPresenter(this);
     }
 
 

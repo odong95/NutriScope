@@ -1,9 +1,6 @@
 package edu.utdallas.csdesign.spring17.nutriscope;
 
 import android.app.Application;
-import android.content.Context;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -13,24 +10,26 @@ import dagger.Provides;
  */
 
 @Module
-public class AppModule {
+public class ApplicationModule {
 
-    Application application;
+    private final Application application;
 
-    public AppModule(Application application) {
+    public ApplicationModule(Application application) {
         this.application = application;
     }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     Application providesApplication() {
         return application;
     }
 
-    @Provides
-    public Context applicationContext() {
-        return this.application;
-    }
+
+/*    @Provides
+    @Local
+    FoodReportService provideFoodReportService() {
+        return new FoodReportClient().getFoodReportService();
+    }*/
 
 
 }

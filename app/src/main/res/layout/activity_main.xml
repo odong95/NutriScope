@@ -1,71 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
             android:id="@+id/name"
-            android:hint="Name" />
-
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
             android:ems="10"
+            android:hint="Name"
+            android:inputType="textPersonName"/>
+
+        <EditText
             android:id="@+id/Age"
-            android:hint="Age" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Age"
+            android:inputType="textPersonName"/>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/linearLayout3">
+            android:layout_below="@+id/linearLayout3"
+            android:orientation="horizontal">
 
             <Button
-                android:text="Save"
-                android:layout_width="132dp"
-                android:layout_height="wrap_content"
                 android:id="@+id/save"
-                android:layout_weight="1" />
-
-            <Button
-                android:text="Delete"
                 android:layout_width="132dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Save"/>
+
+            <Button
                 android:id="@+id/delete"
-                android:layout_weight="1" />
-
-            <Button
-                android:text="Refresh"
                 android:layout_width="132dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Delete"/>
+
+            <Button
                 android:id="@+id/refresh"
-                android:layout_weight="1" />
+                android:layout_width="132dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Refresh"/>
 
         </LinearLayout>
 
         <TextView
+            android:id="@+id/log"
             android:layout_width="match_parent"
-            android:layout_height="396dp"
-            android:id="@+id/log" />
+            android:layout_height="396dp"/>
 
     </LinearLayout>
 

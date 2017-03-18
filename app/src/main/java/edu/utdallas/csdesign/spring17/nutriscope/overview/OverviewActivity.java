@@ -5,9 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
-import edu.utdallas.csdesign.spring17.nutriscope.Injector;
+import edu.utdallas.csdesign.spring17.nutriscope.NutriscopeApplication;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.HistoryRepository;
 
 /**
  *
@@ -19,16 +18,11 @@ public class OverviewActivity extends AppCompatActivity {
 
     public static final String EXTRA_CONSUMED_FOOD_KEY = "CONSUMED_FOOD_KEY";
 
-    private OverviewPresenter overviewPresenter;
-
-    @Inject
-    HistoryRepository historyRepository;
+    @Inject OverviewPresenter overviewPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Injector.get().inject(this);
-
 
         setContentView(R.layout.activity_single_fragment);
 
@@ -42,11 +36,11 @@ public class OverviewActivity extends AppCompatActivity {
         }
 
 
-        // Create the presenter
-        overviewPresenter = new OverviewPresenter(fragment, historyRepository);
-
-        fragment.setPresenter(overviewPresenter);
-
+        DaggerOverviewComponent.builder()
+                .historyRepositoryComponent(((NutriscopeApplication) getApplication()).getHistoryRepositoryComponent())
+                .overviewPresenterModule(new OverviewPresenterModule(fragment))
+                .build()
+                .inject(this);
     }
 
 }

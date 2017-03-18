@@ -1,8 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'realm-android'
 apply plugin: 'com.jakewharton.butterknife'
-
-
 
 android {
     compileSdkVersion 25
@@ -25,19 +22,19 @@ android {
     // If you need to add more flavors, consider using flavor dimensions.
     productFlavors {
         mock {
-          //  applicationIdSuffix = ".mock"
+            //  applicationIdSuffix = ".mock"
         }
         prod {
 
         }
         sandbox {
-         //   applicationIdSuffix = ".sandbox"
+            //   applicationIdSuffix = ".sandbox"
         }
     }
 
     // Remove mockRelease as it's not needed.
     android.variantFilter { variant ->
-        if(variant.buildType.name.equals('release')
+        if (variant.buildType.name.equals('release')
                 && (variant.getFlavors().get(0).name.equals('mock') || variant.getFlavors().get(0).name.equals('sandbox'))) {
             variant.setIgnore(true);
         }
@@ -52,9 +49,21 @@ android {
 }
 
 dependencies {
+    
+    androidTestCompile 'com.android.support:support-annotations:25.3.0'
+    androidTestCompile 'com.android.support:support-v4:25.3.0'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+    androidTestCompile 'com.google.firebase:firebase-auth:10.2.0'
+    androidTestCompile 'com.google.firebase:firebase-core:10.2.0'
+    androidTestCompile 'com.google.firebase:firebase-database:10.2.0'
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
     annotationProcessor "com.google.auto.value:auto-value:1.2"
     annotationProcessor "com.google.dagger:dagger-compiler:2.9"
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
@@ -64,6 +73,7 @@ dependencies {
     compile 'com.android.support:design:25.3.0'
     compile 'com.android.support:recyclerview-v7:25.3.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile group: 'com.facebook.android', name: 'facebook-android-sdk', version: '4.20.0'
     compile "com.google.dagger:dagger:2.9"
     compile 'com.google.firebase:firebase-auth:10.2.0'
     compile 'com.google.firebase:firebase-core:10.2.0'
@@ -78,27 +88,6 @@ dependencies {
     provided 'javax.annotation:jsr250-api:1.0'
     provided 'org.glassfish:javax.annotation:10.0-b28'
     testCompile 'junit:junit:4.12'
-
-    androidTestCompile 'junit:junit:4.12'
-
-    androidTestCompile 'com.android.support:support-annotations:25.3.0'
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support.test:rules:0.5'
-    // Optional -- Hamcrest library
-    androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
-    // Optional -- UI testing with Espresso
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    // Optional -- UI testing with UI Automator
-
-    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
-    androidTestCompile 'com.google.firebase:firebase-auth:10.2.0'
-    androidTestCompile 'com.google.firebase:firebase-core:10.2.0'
-    androidTestCompile 'com.google.firebase:firebase-database:10.2.0'
-    androidTestCompile 'com.android.support:support-v4:25.3.0'
-
-
-    compile group: 'com.facebook.android', name: 'facebook-android-sdk', version: '4.20.0'
-
 }
 
 

@@ -5,10 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
-import edu.utdallas.csdesign.spring17.nutriscope.Injector;
+import edu.utdallas.csdesign.spring17.nutriscope.NutriscopeApplication;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ConsumedFoodRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.FoodRepository;
 
 /**
  * Created by john on 2/21/17.
@@ -19,21 +17,13 @@ public class AddEditFoodActivity extends AppCompatActivity {
     public static final String EXTRA_FOOD_ID = "FOOD_ID";
     public static final String EXTRA_NDB_ID = "NDB_ID";
 
-
-    @Inject
-    ConsumedFoodRepository consumedFoodRepository;
-
-    @Inject
-    FoodRepository foodRepository;
-
-    private AddEditFoodPresenter addEditFoodPresenter;
+    @Inject AddEditFoodPresenter addEditFoodPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_fragment);
 
-        Injector.get().inject(this);
 
         String foodId = getIntent().getStringExtra(EXTRA_FOOD_ID);
         String ndbId = getIntent().getStringExtra(EXTRA_NDB_ID);
@@ -55,16 +45,12 @@ public class AddEditFoodActivity extends AppCompatActivity {
                     .commit();
         }
 
-        addEditFoodPresenter = new AddEditFoodPresenter(
-                consumedFoodRepository,
-                foodRepository,
-                addEditFoodFragment,
-                ndbId,
-                foodId
+        DaggerAddEditFoodComponent.builder()
+                .addEditFoodPresenterModule(new AddEditFoodPresenterModule(addEditFoodFragment, ndbId, foodId))
+                .consumedFoodRepositoryComponent(((NutriscopeApplication) getApplication()).getConsumedFoodRepositoryComponent())
+                .foodRepositoryComponent(((NutriscopeApplication) getApplication()).getFoodRepositoryComponent())
+                .build().inject(this);
 
-        );
-
-        addEditFoodFragment.setPresenter(addEditFoodPresenter);
 
     }
 

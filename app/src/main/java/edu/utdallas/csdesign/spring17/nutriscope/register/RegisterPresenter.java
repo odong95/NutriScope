@@ -12,20 +12,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.concurrent.Executor;
-
 public class RegisterPresenter implements RegisterContract.Presenter {
 
     private RegisterContract.View view;
     private FirebaseAuth auth;
     private Activity a;
     private boolean fbLogin;
+
     public RegisterPresenter() {
 
     }
 
-    public void initialize(Activity a, RegisterContract.View view, FirebaseAuth auth, boolean fb)
-    {
+    public void initialize(Activity a, RegisterContract.View view, FirebaseAuth auth, boolean fb) {
         this.a = a;
         this.view = view;
         this.auth = auth;
@@ -59,9 +57,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
 
                         if (!task.isSuccessful()) {
                             Log.w("", "signInWithCredential", task.getException());
-                        }
-                        else
-                        {
+                        } else {
                             Log.d("", "signInWithCredential:onComplete:" + task.isSuccessful());
                         }
 

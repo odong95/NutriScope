@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data;
+package edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood;
 
 import com.google.auto.value.AutoValue;
 import com.google.firebase.database.Exclude;
@@ -6,6 +6,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 
 /**
  * Created by john on 3/10/17.

@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.source;
+package edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood;
 
 import android.util.Log;
 
@@ -10,21 +10,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import dagger.Module;
-import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
+import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
 
 
 /**
  * Created by john on 3/10/17.
  */
 
-@Module
+
 @Singleton
 public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> {
     private final static String TAG = "CFFirebaseRepo";

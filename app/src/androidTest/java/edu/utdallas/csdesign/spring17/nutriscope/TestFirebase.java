@@ -1,10 +1,8 @@
 package edu.utdallas.csdesign.spring17.nutriscope;
 
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.AndroidTestCase;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -14,7 +12,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.database.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,67 +21,62 @@ import org.threeten.bp.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
+import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 
 /**
- {
- "rules": {
-
- "foodconsumed": {
- "$userid": {
- "$id": {
- ".validate": "newData.hasChildren(['ndbNo', 'quantity', 'dateTimeConsumed'])",
- "ndbNo": {
- ".validate": "newData.isString()"
- },
- "quantity": {
- ".validate": "newData.isString()"
- },
- "$other": {
- },
- },
- ".read": "auth != null && auth.uid == $userid",
- ".write": "auth != null && auth.uid == $userid",
- },
-
-
-
- },
- "users": {
- "$userid": {
- ".validate": "newData.hasChildren(['name'])",
- "name": {
- ".validate": "newData.isString()"
- },
- "$other": {
- ".validate": "false"
- },
- ".read": "true",
- ".write": "auth != null && auth.uid == $userid"
- }
- },
-
- }
- }
+ * {
+ * "rules": {
+ * <p>
+ * "foodconsumed": {
+ * "$userid": {
+ * "$id": {
+ * ".validate": "newData.hasChildren(['ndbNo', 'quantity', 'dateTimeConsumed'])",
+ * "ndbNo": {
+ * ".validate": "newData.isString()"
+ * },
+ * "quantity": {
+ * ".validate": "newData.isString()"
+ * },
+ * "$other": {
+ * },
+ * },
+ * ".read": "auth != null && auth.uid == $userid",
+ * ".write": "auth != null && auth.uid == $userid",
+ * },
+ * <p>
+ * <p>
+ * <p>
+ * },
+ * "users": {
+ * "$userid": {
+ * ".validate": "newData.hasChildren(['name'])",
+ * "name": {
+ * ".validate": "newData.isString()"
+ * },
+ * "$other": {
+ * ".validate": "false"
+ * },
+ * ".read": "true",
+ * ".write": "auth != null && auth.uid == $userid"
+ * }
+ * },
+ * <p>
+ * }
+ * }
  */
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class TestFirebase {
+    String TAG = "TestFirebase";
+    String uid;
+    private CountDownLatch lock = new CountDownLatch(2);
+    private String result;
     public TestFirebase() {
 
     }
-
-
-    private CountDownLatch lock = new CountDownLatch(2);
-
-    private String result;
-
-    String TAG = "TestFirebase";
-    String uid;
 
     public String getUid() {
         return uid;
@@ -95,7 +87,7 @@ public class TestFirebase {
     }
 
     @Test
-    public void test1(){
+    public void test1() {
 
 
         final FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -140,13 +132,11 @@ public class TestFirebase {
         String key = ref.child("foodconsumed").child(getUid()).push().getKey();
 
         int i = 0;
-        Log.d(TAG, ++i + " " +  key);
+        Log.d(TAG, ++i + " " + key);
 
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/foodconsumed/" + getUid() + "/" + key, food.toMap());
-
-
 
 
         ref.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -169,6 +159,8 @@ public class TestFirebase {
 
     @IgnoreExtraProperties
     public class User {
+        public String name = "John";
+
         public User() {
 
         }
@@ -176,8 +168,6 @@ public class TestFirebase {
         public User(String name) {
             this.name = name;
         }
-
-        public String name = "John";
 
         public String getName() {
             return name;
@@ -187,8 +177,6 @@ public class TestFirebase {
             this.name = name;
         }
     }
-
-
 
 
 }

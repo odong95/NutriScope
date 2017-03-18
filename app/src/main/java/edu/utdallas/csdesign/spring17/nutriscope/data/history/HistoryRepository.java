@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.source;
+package edu.utdallas.csdesign.spring17.nutriscope.data.history;
 
 import android.util.Log;
 
@@ -8,9 +8,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-import dagger.Module;
+import edu.utdallas.csdesign.spring17.nutriscope.ApplicationScope;
+import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 
 /**
@@ -18,18 +19,12 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
  * over view.
  */
 
-@Module
-@Singleton
+
+@ApplicationScope
 public class HistoryRepository implements Repository<Trackable>, Observer {
 
     private final static String TAG = "HistoryRepository";
-
-    @Override
-    public void update(Observable observable, Object arg) {
-        Log.d(TAG, "update called");
-        historyCache.add((Trackable) arg);
-
-    }
+    List<Trackable> historyCache = new ArrayList<>();
 
 
     @Inject
@@ -37,7 +32,12 @@ public class HistoryRepository implements Repository<Trackable>, Observer {
 
     }
 
-    List<Trackable> historyCache = new ArrayList<>();
+    @Override
+    public void update(Observable observable, Object arg) {
+        Log.d(TAG, "update called");
+        historyCache.add((Trackable) arg);
+
+    }
 
     @Override
     public void createItem(Trackable item, CreateCallback callback) {

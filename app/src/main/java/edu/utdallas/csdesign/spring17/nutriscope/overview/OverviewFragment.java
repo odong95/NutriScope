@@ -34,8 +34,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.ProfileSettingsActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
-import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
+import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -48,17 +48,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class OverviewFragment extends Fragment implements OverviewContract.View {
 
     final private static String TAG = "OverviewFragment";
-
-    private RecyclerView overviewRecyclerView;
-    private OverviewRecyclerViewAdapter adapter;
-
-    private OverviewContract.Presenter presenter;
-    private BottomSheetBehavior behavior;
-
     @BindView(R2.id.fab_add_overview) FloatingActionButton fab;
     @BindView(R2.id.overview_tabs) TabLayout tabLayout;
     @BindView(R2.id.toolbar) Toolbar toolbar;
     @BindView(R.id.overview_bottom_sheet) LinearLayout bottomSheet;
+    PopupMenu popup;
+    private RecyclerView overviewRecyclerView;
+    private OverviewRecyclerViewAdapter adapter;
+    private OverviewContract.Presenter presenter;
+    private BottomSheetBehavior behavior;
 
     public OverviewFragment() {
 
@@ -67,7 +65,6 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
     public static OverviewFragment newInstance() {
         return new OverviewFragment();
     }
-
 
     @Override
     public void onResume() {
@@ -79,8 +76,6 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
     public void setPresenter(@NonNull OverviewContract.Presenter presenter) {
         this.presenter = checkNotNull(presenter);
     }
-
-    PopupMenu popup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -205,9 +200,9 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
         popup.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
-            public void onDismiss(PopupMenu menu){
+            public void onDismiss(PopupMenu menu) {
 
-                TabLayout.Tab tab =tabLayout.getTabAt(0);
+                TabLayout.Tab tab = tabLayout.getTabAt(0);
                 tab.select();
 
 
@@ -216,9 +211,6 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
 
     }
-
-
-
 
 
     @OnClick(R2.id.overview_bottom_sheet_add_food)
@@ -283,10 +275,9 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
     private class OverviewRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+        private final int FOOD = 0;
         // The items to display in your RecyclerView
         private List<Trackable> items;
-
-        private final int FOOD = 0;
 
         // Provide a suitable constructor (depends on the kind of dataset)
         public OverviewRecyclerViewAdapter(List<Trackable> items) {

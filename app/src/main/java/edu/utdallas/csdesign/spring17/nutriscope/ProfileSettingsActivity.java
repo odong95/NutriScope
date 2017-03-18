@@ -59,8 +59,7 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
         deleteAccountB.setOnClickListener(this);
         backB.setOnClickListener(this);
 
-        if(isFBLoggedIn())
-        {
+        if (isFBLoggedIn()) {
             changeEmailB.setVisibility(View.GONE);
             changePasswordB.setVisibility(View.GONE);
         }
@@ -128,21 +127,21 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
                             } else {
                                 Log.w("AUTH", "reAuthentication:success - " + auth.getCurrentUser().getEmail());
                                 showLoadingDialog();
-                                    user.updateEmail(p1.getText().toString().trim())
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Toast.makeText(ProfileSettingsActivity.this, "Email updated, please login again", Toast.LENGTH_LONG).show();
-                                                        auth.signOut();
-                                                    } else {
-                                                        Log.w("AUTH", "emailUpdate:failed", task.getException());
-                                                        Toast.makeText(ProfileSettingsActivity.this, "Failed to update email, please try again", Toast.LENGTH_LONG).show();
-                                                    }
-                                                    hideProgressDialog();
-
+                                user.updateEmail(p1.getText().toString().trim())
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(ProfileSettingsActivity.this, "Email updated, please login again", Toast.LENGTH_LONG).show();
+                                                    auth.signOut();
+                                                } else {
+                                                    Log.w("AUTH", "emailUpdate:failed", task.getException());
+                                                    Toast.makeText(ProfileSettingsActivity.this, "Failed to update email, please try again", Toast.LENGTH_LONG).show();
                                                 }
-                                            });
+                                                hideProgressDialog();
+
+                                            }
+                                        });
 
                             }
                             hideProgressDialog();
@@ -230,13 +229,12 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
 
         TextView title = (TextView) promptView.findViewById(R.id.input_dialog_text_msg);
         title.setText("Warning this cannot be undone.");
-        title.setPadding(0,0,0,18);
+        title.setPadding(0, 0, 0, 18);
         final EditText p1 = (EditText) promptView.findViewById(R.id.edittext_input_dialog);
         p1.setVisibility(promptView.GONE);
         final EditText p2 = (EditText) promptView.findViewById(R.id.edittext_input_dialog2);
 
-        if(isFBLoggedIn())
-        {
+        if (isFBLoggedIn()) {
             TextView t2 = (TextView) promptView.findViewById(R.id.input_dialog_text_msg2);
             t2.setVisibility(promptView.GONE);
             p2.setVisibility(promptView.GONE);
@@ -245,8 +243,7 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (!isFBLoggedIn()) {
-                    if(!TextUtils.isEmpty(p2.getText().toString().trim()))
-                    {
+                    if (!TextUtils.isEmpty(p2.getText().toString().trim())) {
                         showLoadingDialog();
                         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), p2.getText().toString().trim());
                         user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -279,11 +276,9 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
                             }
                         });
                     }
-                }
-                else
-                {
+                } else {
                     showLoadingDialog();
-                    handleFacebookAccessToken( AccessToken.getCurrentAccessToken());
+                    handleFacebookAccessToken(AccessToken.getCurrentAccessToken());
 
                 }
                 dialog.dismiss();
@@ -347,9 +342,7 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
                             Log.w("", "signInWithCredentialFailed", task.getException());
-                        }
-                        else
-                        {
+                        } else {
                             Log.d("", "signInWithCredential:onComplete:" + task.isSuccessful());
 
                             showLoadingDialog();

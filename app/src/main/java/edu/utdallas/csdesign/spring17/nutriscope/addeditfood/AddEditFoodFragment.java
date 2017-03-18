@@ -18,9 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
@@ -42,17 +40,19 @@ import edu.utdallas.csdesign.spring17.nutriscope.searchfood.SearchFoodActivity;
 
 public class AddEditFoodFragment extends Fragment implements AddEditFoodContract.View {
 
+    static final ButterKnife.Setter<View, Integer> ChangeVisibility
+            = new ButterKnife.Setter<View, Integer>() {
+        @Override
+        public void set(View view, Integer value, int index) {
+            view.setVisibility(value);
+        }
+    };
     final private static String TAG = "AddEditFoodFragment";
-
-    private AddEditFoodContract.Presenter presenter;
-
-    ImmutableMap<FoodNutrients, EditText> editTextBoxes;
-
-    private RecyclerView recyclerView;
-    private AddEditFoodRecyclerViewAdapter adapter;
-
     @BindView(R2.id.toolbar) Toolbar toolbar;
     @BindView(R2.id.fab_add_food) FloatingActionButton fab;
+    private AddEditFoodContract.Presenter presenter;
+    private RecyclerView recyclerView;
+    private AddEditFoodRecyclerViewAdapter adapter;
 
     public AddEditFoodFragment() {
 
@@ -66,7 +66,6 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
     public void setPresenter(AddEditFoodContract.Presenter presenter) {
         this.presenter = presenter;
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,14 +127,6 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         presenter.addFood(3);
 
     }
-
-    static final ButterKnife.Setter<View, Integer> ChangeVisibility
-            = new ButterKnife.Setter<View, Integer>() {
-        @Override
-        public void set(View view, Integer value, int index) {
-            view.setVisibility(value);
-        }
-    };
 
     @Override
     public boolean isActive() {
@@ -263,13 +254,12 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
 
     private class AddEditFoodRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        // The items to display in your RecyclerView
-        private List<Object> items;
-
         private final int NUTRIENT = 0;
         private final int QUANTITY = 1;
         private final int NAME = 2;
         private final int FOODNUTRIENT = 3;
+        // The items to display in your RecyclerView
+        private List<Object> items;
 
         // Provide a suitable constructor (depends on the kind of dataset)
         public AddEditFoodRecyclerViewAdapter(List<Object> items) {

@@ -6,14 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
-
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-
-import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 
@@ -21,10 +17,10 @@ import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 public class RegisterActivity extends AppCompatActivity {
 
     public RegisterPresenter registerPresenter;
+    public boolean fbLogin;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog mProgressDialog;
-    public boolean fbLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

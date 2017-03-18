@@ -5,9 +5,11 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.ConsumedFood;
+import javax.inject.Inject;
+
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.HistoryRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
+import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -15,7 +17,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by john on 2/10/17.
  */
 
-public class OverviewPresenter implements OverviewContract.Presenter {
+final class OverviewPresenter implements OverviewContract.Presenter {
 
     final private static String TAG = "OverviewPresenter";
 
@@ -23,11 +25,17 @@ public class OverviewPresenter implements OverviewContract.Presenter {
 
     private final HistoryRepository historyRepository;
 
+    @Inject
     public OverviewPresenter(@NonNull OverviewContract.View overviewView, HistoryRepository historyRepository) {
         this.overviewView = checkNotNull(overviewView);
         this.historyRepository = historyRepository;
+    }
+
+    @Inject
+    void setupListeners() {
         overviewView.setPresenter(this);
     }
+
 
     @Override
     public void start() {

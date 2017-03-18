@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.source;
+package edu.utdallas.csdesign.spring17.nutriscope.data;
 
 import java.util.List;
 
@@ -8,6 +8,15 @@ import java.util.List;
  */
 
 public interface Repository<T> {
+
+    void createItem(T item, CreateCallback callback);
+
+    void updateItem(T item, UpdateCallback callback);
+
+    void queryItem(Specification specification, QueryCallback<T> callback);
+
+    void deleteItem(T id, DeleteCallback callback);
+
 
     interface QueryCallback<T> {
 
@@ -40,15 +49,6 @@ public interface Repository<T> {
         void onDeleteFailed();
 
     }
-
-
-    void createItem(T item, CreateCallback callback);
-
-    void updateItem(T item, UpdateCallback callback);
-
-    void queryItem(Specification specification, QueryCallback<T> callback);
-
-    void deleteItem(T id, DeleteCallback callback);
 
 
 }
