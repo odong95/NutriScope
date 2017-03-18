@@ -24,9 +24,11 @@ public interface LoginContract {
 
     }
 
-    interface Interactor extends BaseInteractor {
+    interface Interactor extends BaseInteractor<Presenter> {
 
         void login(String email, String password);
+
+
 
         //void createUser();
 

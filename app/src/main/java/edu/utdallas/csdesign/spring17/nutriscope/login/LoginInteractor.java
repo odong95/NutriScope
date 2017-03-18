@@ -21,10 +21,6 @@ public class LoginInteractor implements LoginContract.Interactor {
 
     }
 
-    public LoginInteractor(LoginContract.Presenter presenter) {
-        this.presenter = presenter;
-    }
-
     public void setPresenter(LoginContract.Presenter presenter) {
         this.presenter = presenter;
     }

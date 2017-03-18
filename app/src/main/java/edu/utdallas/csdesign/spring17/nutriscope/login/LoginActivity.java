@@ -4,14 +4,15 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import javax.inject.Inject;
+
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 
 
 public class LoginActivity extends AppCompatActivity {
 
 
-    private LoginPresenter loginPresenter;
-    private ProgressDialog mProgressDialog;
+    @Inject LoginPresenter loginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +25,10 @@ public class LoginActivity extends AppCompatActivity {
                 .add(R.id.activity_login, fragment)
                 .commit();
 
-        LoginInteractor interactor = new LoginInteractor();
-        loginPresenter = new LoginPresenter(interactor, fragment);
-
-        interactor.setPresenter(loginPresenter);
-        fragment.setPresenter(loginPresenter);
-        fragment.setDialog(mProgressDialog);
+        DaggerLoginComponent.builder()
+                .loginPresenterModule(new LoginPresenterModule(fragment, new LoginInteractor()))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -43,10 +42,5 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
-    }
 
 }

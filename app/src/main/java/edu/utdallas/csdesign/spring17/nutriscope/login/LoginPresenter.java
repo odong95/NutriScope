@@ -1,6 +1,8 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
 
+import javax.inject.Inject;
+
 public class LoginPresenter implements LoginContract.Presenter {
 
     private LoginContract.View view;
@@ -10,12 +12,20 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     }
 
+    @Inject
     public LoginPresenter(LoginContract.Interactor interactor, LoginContract.View view) {
         this.interactor = interactor;
         this.view = view;
 
 
     }
+
+    @Inject
+    void setupListeners() {
+        view.setPresenter(this);
+        interactor.setPresenter(this);
+    }
+
 
     @Override
     public void start() {

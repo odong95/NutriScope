@@ -1,12 +1,12 @@
 package edu.utdallas.csdesign.spring17.nutriscope;
 
-import io.realm.RealmObject;
+
 
 /**
  * Created by Lately on 3/8/2017.
  */
 
-public class Person extends RealmObject {
+public class Person {
 
     String name;
     int age;
