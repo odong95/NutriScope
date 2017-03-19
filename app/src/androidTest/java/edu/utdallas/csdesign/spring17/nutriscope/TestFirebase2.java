@@ -9,9 +9,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.ValueEventListener;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,12 +72,12 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class TestFirebase {
+public class TestFirebase2 {
     String TAG = "TestFirebase";
     String uid;
-    private CountDownLatch lock = new CountDownLatch(2);
+    private CountDownLatch lock = new CountDownLatch(1);
     private String result;
-    public TestFirebase() {
+    public TestFirebase2() {
 
     }
 
@@ -87,7 +90,7 @@ public class TestFirebase {
     }
 
     @Test
-    public void test1() {
+    public void test2() {
 
 
         final FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -95,10 +98,16 @@ public class TestFirebase {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                setUid(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                writeToDb();
+                if (task.isSuccessful()) {
+                    setUid(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    writeToDb();
+                }
+                else {
+                    task.getException();
+                }
             }
         });
+
 
         try {
             lock.await(10000, TimeUnit.MILLISECONDS);
@@ -111,13 +120,34 @@ public class TestFirebase {
 
     void writeToDb() {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
+
+        db.getReference().child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, " users snap " + dataSnapshot.toString());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "users error " + databaseError.toString() + databaseError.getDetails() + databaseError.getMessage());
+
+
+            }
+        });
+
         db.getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(new User("john")).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "complete");
+                    writeConsumedFood();
+                }
+                else {
+                        task.getException();
+                    lock.countDown();
+                    }
 
-                Log.d(TAG, "complete");
-                writeConsumedFood();
-                lock.countDown();
             }
         });
     }
@@ -129,11 +159,25 @@ public class TestFirebase {
         final ConsumedFood food = new ConsumedFood("0324", "1", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
         Log.d(TAG, getUid());
 
+        db.getReference().child("foodconsumed").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "foodcons. snap " + dataSnapshot.toString());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "foodcons. error " + databaseError.toString() + databaseError.getDetails() + databaseError.getMessage());
+
+
+            }
+        });
 
         String key = ref.child("foodconsumed").child(getUid()).push().getKey();
 
         int i = 0;
-        Log.d(TAG, ++i + " " + key);
+        Log.d(TAG, ++i + " key " + key);
 
 
         Map<String, Object> childUpdates = new HashMap<>();
@@ -144,11 +188,11 @@ public class TestFirebase {
         ref.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Log.d(TAG, "COMPLETE");
-                try {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "COMPLETE");
+                }
+                else {
                     task.getException();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
                 }
                 lock.countDown();
 

@@ -1,6 +1,5 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
