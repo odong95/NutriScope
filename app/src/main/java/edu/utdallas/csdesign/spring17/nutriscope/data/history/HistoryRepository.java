@@ -34,8 +34,9 @@ public class HistoryRepository implements Repository<Trackable>, Observer {
 
     @Override
     public void update(Observable observable, Object arg) {
-        Log.d(TAG, "update called");
+
         historyCache.add((Trackable) arg);
+        Log.d(TAG, "update called " + historyCache.size());
 
     }
 
@@ -53,7 +54,7 @@ public class HistoryRepository implements Repository<Trackable>, Observer {
     public void queryItem(Specification specification, final QueryCallback<Trackable> callback) {
 
         // Get all consumed food
-
+        Log.d(TAG, "query called" + historyCache.size());
         callback.onQueryComplete(historyCache);
 
 

@@ -2,8 +2,6 @@ package edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood;
 
 import dagger.Module;
 import dagger.Provides;
-import edu.utdallas.csdesign.spring17.nutriscope.ApplicationScope;
-import edu.utdallas.csdesign.spring17.nutriscope.data.Remote;
 
 /**
  * Created by john on 3/18/17.
@@ -11,12 +9,31 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Remote;
 @Module
 public class ConsumedFoodRepositoryModule {
 
-    @ApplicationScope
-    @Provides
-    @Remote
-    ConsumedFoodFirebaseRepository provideConsumedFoodFirebaseRepository() {
-        return new ConsumedFoodFirebaseRepository();
+    private final ConsumedFoodRepository consumedFoodRepository;
+
+
+    public ConsumedFoodRepositoryModule(ConsumedFoodRepository consumedFoodRepository) {
+        this.consumedFoodRepository = consumedFoodRepository;
     }
+
+
+    @Provides
+    ConsumedFoodRepository providesConsumedFoodRepository() {
+        return consumedFoodRepository;
+    }
+    /*
+
+    @Provides
+    HistoryRepository providesHistoryRepository() {
+        return historyRepository;
+    }
+
+
+    @Provides
+    ConsumedFoodFirebaseRepository provideConsumedFoodFirebaseRepository() {
+        return consumedFoodFirebaseRepository;
+    }
+*/
 
 
 }

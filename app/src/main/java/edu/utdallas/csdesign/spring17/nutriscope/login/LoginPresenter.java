@@ -8,16 +8,11 @@ public class LoginPresenter implements LoginContract.Presenter {
     private LoginContract.View view;
     private LoginContract.Interactor interactor;
 
-    public LoginPresenter() {
-
-    }
 
     @Inject
     public LoginPresenter(LoginContract.Interactor interactor, LoginContract.View view) {
         this.interactor = interactor;
         this.view = view;
-
-
     }
 
     @Inject

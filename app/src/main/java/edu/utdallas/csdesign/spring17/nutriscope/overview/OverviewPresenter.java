@@ -1,14 +1,14 @@
 package edu.utdallas.csdesign.spring17.nutriscope.overview;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
-import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -39,28 +39,17 @@ final class OverviewPresenter implements OverviewContract.Presenter {
 
     @Override
     public void start() {
-
-        List<Trackable> test = new ArrayList<>();
-
-        for (int i = 0; i < 100; i++) {
-            test.add(new ConsumedFood(i));
-
-        }
-
-        overviewView.showHistory(test);
-
-
         loadHistory();
 
     }
 
     @Override
     public void loadHistory() {
-/*
+
         historyRepository.queryItem(null, new Repository.QueryCallback<Trackable>() {
             @Override
             public void onQueryComplete(List<Trackable> items) {
-                Log.d(TAG, "history list loaded" + items.size());
+                Log.d(TAG, "history list loaded " + items.size());
                 overviewView.showHistory(items);
 
             }
@@ -70,7 +59,7 @@ final class OverviewPresenter implements OverviewContract.Presenter {
 
 
             }
-        });*/
+        });
 
 
     }

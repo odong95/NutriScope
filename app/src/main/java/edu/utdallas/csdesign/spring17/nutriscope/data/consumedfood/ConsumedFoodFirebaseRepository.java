@@ -13,9 +13,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
 
@@ -25,7 +22,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
  */
 
 
-@Singleton
+
 public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> {
     private final static String TAG = "CFFirebaseRepo";
 
@@ -34,7 +31,7 @@ public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> 
     FirebaseAuth auth;
 
 
-    @Inject
+
     public ConsumedFoodFirebaseRepository() {
 
         auth = FirebaseAuth.getInstance();

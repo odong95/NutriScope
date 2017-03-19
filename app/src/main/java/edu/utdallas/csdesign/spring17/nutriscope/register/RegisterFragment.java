@@ -1,11 +1,9 @@
 package edu.utdallas.csdesign.spring17.nutriscope.register;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,24 +11,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-
+import butterknife.BindView;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
+import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
+import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 
 
 public class RegisterFragment extends Fragment implements RegisterContract.View, View.OnClickListener {
-    public ProgressDialog mProgressDialog;
-    private EditText emailText;
-    private EditText passwordText;
-    private EditText confirmPasswordText;
-    private Button goToLogin, register;
-    private LoginButton fbButton;
-    private CallbackManager callbackManager;
+
+    @BindView(R2.id.email) EditText emailText;
+    @BindView(R2.id.password) EditText passwordText;
+    @BindView(R2.id.passwordconfirm) EditText confirmPasswordText;
+    @BindView(R2.id.goToLogin) Button goToLogin;
+    @BindView(R2.id.register_button) Button register;
+
     private RegisterContract.Presenter presenter;
 
     public RegisterFragment() {
@@ -54,15 +49,10 @@ public class RegisterFragment extends Fragment implements RegisterContract.View,
         confirmPasswordText = (EditText) view.findViewById(R.id.passwordconfirm);
         register = (Button) view.findViewById(R.id.register_button);
         goToLogin = (Button) view.findViewById(R.id.goToLogin);
-        fbButton = (LoginButton) view.findViewById(R.id.login_button);
-        callbackManager = CallbackManager.Factory.create();
-        fbButton.setReadPermissions("email", "public_profile");
-        fbButton.setFragment(this);
 
         register.setOnClickListener(this);
         goToLogin.setOnClickListener(this);
 
-        setupFBLogin();
     }
 
     @Override
@@ -70,16 +60,11 @@ public class RegisterFragment extends Fragment implements RegisterContract.View,
         this.presenter = presenter;
     }
 
-    public void setDialog(ProgressDialog d) {
-        this.mProgressDialog = d;
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.register_button:
                 if (!checkEmpty() && checkPasswords()) {
-                    showProgressDialog();
                     presenter.register(emailText.getText().toString().trim(), passwordText.getText().toString().trim());
                 }
                 break;
@@ -89,43 +74,26 @@ public class RegisterFragment extends Fragment implements RegisterContract.View,
         }
     }
 
-    public void setupFBLogin() {
-        fbButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                showLoadingDialog();
-                presenter.handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d("TAG", "facebook:onCancel");
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                Log.d("TAG", "facebook:onError", exception);
-            }
-        });
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
 
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        hideProgressDialog();
+    }
+
+    @Override
+    public void onRegisterComplete() {
+        Intent intent = new Intent(getActivity(), OverviewActivity.class);
+        startActivity(intent);
     }
 
 
     @Override
     public void onErrorResponse(String error) {
-        hideProgressDialog();
         passwordText.setText("");
         confirmPasswordText.setText("");
         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
@@ -154,30 +122,4 @@ public class RegisterFragment extends Fragment implements RegisterContract.View,
         return true;
     }
 
-
-    private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this.getActivity());
-            mProgressDialog.setMessage("Registering...");
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
-
-    private void showLoadingDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this.getActivity());
-            mProgressDialog.setMessage("Loading...");
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
-
-    private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
-    }
 }

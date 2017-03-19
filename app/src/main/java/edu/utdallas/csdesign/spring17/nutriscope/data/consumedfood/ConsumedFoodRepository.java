@@ -7,7 +7,6 @@ import java.util.Observable;
 import javax.inject.Inject;
 
 import edu.utdallas.csdesign.spring17.nutriscope.ApplicationScope;
-import edu.utdallas.csdesign.spring17.nutriscope.data.Remote;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
@@ -25,13 +24,20 @@ public class ConsumedFoodRepository extends Observable implements Repository<Con
     List<ConsumedFood> consumedFoodCache = new ArrayList<>();
 
 
+
+    public ConsumedFoodRepository(HistoryRepository historyRepository, ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository) {
+        this.consumedFoodFirebaseRepository = consumedFoodFirebaseRepository;
+        this.addObserver(historyRepository);
+    }
+
     @Inject
-    public ConsumedFoodRepository(@Remote ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository, @ApplicationScope HistoryRepository historyRepository) {
+    void setup() {
         this.consumedFoodFirebaseRepository = consumedFoodFirebaseRepository;
 
-        this.addObserver(historyRepository);
 
     }
+
+
 
     @Override
     public void createItem(ConsumedFood item, CreateCallback callback) {

@@ -10,6 +10,8 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 import java.lang.ref.WeakReference;
 
 import edu.utdallas.csdesign.spring17.nutriscope.Util.FirebaseLogger;
+import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodFirebaseRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodRepositoryComponent;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodRepositoryModule;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.DaggerConsumedFoodRepositoryComponent;
@@ -47,16 +49,24 @@ public class NutriscopeApplication extends Application {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 
-        FirebaseLogger firebaseLogger = new FirebaseLogger();
+        new FirebaseLogger();
 
 
         netComponent = DaggerNetComponent.builder().build();
 
-        historyRepositoryComponent = DaggerHistoryRepositoryComponent.builder().historyRepositoryModule(new HistoryRepositoryModule(new HistoryRepository())).build();
+        historyRepositoryComponent = DaggerHistoryRepositoryComponent.builder()
+                .historyRepositoryModule(new HistoryRepositoryModule(new HistoryRepository()))
+                .build();
 
-        consumedFoodRepositoryComponent = DaggerConsumedFoodRepositoryComponent.builder().consumedFoodRepositoryModule(new ConsumedFoodRepositoryModule()).build();
+        consumedFoodRepositoryComponent = DaggerConsumedFoodRepositoryComponent.builder()
+                .consumedFoodRepositoryModule(new ConsumedFoodRepositoryModule(
+                        new ConsumedFoodRepository(
+                                historyRepositoryComponent.getHistoryRepository(),
+                                new ConsumedFoodFirebaseRepository())))
+                .build();
 
-        foodRepositoryComponent = DaggerFoodRepositoryComponent.builder().foodRepositoryModule(new FoodRepositoryModule()).build();
+        foodRepositoryComponent = DaggerFoodRepositoryComponent.builder()
+                .foodRepositoryModule(new FoodRepositoryModule()).build();
 
 
     }

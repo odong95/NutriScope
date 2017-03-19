@@ -21,6 +21,7 @@ public class LoginInteractor implements LoginContract.Interactor {
 
     }
 
+    @Override
     public void setPresenter(LoginContract.Presenter presenter) {
         this.presenter = presenter;
     }

@@ -19,17 +19,6 @@ import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.register.RegisterActivity;
 
-/*
-
-
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-*/
-
 
 public class LoginFragment extends Fragment implements LoginContract.View, View.OnClickListener {
 
