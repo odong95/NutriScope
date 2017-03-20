@@ -74,7 +74,7 @@ public class ConsumedFood implements Trackable {
 
 
     @Override
-    public String getItemId() {
+    public String getKey() {
         return KeyGenerator.generate(dateTimeConsumed);
     }
 

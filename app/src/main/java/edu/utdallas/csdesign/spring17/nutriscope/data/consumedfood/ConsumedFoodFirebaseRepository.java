@@ -1,6 +1,5 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
