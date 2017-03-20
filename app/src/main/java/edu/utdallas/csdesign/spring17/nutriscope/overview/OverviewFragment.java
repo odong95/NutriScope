@@ -30,7 +30,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import edu.utdallas.csdesign.spring17.nutriscope.ProfileSettingsActivity;
+import edu.utdallas.csdesign.spring17.nutriscope.settings.ProfileSettingsActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
@@ -68,7 +68,9 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume");
         super.onResume();
+
         presenter.start();
     }
 
@@ -147,6 +149,8 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
             }
         });
+
+
 
 
         this.behavior = BottomSheetBehavior.from(bottomSheet);
@@ -231,6 +235,13 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
+    public void showAddEditFood(String ndbNo) {
+        Intent intent = new Intent(getActivity(), AddEditFoodActivity.class);
+        intent.putExtra(AddEditFoodActivity.EXTRA_NDB_ID, ndbNo);
+        startActivity(intent);
+
+    }
+
     public void showAddEditFood() {
         hideBottomSheet();
         Intent intent = new Intent(getActivity(), AddEditFoodActivity.class);
@@ -240,7 +251,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
     @Override
     public void showHistory(List<Trackable> list) {
-
+        Log.d(TAG, "showHistory");
         if (adapter == null) {
 
             adapter = new OverviewRecyclerViewAdapter(list);
@@ -252,22 +263,29 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
     }
 
-    class ViewHolderFood extends RecyclerView.ViewHolder {
+    class ViewHolderFood extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.food_consumed_name)
         TextView foodName;
 
+        private ConsumedFood consumedFood;
+
         public ViewHolderFood(View v) {
             super(v);
             ButterKnife.bind(this, v);
+            v.setOnClickListener(this);
         }
 
-        public TextView getFoodName() {
-            return foodName;
+        public void bindFood(ConsumedFood consumedFood) {
+            this.consumedFood = consumedFood;
+            foodName.setText(consumedFood.getNdbNo());
         }
 
-        public void setFoodName(TextView foodName) {
-            this.foodName = foodName;
+
+        @Override
+        public void onClick(View v) {
+            Log.d(TAG, "vhf clicked");
+            presenter.openAddEditFood(consumedFood);
         }
 
     }
@@ -348,7 +366,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         private void configureViewHolderFood(ViewHolderFood vhf, int position) {
             ConsumedFood food = (ConsumedFood) items.get(position);
             if (food != null) {
-                vhf.getFoodName().setText("Name: " + food.getTimeStamp());
+                vhf.bindFood(food);
             }
         }
 

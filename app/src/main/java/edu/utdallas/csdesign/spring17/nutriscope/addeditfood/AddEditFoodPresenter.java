@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZoneOffset;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.inject.Named;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodClass;
 import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
@@ -64,7 +66,7 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     public void addFood(int quantity) {
 
 
-        ConsumedFood consumedFood = new ConsumedFood(getFood().getDesc().getNdbno(), String.valueOf(quantity));
+        ConsumedFood consumedFood = new ConsumedFood(new FoodClass(), getFood().getDesc().getNdbno(), String.valueOf(quantity), LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
         consumedFood.setDateTimeConsumed(LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond());
 
         consumedFoodRepository.createItem(consumedFood, new Repository.CreateCallback() {
@@ -85,10 +87,6 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
 
     @Override
     public void populateFood() {
-/*        if (foodName != null) {
-            view.showFoodName(foodName);
-
-        }*/
 
         if (ndbId != null) {
             Log.d(TAG, "ndbid not null");

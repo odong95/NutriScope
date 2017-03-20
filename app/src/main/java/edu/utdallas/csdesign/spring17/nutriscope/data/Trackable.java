@@ -6,6 +6,6 @@ package edu.utdallas.csdesign.spring17.nutriscope.data;
 
 public interface Trackable {
 
-    long getTimeStamp();
+    String getItemId();
 
 }

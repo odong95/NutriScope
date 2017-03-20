@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
+import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodClass;
+import edu.utdallas.csdesign.spring17.nutriscope.util.KeyGenerator;
 
 /**
  * Created by john on 3/10/17.
@@ -17,6 +19,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 @IgnoreExtraProperties
 public class ConsumedFood implements Trackable {
 
+    private FoodClass foodClass;
     private String ndbNo;
     private String quantity;
     private long dateTimeConsumed;
@@ -26,19 +29,11 @@ public class ConsumedFood implements Trackable {
 
     }
 
-    public ConsumedFood(long ts) {
-        this.dateTimeConsumed = ts;
-    }
-
-    public ConsumedFood(String ndbNo, String quantity) {
+    public ConsumedFood(FoodClass foodClass, String ndbNo, String quantity, long dateTimeConsumed) {
+        this.foodClass = foodClass;
         this.ndbNo = ndbNo;
         this.quantity = quantity;
-    }
-
-    public ConsumedFood(String ndbNo, String quantity, long ts) {
-        this.ndbNo = ndbNo;
-        this.quantity = quantity;
-        this.dateTimeConsumed = ts;
+        this.dateTimeConsumed = dateTimeConsumed;
     }
 
     public String getNdbNo() {
@@ -57,10 +52,12 @@ public class ConsumedFood implements Trackable {
         this.dateTimeConsumed = dateTimeConsumed;
     }
 
-    @Exclude
-    @Override
-    public long getTimeStamp() {
-        return getDateTimeConsumed();
+    @Exclude public FoodClass getFoodClass() {
+        return foodClass;
+    }
+
+    public void setFoodClass(FoodClass foodClass) {
+        this.foodClass = foodClass;
     }
 
     @Exclude
@@ -75,5 +72,10 @@ public class ConsumedFood implements Trackable {
 
     }
 
+
+    @Override
+    public String getItemId() {
+        return KeyGenerator.generate(dateTimeConsumed);
+    }
 
 }

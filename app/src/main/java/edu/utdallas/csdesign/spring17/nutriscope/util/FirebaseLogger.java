@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.Util;
+package edu.utdallas.csdesign.spring17.nutriscope.util;
 
 import android.support.annotation.NonNull;
 import android.util.Log;

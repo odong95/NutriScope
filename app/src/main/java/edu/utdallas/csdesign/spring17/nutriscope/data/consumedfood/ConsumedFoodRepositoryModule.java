@@ -11,29 +11,12 @@ public class ConsumedFoodRepositoryModule {
 
     private final ConsumedFoodRepository consumedFoodRepository;
 
-
     public ConsumedFoodRepositoryModule(ConsumedFoodRepository consumedFoodRepository) {
         this.consumedFoodRepository = consumedFoodRepository;
     }
-
 
     @Provides
     ConsumedFoodRepository providesConsumedFoodRepository() {
         return consumedFoodRepository;
     }
-    /*
-
-    @Provides
-    HistoryRepository providesHistoryRepository() {
-        return historyRepository;
-    }
-
-
-    @Provides
-    ConsumedFoodFirebaseRepository provideConsumedFoodFirebaseRepository() {
-        return consumedFoodFirebaseRepository;
-    }
-*/
-
-
 }

@@ -3,13 +3,11 @@ package edu.utdallas.csdesign.spring17.nutriscope;
 import android.app.Application;
 import android.content.Context;
 
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import java.lang.ref.WeakReference;
 
-import edu.utdallas.csdesign.spring17.nutriscope.Util.FirebaseLogger;
+import edu.utdallas.csdesign.spring17.nutriscope.util.FirebaseLogger;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodFirebaseRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodRepositoryComponent;
@@ -39,18 +37,15 @@ public class NutriscopeApplication extends Application {
         return context.get();
     }
 
-
-
     @Override
     public void onCreate() {
         super.onCreate();
         context = new WeakReference<Context>(this);
         AndroidThreeTen.init(this);
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
+    //    FacebookSdk.sdkInitialize(getApplicationContext());
+    //    AppEventsLogger.activateApp(this);
 
         new FirebaseLogger();
-
 
         netComponent = DaggerNetComponent.builder().build();
 
@@ -67,8 +62,6 @@ public class NutriscopeApplication extends Application {
 
         foodRepositoryComponent = DaggerFoodRepositoryComponent.builder()
                 .foodRepositoryModule(new FoodRepositoryModule()).build();
-
-
     }
 
     public NetComponent getNetComponent() {

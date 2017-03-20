@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope;
+package edu.utdallas.csdesign.spring17.nutriscope.settings;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -27,6 +27,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 

@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
+import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -21,24 +22,25 @@ final class OverviewPresenter implements OverviewContract.Presenter {
 
     final private static String TAG = "OverviewPresenter";
 
-    private final OverviewContract.View overviewView;
+    private final OverviewContract.View view;
 
     private final HistoryRepository historyRepository;
 
     @Inject
-    public OverviewPresenter(@NonNull OverviewContract.View overviewView, HistoryRepository historyRepository) {
-        this.overviewView = checkNotNull(overviewView);
+    public OverviewPresenter(@NonNull OverviewContract.View view, HistoryRepository historyRepository) {
+        this.view = checkNotNull(view);
         this.historyRepository = historyRepository;
     }
 
     @Inject
     void setupListeners() {
-        overviewView.setPresenter(this);
+        view.setPresenter(this);
     }
 
 
     @Override
     public void start() {
+        Log.d(TAG, "start");
         loadHistory();
 
     }
@@ -50,7 +52,7 @@ final class OverviewPresenter implements OverviewContract.Presenter {
             @Override
             public void onQueryComplete(List<Trackable> items) {
                 Log.d(TAG, "history list loaded " + items.size());
-                overviewView.showHistory(items);
+                view.showHistory(items);
 
             }
 
@@ -61,6 +63,12 @@ final class OverviewPresenter implements OverviewContract.Presenter {
             }
         });
 
+
+    }
+
+    @Override
+    public void openAddEditFood(ConsumedFood consumedFood) {
+        view.showAddEditFood(consumedFood.getNdbNo());
 
     }
 
