@@ -156,7 +156,7 @@ public class TestFirebase2 {
     void writeConsumedFood() {
         final FirebaseDatabase db = FirebaseDatabase.getInstance();
         final DatabaseReference ref = db.getReference();
-        final ConsumedFood food = new ConsumedFood("0324", "1", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
+        //final ConsumedFood food = new ConsumedFood("0324", "1", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
         Log.d(TAG, getUid());
 
         db.getReference().child("foodconsumed").addValueEventListener(new ValueEventListener() {
@@ -181,7 +181,7 @@ public class TestFirebase2 {
 
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/foodconsumed/" + getUid() + "/" + key, food.toMap());
+        //childUpdates.put("/foodconsumed/" + getUid() + "/" + key, food.toMap());
 
 
 
