@@ -33,12 +33,8 @@ public class LoginInteractor implements LoginContract.Interactor {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     presenter.loginSuccessful();
-
-
                 } else {
-                    presenter.onErrorResponse("error");
-
-
+                    presenter.onErrorResponse("Login failed, please try again");
                 }
             }
         });
