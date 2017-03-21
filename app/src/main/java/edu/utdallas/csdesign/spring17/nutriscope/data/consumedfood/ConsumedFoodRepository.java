@@ -2,6 +2,8 @@ package edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood;
 
 import android.util.Log;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +12,11 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryItem;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.RepositoryInfo;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
 
 /**
  * Created by john on 3/10/17.
@@ -70,7 +74,25 @@ public class ConsumedFoodRepository implements Repository<ConsumedFood> {
             @Override
             public void onQueryComplete(List<ConsumedFood> items) {
                 Log.d(TAG, "Food returned " + items.size() );
-                for(ConsumedFood item: items) {
+
+                // These results do not have the food attached.
+
+                for(final ConsumedFood item: items) {
+                    foodRepository.queryItem(
+                            new FoodSpecification(
+                                new ImmutableList.Builder<String>().add(item.getNdbNo()).build()),
+                            new QueryCallback<Food>() {
+                        @Override
+                        public void onQueryComplete(List<Food> items) {
+                            item.setFood(items.get(0));
+
+                        }
+
+                        @Override
+                        public void onDataNotAvailable() {
+
+                        }
+                    });
                     results.add(item);
 
                 }

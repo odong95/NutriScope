@@ -18,6 +18,8 @@ import java.util.Map;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
+import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
 
 
 /**
@@ -26,13 +28,11 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
 
 
 
-public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> {
+final public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> {
     private final static String TAG = "CFFirebaseRepo";
 
-    DatabaseReference databaseReference;
-    FirebaseAuth.AuthStateListener authStateListener;
-    FirebaseAuth auth;
-
+    private DatabaseReference databaseReference;
+    private FirebaseAuth auth;
 
 
     public ConsumedFoodFirebaseRepository() {

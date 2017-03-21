@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
-import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodClass;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
 import edu.utdallas.csdesign.spring17.nutriscope.util.KeyGenerator;
 
 /**
@@ -19,7 +19,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.util.KeyGenerator;
 @IgnoreExtraProperties
 public class ConsumedFood implements Trackable {
 
-    private FoodClass foodClass;
+    private Food food;
     private String ndbNo;
     private String quantity;
     private long dateTimeConsumed;
@@ -29,8 +29,8 @@ public class ConsumedFood implements Trackable {
 
     }
 
-    public ConsumedFood(FoodClass foodClass, String ndbNo, String quantity, long dateTimeConsumed) {
-        this.foodClass = foodClass;
+    public ConsumedFood(Food food, String ndbNo, String quantity, long dateTimeConsumed) {
+        this.food = food;
         this.ndbNo = ndbNo;
         this.quantity = quantity;
         this.dateTimeConsumed = dateTimeConsumed;
@@ -52,10 +52,13 @@ public class ConsumedFood implements Trackable {
         this.dateTimeConsumed = dateTimeConsumed;
     }
 
-    @Exclude public FoodClass getFoodClass() {
-        return foodClass;
+    @Exclude public Food getFood() {
+        return food;
     }
 
+    public void setFood(Food food) {
+        this.food = food;
+    }
 
     @Exclude
     public Map<String, Object> toMap() {
