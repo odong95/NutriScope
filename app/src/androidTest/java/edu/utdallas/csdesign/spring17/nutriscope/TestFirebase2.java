@@ -27,6 +27,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
+import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodClass;
 
 /**
  * {
@@ -156,7 +157,7 @@ public class TestFirebase2 {
     void writeConsumedFood() {
         final FirebaseDatabase db = FirebaseDatabase.getInstance();
         final DatabaseReference ref = db.getReference();
-        final ConsumedFood food = new ConsumedFood("0324", "1", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
+        final ConsumedFood food = new ConsumedFood(new FoodClass(), "0324", "1", LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
         Log.d(TAG, getUid());
 
         db.getReference().child("foodconsumed").addValueEventListener(new ValueEventListener() {

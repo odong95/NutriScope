@@ -56,9 +56,6 @@ public class ConsumedFood implements Trackable {
         return foodClass;
     }
 
-    public void setFoodClass(FoodClass foodClass) {
-        this.foodClass = foodClass;
-    }
 
     @Exclude
     public Map<String, Object> toMap() {
@@ -71,7 +68,6 @@ public class ConsumedFood implements Trackable {
 
 
     }
-
 
     @Override
     public String getKey() {

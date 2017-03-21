@@ -53,15 +53,16 @@ public class NutriscopeApplication extends Application {
                 .historyRepositoryModule(new HistoryRepositoryModule(new HistoryRepository()))
                 .build();
 
+        foodRepositoryComponent = DaggerFoodRepositoryComponent.builder()
+                .foodRepositoryModule(new FoodRepositoryModule()).build();
+
         consumedFoodRepositoryComponent = DaggerConsumedFoodRepositoryComponent.builder()
                 .consumedFoodRepositoryModule(new ConsumedFoodRepositoryModule(
                         new ConsumedFoodRepository(
+                                foodRepositoryComponent.getFoodRepository(),
                                 historyRepositoryComponent.getHistoryRepository(),
                                 new ConsumedFoodFirebaseRepository())))
                 .build();
-
-        foodRepositoryComponent = DaggerFoodRepositoryComponent.builder()
-                .foodRepositoryModule(new FoodRepositoryModule()).build();
     }
 
     public NetComponent getNetComponent() {
