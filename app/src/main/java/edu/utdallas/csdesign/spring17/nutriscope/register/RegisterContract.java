@@ -20,8 +20,6 @@ public interface RegisterContract {
 
         void register(String email, String password);
 
-        //void handleFacebookAccessToken(AccessToken accessToken);
-
         void onErrorResponse(String error);
 
         void onRegisterComplete();
