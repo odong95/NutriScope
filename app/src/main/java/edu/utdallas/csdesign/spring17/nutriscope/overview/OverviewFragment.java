@@ -33,8 +33,8 @@ import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
-import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
+import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryItem;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.settings.ProfileSettingsActivity;
 
@@ -250,7 +250,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
     }
 
     @Override
-    public void showHistory(List<Trackable> list) {
+    public void showHistory(List<HistoryItem> list) {
         Log.d(TAG, "showHistory");
         if (adapter == null) {
 
@@ -295,10 +295,10 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
         private final int FOOD = 0;
         // The items to display in your RecyclerView
-        private List<Trackable> items;
+        private List<HistoryItem> items;
 
         // Provide a suitable constructor (depends on the kind of dataset)
-        public OverviewRecyclerViewAdapter(List<Trackable> items) {
+        public OverviewRecyclerViewAdapter(List<HistoryItem> items) {
             this.items = items;
         }
 
@@ -311,7 +311,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         //Returns the view type of the item at position for the purposes of view recycling.
         @Override
         public int getItemViewType(int position) {
-            if (items.get(position) instanceof ConsumedFood) {
+            if (items.get(position).getType() == ConsumedFood.class) {
                 return FOOD;
             }
             return -1;
@@ -364,14 +364,14 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
 
         private void configureViewHolderFood(ViewHolderFood vhf, int position) {
-            ConsumedFood food = (ConsumedFood) items.get(position);
+            ConsumedFood food = items.get(position).getItem(ConsumedFood.class);
             if (food != null) {
                 vhf.bindFood(food);
             }
         }
 
 
-        public void setList(List<Trackable> trackable) {
+        public void setList(List<HistoryItem> trackable) {
             this.items = trackable;
         }
 

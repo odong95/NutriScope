@@ -8,8 +8,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
+import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryItem;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -48,9 +48,9 @@ final class OverviewPresenter implements OverviewContract.Presenter {
     @Override
     public void loadHistory() {
 
-        historyRepository.queryItem(null, new Repository.QueryCallback<Trackable>() {
+        historyRepository.queryItem(null, new Repository.QueryCallback<HistoryItem>() {
             @Override
-            public void onQueryComplete(List<Trackable> items) {
+            public void onQueryComplete(List<HistoryItem> items) {
                 Log.d(TAG, "history list loaded " + items.size());
                 view.showHistory(items);
 

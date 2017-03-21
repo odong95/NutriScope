@@ -11,11 +11,13 @@ public class HistoryItem implements Trackable, Comparable<HistoryItem>{
 
     final private String key;
     final private Class<?> type;
+    final private Object object;
 
 
-    public HistoryItem(Class<?> type, String key) {
+    public HistoryItem(Class<?> type, String key, Object object) {
         this.type = type;
         this.key = key;
+        this.object = object;
     }
 
     public String getKey() {
@@ -24,6 +26,10 @@ public class HistoryItem implements Trackable, Comparable<HistoryItem>{
 
     public Class<?> getType() {
         return type;
+    }
+
+    public <T> T getItem(Class<T> type) {
+        return type.cast(object);
     }
 
     public int compareTo(HistoryItem other) {

@@ -20,8 +20,10 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 
 
 @ApplicationScope
-public class HistoryRepository implements Repository<Trackable> {
+public class HistoryRepository implements Repository<HistoryItem> {
     private final static String TAG = "HistoryRepository";
+
+    private boolean isInit = false;
 
 
     List<HistoryItem> history = new ArrayList<>();
@@ -39,47 +41,76 @@ public class HistoryRepository implements Repository<Trackable> {
     }
 
     @Override
-    public void createItem(Trackable item, CreateCallback callback) {
-
+    public void createItem(HistoryItem item, CreateCallback callback) {
+        history.add(item);
+        callback.onCreateComplete();
     }
 
     @Override
-    public void updateItem(Trackable item, UpdateCallback callback) {
-
+    public void updateItem(HistoryItem item, UpdateCallback callback) {
+        for (int i = 0; i < history.size(); i++) {
+            if (item.getKey().equals(history.get(i).getKey())) {
+                history.set(i, item);
+                callback.onUpdateComplete();
+                return;
+            }
+        }
+        callback.onUpdateFailed();
     }
 
     @Override
-    public void queryItem(Specification specification, final QueryCallback<Trackable> callback) {
+    public void queryItem(Specification specification, final QueryCallback<HistoryItem> callback) {
+        // return entire sorted list if spec is null
+        if (specification == null) {
 
-        final List<Trackable> output = new ArrayList<>();
+            // the first time, go to each child repo and query full contents
+            if (!isInit) {
+                history.clear();
+                for (int i = 0; i < repos.size(); i++) {
 
-        for(int i = 0; i < repos.size(); i++) {
+                    final int index = i;
+                    repos.get(i).getRepo().queryItem(specification, new QueryCallback<Trackable>() {
+                        @Override
+                        public void onQueryComplete(List<Trackable> items) {
+                            for (Trackable item : items) {
+                                history.add(new HistoryItem(repos.get(index).getType(), item.getKey(), item));
+                            }
+                            if (index == repos.size() - 1) {
+                                isInit = true;
+                                callback.onQueryComplete(history);
+                                Log.d(TAG, "query called" + history.size());
+                            }
+                        }
 
-            final int index = i;
-            repos.get(i).getRepo().queryItem(specification, new QueryCallback<Trackable>() {
-                @Override
-                public void onQueryComplete(List<Trackable> items) {
-                    output.addAll(items);
-                    if (index == repos.size() - 1) {
-                        callback.onQueryComplete(output);
-                        Log.d(TAG, "query called" + output.size());
-                    }
+                        @Override
+                        public void onDataNotAvailable() {
+                            callback.onDataNotAvailable();
+
+                        }
+                    });
+
                 }
-
-                @Override
-                public void onDataNotAvailable() {
-
-                }
-            });
-
+            }
+            // else just return current state
+            else {
+                Log.d(TAG, "return current state " + history.size());
+                callback.onQueryComplete(history);
+            }
         }
 
     }
 
 
     @Override
-    public void deleteItem(Trackable id, DeleteCallback callback) {
-
+    public void deleteItem(HistoryItem item, DeleteCallback callback) {
+        for (int i = 0; i < history.size(); i++) {
+            if (item.getKey().equals(history.get(i).getKey())) {
+                history.remove(i);
+                callback.onDeleteComplete();
+                return;
+            }
+        }
+        callback.onDeleteFailed();
     }
 
 
