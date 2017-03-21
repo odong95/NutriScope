@@ -46,14 +46,11 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                         }
                     }
                 });
-
-
     }
 
     private void setupUserInfo(User user) {
         db.child(user.getUid()).setValue(user);
         presenter.onRegisterComplete();
-
 
     }
 

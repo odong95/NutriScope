@@ -8,6 +8,10 @@ public class User {
 
     private String uid;
     private String email;
+    private String nickname;
+    private String age;
+    private String sex;
+    private String height;
 
     public User() {
 
@@ -33,4 +37,20 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getNickname(){return nickname;};
+
+    public void setNickname(String nickname){this.nickname = nickname;};
+
+    public String getAge(){return age;};
+
+    public void setAge(String age){this.age = age;};
+
+    public String getSex(){return sex;};
+
+    public void setSex(String sex){this.sex = sex;};
+
+    public String getHeight(){return height;};
+
+    public void setHeight(String height){this.height = height;};
 }

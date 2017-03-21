@@ -26,6 +26,8 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
@@ -34,6 +36,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 
 public class ProfileSettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private Button changeUserSettingsB;
     private Button changeEmailB;
     private Button changePasswordB;
     private Button deleteAccountB;
@@ -44,17 +47,20 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
     private ProgressDialog mProgressDialog;
 
 
+    DatabaseReference db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_settings);
         setTitle("Profile Settings");
 
+        changeUserSettingsB = (Button) findViewById(R.id.change_usersettings_button);
         changeEmailB = (Button) findViewById(R.id.change_email_button);
         changePasswordB = (Button) findViewById(R.id.change_password_button);
         deleteAccountB = (Button) findViewById(R.id.delete_account_button);
         backB = (Button) findViewById(R.id.go_back_button);
 
+        changeUserSettingsB.setOnClickListener(this);
         changeEmailB.setOnClickListener(this);
         changePasswordB.setOnClickListener(this);
         deleteAccountB.setOnClickListener(this);
@@ -78,13 +84,17 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-
+        db = FirebaseDatabase.getInstance().getReference().child("users");
     }
 
     @Override
     public void onClick(View view) {
 
         switch (view.getId()) {
+            case R.id.change_usersettings_button:
+                startActivity(new Intent(this, UserInfoActivity.class));
+                finish();
+                break;
             case R.id.change_email_button:
                 handleChangeEmail();
                 break;
@@ -105,7 +115,6 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
         LayoutInflater layoutInflater = LayoutInflater.from(ProfileSettingsActivity.this);
         final View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingsActivity.this);
-        builder.setTitle("Change Email");
         builder.setView(promptView);
 
         TextView title = (TextView) promptView.findViewById(R.id.input_dialog_text_msg);
@@ -133,6 +142,7 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
+                                                    db.child(user.getUid()).child("email").setValue(p1.getText().toString().trim());
                                                     Toast.makeText(ProfileSettingsActivity.this, "Email updated, please login again", Toast.LENGTH_LONG).show();
                                                     auth.signOut();
                                                 } else {
@@ -165,7 +175,6 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
         LayoutInflater layoutInflater = LayoutInflater.from(ProfileSettingsActivity.this);
         final View promptView = layoutInflater.inflate(R.layout.input_dialog_password, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingsActivity.this);
-        builder.setTitle("Change Password");
         builder.setView(promptView);
 
         final EditText p0 = (EditText) promptView.findViewById(R.id.edittext_input_dialog1);
@@ -229,7 +238,7 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
         builder.setView(promptView);
 
         TextView title = (TextView) promptView.findViewById(R.id.input_dialog_text_msg);
-        title.setText("Warning this cannot be undone.");
+        title.setText("WARNING. This cannot be undone.");
         title.setPadding(0, 0, 0, 18);
         final EditText p1 = (EditText) promptView.findViewById(R.id.edittext_input_dialog);
         p1.setVisibility(promptView.GONE);
@@ -256,6 +265,8 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
                                 } else {
                                     Log.w("AUTH", "reAuthentication:success - " + auth.getCurrentUser().getEmail());
                                     showLoadingDialog();
+                                    final String uid = user.getUid();
+                                    db.child(uid).removeValue();
                                     user.delete()
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
