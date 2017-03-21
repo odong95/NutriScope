@@ -4,14 +4,13 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-
-import javax.inject.Inject;
 
 import edu.utdallas.csdesign.spring17.nutriscope.ApplicationScope;
+import edu.utdallas.csdesign.spring17.nutriscope.data.Castable;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.history.RepositoryInfo;
 
 /**
  * Created by john on 3/10/17.
@@ -19,7 +18,13 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
 
 
 @ApplicationScope
-public class ConsumedFoodRepository implements Repository<ConsumedFood> {
+public class ConsumedFoodRepository implements Castable, Repository<ConsumedFood> {
+    public static final Class type = ConsumedFood.class;
+
+    @Override
+    public Class getType() {
+        return type;
+    }
 
     public static final String TAG = "CFrepo";
 
@@ -34,7 +39,7 @@ public class ConsumedFoodRepository implements Repository<ConsumedFood> {
     public ConsumedFoodRepository(HistoryRepository historyRepository, ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository) {
         this.consumedFoodFirebaseRepository = consumedFoodFirebaseRepository;
         this.historyRepository = historyRepository;
-        historyRepository.addObservable(this.getClass(), this);
+        historyRepository.putRepo(new RepositoryInfo<>(ConsumedFood.class, this));
 
 
     }

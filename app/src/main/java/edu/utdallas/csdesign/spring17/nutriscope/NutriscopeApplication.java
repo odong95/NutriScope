@@ -7,7 +7,6 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import java.lang.ref.WeakReference;
 
-import edu.utdallas.csdesign.spring17.nutriscope.util.FirebaseLogger;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodFirebaseRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodRepositoryComponent;
@@ -20,6 +19,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.history.DaggerHistoryRepos
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepositoryComponent;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepositoryModule;
+import edu.utdallas.csdesign.spring17.nutriscope.util.FirebaseLogger;
 
 
 public class NutriscopeApplication extends Application {

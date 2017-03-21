@@ -25,9 +25,10 @@ public class FoodReportClient {
 
     private FoodReportService foodReportService;
 
-
     public FoodReportClient() {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
+
+        //client.cache(new Cache())
 
         client.addInterceptor(new Interceptor() {
             @Override

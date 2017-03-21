@@ -30,13 +30,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import edu.utdallas.csdesign.spring17.nutriscope.settings.ProfileSettingsActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
+import edu.utdallas.csdesign.spring17.nutriscope.settings.ProfileSettingsActivity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
