@@ -18,14 +18,11 @@ import java.util.Map;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
-import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
 
 
 /**
  * Created by john on 3/10/17.
  */
-
 
 
 final public class ConsumedFoodFirebaseRepository implements Repository<ConsumedFood> {

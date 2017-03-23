@@ -52,7 +52,8 @@ public class ConsumedFood implements Trackable {
         this.dateTimeConsumed = dateTimeConsumed;
     }
 
-    @Exclude public Food getFood() {
+    @Exclude
+    public Food getFood() {
         return food;
     }
 

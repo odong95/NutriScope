@@ -38,19 +38,51 @@ public class User {
         this.email = email;
     }
 
-    public String getNickname(){return nickname;};
+    public String getNickname() {
+        return nickname;
+    }
 
-    public void setNickname(String nickname){this.nickname = nickname;};
+    ;
 
-    public String getAge(){return age;};
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
-    public void setAge(String age){this.age = age;};
+    ;
 
-    public String getSex(){return sex;};
+    public String getAge() {
+        return age;
+    }
 
-    public void setSex(String sex){this.sex = sex;};
+    ;
 
-    public String getHeight(){return height;};
+    public void setAge(String age) {
+        this.age = age;
+    }
 
-    public void setHeight(String height){this.height = height;};
+    ;
+
+    public String getSex() {
+        return sex;
+    }
+
+    ;
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    ;
+
+    public String getHeight() {
+        return height;
+    }
+
+    ;
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    ;
 }

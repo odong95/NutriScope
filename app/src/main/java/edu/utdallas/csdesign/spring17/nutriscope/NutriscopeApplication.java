@@ -42,8 +42,8 @@ public class NutriscopeApplication extends Application {
         super.onCreate();
         context = new WeakReference<Context>(this);
         AndroidThreeTen.init(this);
-    //    FacebookSdk.sdkInitialize(getApplicationContext());
-    //    AppEventsLogger.activateApp(this);
+        //    FacebookSdk.sdkInitialize(getApplicationContext());
+        //    AppEventsLogger.activateApp(this);
 
         new FirebaseLogger();
 
@@ -80,7 +80,6 @@ public class NutriscopeApplication extends Application {
     public FoodRepositoryComponent getFoodRepositoryComponent() {
         return foodRepositoryComponent;
     }
-
 
 
 }

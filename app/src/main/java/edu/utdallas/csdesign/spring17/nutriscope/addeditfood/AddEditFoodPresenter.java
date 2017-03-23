@@ -3,6 +3,8 @@ package edu.utdallas.csdesign.spring17.nutriscope.addeditfood;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.common.collect.ImmutableList;
+
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZoneOffset;
@@ -16,7 +18,6 @@ import javax.inject.Named;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodClass;
 import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
@@ -66,7 +67,7 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     public void addFood(int quantity) {
 
 
-        ConsumedFood consumedFood = new ConsumedFood(new FoodClass(), getFood().getDesc().getNdbno(), String.valueOf(quantity), LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
+        ConsumedFood consumedFood = new ConsumedFood(new Food(), getFood().getDesc().getNdbno(), String.valueOf(quantity), LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
         consumedFood.setDateTimeConsumed(LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond());
 
         consumedFoodRepository.createItem(consumedFood, new Repository.CreateCallback() {
@@ -90,7 +91,7 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
 
         if (ndbId != null) {
             Log.d(TAG, "ndbid not null");
-            foodRepository.queryItem(new FoodSpecification(ndbId), new Repository.QueryCallback() {
+            foodRepository.queryItem(new FoodSpecification(new ImmutableList.Builder<String>().add(ndbId).build()), new FoodRepository.QueryCallback<Food>() {
                 @Override
                 public void onQueryComplete(List items) {
                     Food food = (Food) items.get(0);

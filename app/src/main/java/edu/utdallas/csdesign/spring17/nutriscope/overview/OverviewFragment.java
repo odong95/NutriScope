@@ -150,9 +150,6 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
             }
         });
 
-
-
-
         this.behavior = BottomSheetBehavior.from(bottomSheet);
         behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
@@ -265,7 +262,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
     class ViewHolderFood extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.food_consumed_name)
+        @BindView(R.id.food_name)
         TextView foodName;
 
         private ConsumedFood consumedFood;
@@ -278,7 +275,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
         public void bindFood(ConsumedFood consumedFood) {
             this.consumedFood = consumedFood;
-            foodName.setText(consumedFood.getNdbNo());
+            foodName.setText(consumedFood.getFood().getDesc().getName());
         }
 
 

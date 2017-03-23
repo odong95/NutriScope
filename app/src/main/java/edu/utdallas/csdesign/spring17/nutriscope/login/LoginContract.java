@@ -29,7 +29,6 @@ public interface LoginContract {
         void login(String email, String password);
 
 
-
         //void createUser();
 
 

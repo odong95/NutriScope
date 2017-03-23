@@ -2,7 +2,6 @@ package edu.utdallas.csdesign.spring17.nutriscope.data.food;
 
 import com.google.common.collect.ImmutableList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;

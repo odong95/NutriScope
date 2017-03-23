@@ -2,13 +2,8 @@ package edu.utdallas.csdesign.spring17.nutriscope.data.food;
 
 import android.util.Log;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -60,7 +55,7 @@ final public class FoodRepository implements Repository<Food> {
 
         final FoodSpecification spec = (FoodSpecification) specification;
 
-        for(int i = 0; i < spec.getIds().size(); i++) {
+        for (int i = 0; i < spec.getIds().size(); i++) {
             final int index = i;
 
             // get new data
@@ -76,7 +71,8 @@ final public class FoodRepository implements Repository<Food> {
 
                         Log.d(TAG, food.getDesc().getName());
                         output.add(food);
-                        if (index == spec.getIds().size()) {
+                        if (index == spec.getIds().size() - 1) {
+                            Log.d(TAG, "send up " + output.size());
                             callback.onQueryComplete(output);
                         }
                     } else {

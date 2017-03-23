@@ -18,11 +18,13 @@ public class LoginPresenterModule {
         this.interactor = interactor;
     }
 
-    @Provides LoginContract.View provideLoginContractView() {
+    @Provides
+    LoginContract.View provideLoginContractView() {
         return view;
     }
 
-    @Provides LoginContract.Interactor provideLoginContractInteractor() {
+    @Provides
+    LoginContract.Interactor provideLoginContractInteractor() {
         return interactor;
     }
 

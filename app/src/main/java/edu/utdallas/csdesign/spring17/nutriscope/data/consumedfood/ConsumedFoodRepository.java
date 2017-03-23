@@ -33,8 +33,9 @@ public class ConsumedFoodRepository implements Repository<ConsumedFood> {
     private HistoryRepository historyRepository;
 
 
-    /** Need to cast Repository type from ConsumedFood to Trackable
-     *  as Java doesn't have reified types
+    /**
+     * Need to cast Repository type from ConsumedFood to Trackable
+     * as Java doesn't have reified types
      */
     @SuppressWarnings("unchecked")
     public ConsumedFoodRepository(
@@ -45,7 +46,7 @@ public class ConsumedFoodRepository implements Repository<ConsumedFood> {
         this.consumedFoodFirebaseRepository = consumedFoodFirebaseRepository;
         this.historyRepository = historyRepository;
         historyRepository.putRepo(
-                new RepositoryInfo<>(ConsumedFood.class, (Repository<Trackable>)(Object)this));
+                new RepositoryInfo<>(ConsumedFood.class, (Repository<Trackable>) (Object) this));
     }
 
     List<ConsumedFood> consumedFoodCache = new ArrayList<>();
@@ -73,31 +74,39 @@ public class ConsumedFoodRepository implements Repository<ConsumedFood> {
         consumedFoodFirebaseRepository.queryItem(null, new QueryCallback<ConsumedFood>() {
             @Override
             public void onQueryComplete(List<ConsumedFood> items) {
-                Log.d(TAG, "Food returned " + items.size() );
+                Log.d(TAG, "Food returned " + items.size());
+
 
                 // These results do not have the food attached.
 
-                for(final ConsumedFood item: items) {
+                for (int i = 0; i < items.size(); i++) {
+                    final int index = i;
+                    final int end = items.size() - 1;
+                    final ConsumedFood consumedFood = items.get(index);
+
                     foodRepository.queryItem(
-                            new FoodSpecification(
-                                new ImmutableList.Builder<String>().add(item.getNdbNo()).build()),
+                            new FoodSpecification(new ImmutableList.Builder<String>().add(items.get(index).getNdbNo()).build()),
                             new QueryCallback<Food>() {
-                        @Override
-                        public void onQueryComplete(List<Food> items) {
-                            item.setFood(items.get(0));
+                                @Override
+                                public void onQueryComplete(List<Food> items) {
+                                    Log.d(TAG, items.get(0).getDesc().getName());
+                                    consumedFood.setFood(items.get(0));
+                                    results.add(consumedFood);
+                                    if (index == end) {
+                                        Log.d(TAG, "sending results up");
+                                        callback.onQueryComplete(results);
 
-                        }
+                                    }
 
-                        @Override
-                        public void onDataNotAvailable() {
+                                }
 
-                        }
-                    });
-                    results.add(item);
+                                @Override
+                                public void onDataNotAvailable() {
+
+                                }
+                            });
 
                 }
-                consumedFoodCache.addAll(items);
-                callback.onQueryComplete(items);
             }
 
             @Override
@@ -113,7 +122,6 @@ public class ConsumedFoodRepository implements Repository<ConsumedFood> {
     public void deleteItem(ConsumedFood id, DeleteCallback callback) {
 
     }
-
 
 
 }

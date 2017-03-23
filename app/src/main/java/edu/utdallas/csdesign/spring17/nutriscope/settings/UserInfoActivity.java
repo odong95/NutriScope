@@ -1,7 +1,6 @@
 package edu.utdallas.csdesign.spring17.nutriscope.settings;
 
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,8 +26,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
-
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
 
@@ -43,7 +40,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     private TextView textAge;
     private TextView textSex;
     private TextView textHeight;
-    private String sex, ftTxt,inTxt;
+    private String sex, ftTxt, inTxt;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
     DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users").child(auth.getCurrentUser().getUid());
@@ -68,8 +65,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private void refreshUserInfo()
-    {
+    private void refreshUserInfo() {
         textNickname = (TextView) findViewById(R.id.user_settings_nickname);
         textAge = (TextView) findViewById(R.id.user_settings_age);
         textSex = (TextView) findViewById(R.id.user_settings_sex);
@@ -80,20 +76,16 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
 
-                if(!TextUtils.isEmpty(user.getNickname()))
-                {
+                if (!TextUtils.isEmpty(user.getNickname())) {
                     textNickname.setText(user.getNickname());
                 }
-                if(!TextUtils.isEmpty(user.getAge()))
-                {
+                if (!TextUtils.isEmpty(user.getAge())) {
                     textAge.setText(user.getAge());
                 }
-                if(!TextUtils.isEmpty(user.getSex()))
-                {
+                if (!TextUtils.isEmpty(user.getSex())) {
                     textSex.setText(user.getSex());
                 }
-                if(!TextUtils.isEmpty(user.getHeight()))
-                {
+                if (!TextUtils.isEmpty(user.getHeight())) {
                     textHeight.setText(user.getHeight());
                 }
             }
@@ -145,12 +137,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String nick = et.getText().toString().trim();
-                if(nick.length()>18)
-                {
+                if (nick.length() > 18) {
                     onErrorResponse("Nickname cannot exceed 18 characters");
-                }
-                else if(!TextUtils.isEmpty(nick))
-                {
+                } else if (!TextUtils.isEmpty(nick)) {
                     db.child("nickname").setValue(nick);
                     refreshUserInfo();
                 }
@@ -181,12 +170,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String age = et.getText().toString().trim();
-                if(!isNumeric(age) || age.length() > 3)
-                {
+                if (!isNumeric(age) || age.length() > 3) {
                     onErrorResponse("Please enter a valid number");
-                }
-                else if(!TextUtils.isEmpty(age))
-                {
+                } else if (!TextUtils.isEmpty(age)) {
                     db.child("age").setValue(age);
                     refreshUserInfo();
                 }
@@ -210,7 +196,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         AlertDialog.Builder builder = new AlertDialog.Builder(UserInfoActivity.this);
         builder.setView(promptView);
 
-        Spinner dropdown = (Spinner)promptView.findViewById(R.id.sex_spinner);
+        Spinner dropdown = (Spinner) promptView.findViewById(R.id.sex_spinner);
         String[] items = new String[]{"Male", "Female"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
         dropdown.setAdapter(adapter);
@@ -262,7 +248,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         inTxt = "0";
         ft.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 
                 ftTxt = newVal + "";
             }
@@ -270,7 +256,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
         in.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 inTxt = newVal + "";
             }
         });

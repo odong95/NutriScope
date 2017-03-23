@@ -32,7 +32,6 @@ public interface RegisterContract {
         void register(String email, String password);
 
 
-
     }
 
 

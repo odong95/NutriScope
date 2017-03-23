@@ -28,24 +28,22 @@ public class FirebaseLogger {
     public FirebaseLogger() {
 
 
-
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
         db.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange (DataSnapshot dataSnapshot){
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, dataSnapshot.toString());
 
             }
 
             @Override
-            public void onCancelled (DatabaseError databaseError){
+            public void onCancelled(DatabaseError databaseError) {
                 Log.d(TAG, databaseError.toString());
 
 
-        }
-    });
-
+            }
+        });
 
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();

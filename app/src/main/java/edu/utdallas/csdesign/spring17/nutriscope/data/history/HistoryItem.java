@@ -6,7 +6,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
  * Created by john on 3/20/17.
  */
 
-public class HistoryItem implements Trackable, Comparable<HistoryItem>{
+public class HistoryItem implements Trackable, Comparable<HistoryItem> {
 
 
     final private String key;

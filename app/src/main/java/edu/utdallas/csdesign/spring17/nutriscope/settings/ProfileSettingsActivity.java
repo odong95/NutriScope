@@ -48,6 +48,7 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
 
 
     DatabaseReference db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
