@@ -65,23 +65,25 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
 
     @Override
     public void addFood(int quantity) {
+        if (getFood() != null) {
 
 
-        ConsumedFood consumedFood = new ConsumedFood(new Food(), getFood().getDesc().getNdbno(), String.valueOf(quantity), LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
-        consumedFood.setDateTimeConsumed(LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond());
+		ConsumedFood consumedFood = new ConsumedFood(new Food(), getFood().getDesc().getNdbno(), String.valueOf(quantity), LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
+		consumedFood.setDateTimeConsumed(LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond());
 
-        consumedFoodRepository.createItem(consumedFood, new Repository.CreateCallback() {
-            @Override
-            public void onCreateComplete() {
-                Log.d(TAG, "firebase success");
-                view.showOverview("key");
-            }
+		consumedFoodRepository.createItem(consumedFood, new Repository.CreateCallback() {
+		    @Override
+		    public void onCreateComplete() {
+		        Log.d(TAG, "firebase success");
+		        view.showOverview("key");
+		    }
 
-            @Override
-            public void onCreateFailed() {
-                Log.d(TAG, "firebase fail");
-            }
-        });
+		        @Override
+		        public void onCreateFailed() {
+		            Log.d(TAG, "firebase fail");
+		        }
+		    });
+		}
 
 
     }

@@ -40,6 +40,7 @@ public class AutoSuggestClient {
                         .addQueryParameter("offset", "0")
                         .addQueryParameter("sort", "r")
                         .addQueryParameter("format", "JSON")
+                        .addQueryParameter("ds", "Standard Reference")
                         .addQueryParameter("api_key", "14Ahlq8z1eROqsbWEI86M4klUkzsFh3du4j3FvuV")
                         .build();
 
