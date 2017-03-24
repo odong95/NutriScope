@@ -68,7 +68,7 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
         if (getFood() != null) {
 
 
-		ConsumedFood consumedFood = new ConsumedFood(new Food(), getFood().getDesc().getNdbno(), String.valueOf(quantity), LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
+		ConsumedFood consumedFood = new ConsumedFood(getFood(), getFood().getDesc().getNdbno(), String.valueOf(quantity), LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
 		consumedFood.setDateTimeConsumed(LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond());
 
 		consumedFoodRepository.createItem(consumedFood, new Repository.CreateCallback() {

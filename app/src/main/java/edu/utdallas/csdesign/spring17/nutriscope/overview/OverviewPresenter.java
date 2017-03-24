@@ -48,13 +48,13 @@ final class OverviewPresenter implements OverviewContract.Presenter {
     @Override
     public void loadHistory() {
 
-        historyRepository.queryItem(null, new Repository.QueryCallback<HistoryItem>() {
+        historyRepository.queryItem(null, new HistoryRepository.QueryCallback<HistoryItem>() {
             @Override
             public void onQueryComplete(List<HistoryItem> items) {
                 Log.d(TAG, "history list loaded " + items.size());
                 for (HistoryItem item : items) {
                     if (item.getType() == ConsumedFood.class) {
-                        Log.d(TAG, item.getItem(ConsumedFood.class).getFood().getDesc().getName());
+                        Log.d(TAG, item.getItem(ConsumedFood.class).getKey());
                     }
                 }
                 view.showHistory(items);

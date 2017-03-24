@@ -64,21 +64,22 @@ final public class FoodRepository implements Repository<Food> {
             call.enqueue(new Callback<FoodReport>() {
                 @Override
                 public void onResponse(Call<FoodReport> call, Response<FoodReport> response) {
-                    FoodReport report = response.body();
+                    if(response.isSuccessful()) {
+                        FoodReport report = response.body();
 
-                    if (report != null) {
-                        Food food = report.getFoods().get(0).getFood();
+                        if (report != null) {
+                            Food food = report.getFoods().get(0).getFood();
 
-                        Log.d(TAG, food.getDesc().getName());
-                        output.add(food);
-                        if (index == spec.getIds().size() - 1) {
-                            Log.d(TAG, "send up " + output.size());
-                            callback.onQueryComplete(output);
+                            Log.d(TAG, food.getDesc().getName());
+                            output.add(food);
+                            if (index == spec.getIds().size() - 1) {
+                                Log.d(TAG, "send up " + output.size());
+                                callback.onQueryComplete(output);
+                            }
+                        } else {
+                            callback.onDataNotAvailable();
                         }
-                    } else {
-                        callback.onDataNotAvailable();
                     }
-
                 }
 
                 @Override
