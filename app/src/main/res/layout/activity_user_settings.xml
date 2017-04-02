@@ -136,6 +136,105 @@
                 android:text="Edit" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weight:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/user_settings_weight"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.81"
+                android:text="Not Set"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/user_settings_changeweight"
+                android:layout_width="71dp"
+                android:layout_height="37dp"
+                android:layout_weight="0.00"
+                android:text="Edit" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Activity Level:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/user_settings_activityLevel"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.73"
+                android:text="Not Set"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/user_settings_changeActivityLevel"
+                android:layout_width="71dp"
+                android:layout_height="37dp"
+                android:layout_weight="0.00"
+                android:text="Edit" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calorie Goal:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/user_settings_calories"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.73"
+                android:text="Not Set"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/user_settings_changecalories"
+                android:layout_width="71dp"
+                android:layout_height="37dp"
+                android:layout_weight="0.00"
+                android:text="Edit" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/getRecGoal"
+            android:layout_width="339dp"
+            android:layout_height="wrap_content"
+            android:text="Get Recommended Calorie Goal"
+            android:layout_weight="0.14" />
+
         <Button
             android:id="@+id/go_back_button"
             style="?android:textAppearanceSmall"
@@ -147,5 +246,7 @@
             android:textColor="@android:color/white"
             android:textStyle="bold"/>
     </LinearLayout>
+
+
 
 </FrameLayout>

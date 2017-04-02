@@ -35,6 +35,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryItem;
+import edu.utdallas.csdesign.spring17.nutriscope.graph.DemoGraphActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.settings.ProfileSettingsActivity;
 
@@ -107,6 +108,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
                 if (tabLayout.getSelectedTabPosition() == 0) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                 } else if (tabLayout.getSelectedTabPosition() == 1) {
+                    openGraph();
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                 } else if (tabLayout.getSelectedTabPosition() == 2) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
@@ -216,6 +218,11 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
     }
 
+    public void openGraph() {
+        Intent intent = new Intent(getActivity(), DemoGraphActivity.class);
+        startActivity(intent);
+
+    }
 
     @OnClick(R2.id.overview_bottom_sheet_add_food)
     public void submit() {

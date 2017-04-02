@@ -12,6 +12,11 @@ public class User {
     private String age;
     private String sex;
     private String height;
+    private String weight;
+    private String activityLevel;
+    private String calorieGoal;
+    private String hft;
+    private String hin;
 
     public User() {
 
@@ -50,7 +55,28 @@ public class User {
 
     public void setSex(String sex){this.sex = sex;};
 
+    public String getWeight(){return weight;};
+
+    public void setWeight(String weight){this.weight = weight;};
+
     public String getHeight(){return height;};
 
     public void setHeight(String height){this.height = height;};
+
+    public String getActivityLevel(){return activityLevel;};
+
+    public void setActivityLevel(String activityLevel){this.activityLevel = activityLevel;};
+
+    public String getCalorieGoal(){return calorieGoal;};
+
+    public void setCalorieGoal(String calorieGoal){this.calorieGoal = calorieGoal;};
+
+    public String getHft(){return hft;};
+
+    public void setHft(String hft){this.hft = hft;};
+
+    public String getHin(){return hin;};
+
+    public void setHin(String hin){this.hin = hin;};
+
 }

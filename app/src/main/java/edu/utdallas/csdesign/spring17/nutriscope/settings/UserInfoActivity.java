@@ -38,13 +38,22 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     private Button editAgeB;
     private Button editSexB;
     private Button editHeightB;
+    private Button editWeightB;
+    private Button editActivityLvlB;
+    private Button editCalorieGoalB;
+    private Button getRecommendCalB;
     private Button goBackB;
     private TextView textNickname;
     private TextView textAge;
     private TextView textSex;
     private TextView textHeight;
+    private TextView textWeight;
+    private TextView textActivityLevel;
+    private TextView textCalorieGoal;
     private String sex, ftTxt,inTxt;
-
+    private String activityLvl;
+    private TEECalculator calc;
+    private boolean clicked;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users").child(auth.getCurrentUser().getUid());
 
@@ -58,12 +67,23 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         editAgeB = (Button) findViewById(R.id.user_settings_changeage);
         editSexB = (Button) findViewById(R.id.user_settings_changesex);
         editHeightB = (Button) findViewById(R.id.user_settings_changeheight);
+        editWeightB = (Button) findViewById(R.id.user_settings_changeweight);
+        editActivityLvlB = (Button) findViewById(R.id.user_settings_changeActivityLevel);
+        editCalorieGoalB = (Button) findViewById(R.id.user_settings_changecalories);
+        getRecommendCalB = (Button) findViewById(R.id.getRecGoal);
         goBackB = (Button) findViewById(R.id.go_back_button);
+
+        calc = new TEECalculator();
         refreshUserInfo();
+
         editNicknameB.setOnClickListener(this);
         editAgeB.setOnClickListener(this);
         editSexB.setOnClickListener(this);
         editHeightB.setOnClickListener(this);
+        editWeightB.setOnClickListener(this);
+        editActivityLvlB.setOnClickListener(this);
+        editCalorieGoalB.setOnClickListener(this);
+        getRecommendCalB.setOnClickListener(this);
         goBackB.setOnClickListener(this);
 
     }
@@ -74,6 +94,9 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         textAge = (TextView) findViewById(R.id.user_settings_age);
         textSex = (TextView) findViewById(R.id.user_settings_sex);
         textHeight = (TextView) findViewById(R.id.user_settings_height);
+        textWeight = (TextView) findViewById(R.id.user_settings_weight);
+        textActivityLevel = (TextView) findViewById(R.id.user_settings_activityLevel);
+        textCalorieGoal = (TextView) findViewById(R.id.user_settings_calories);
 
         ValueEventListener userListener = new ValueEventListener() {
             @Override
@@ -87,15 +110,33 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 if(!TextUtils.isEmpty(user.getAge()))
                 {
                     textAge.setText(user.getAge());
+                    calc.setAge(user.getAge());
                 }
                 if(!TextUtils.isEmpty(user.getSex()))
                 {
                     textSex.setText(user.getSex());
+                    calc.setGender(user.getSex());
                 }
                 if(!TextUtils.isEmpty(user.getHeight()))
                 {
                     textHeight.setText(user.getHeight());
+                    calc.setHeight(user.getHft(),user.getHin());
                 }
+                if(!TextUtils.isEmpty(user.getWeight()))
+                {
+                    textWeight.setText(user.getWeight());
+                    calc.setWeight(user.getWeight());
+                }
+                if(!TextUtils.isEmpty(user.getActivityLevel()))
+                {
+                    textActivityLevel.setText(parseLvl(user.getActivityLevel()));
+                    calc.setActivityLevel(user.getActivityLevel());
+                }
+                if(!TextUtils.isEmpty(user.getCalorieGoal()))
+                {
+                    textCalorieGoal.setText(user.getCalorieGoal());
+                }
+                getCalorieGoal();
             }
 
             @Override
@@ -123,12 +164,26 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             case R.id.user_settings_changeheight:
                 handleChangeHeight();
                 break;
+            case R.id.user_settings_changeweight:
+                handleChangeWeight();
+                break;
+            case R.id.user_settings_changeActivityLevel:
+                handleChangeActivityLevel();
+                break;
+            case R.id.user_settings_changecalories:
+                handleChangeCalorieGoal();
+                break;
+            case R.id.getRecGoal:
+                clicked = true;
+                getCalorieGoal();
+                break;
             case R.id.go_back_button:
                 startActivity(new Intent(this, ProfileSettingsActivity.class));
                 finish();
                 break;
         }
     }
+
 
     private void handleChangeNickname() {
         LayoutInflater layoutInflater = LayoutInflater.from(UserInfoActivity.this);
@@ -280,6 +335,8 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
             public void onClick(DialogInterface dialog, int which) {
                 String height = ftTxt + "'" + inTxt + "\"";
                 db.child("height").setValue(height);
+                db.child("hft").setValue(ftTxt);
+                db.child("hin").setValue(inTxt);
                 refreshUserInfo();
                 dialog.dismiss();
             }
@@ -292,6 +349,203 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         });
         builder.show();
     }
+
+    private void handleChangeWeight()
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(UserInfoActivity.this);
+        final View promptView = layoutInflater.inflate(R.layout.input_dialog_settings, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserInfoActivity.this);
+        builder.setView(promptView);
+
+        TextView title = (TextView) promptView.findViewById(R.id.input_dialog_text_msg);
+        title.setText("Enter Weight (lbs):");
+        final EditText et = (EditText) promptView.findViewById(R.id.edittext_input_dialog);
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String weight = et.getText().toString().trim();
+                if(!isNumeric(weight) || weight.length() > 3)
+                {
+                    onErrorResponse("Please enter a valid number");
+                }
+                else if(!TextUtils.isEmpty(weight))
+                {
+                    db.child("weight").setValue(weight);
+                    refreshUserInfo();
+                }
+
+
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+    private void handleChangeActivityLevel() {
+        LayoutInflater layoutInflater = LayoutInflater.from(UserInfoActivity.this);
+        final View promptView = layoutInflater.inflate(R.layout.input_dialog_sex, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserInfoActivity.this);
+        builder.setView(promptView);
+
+        Spinner dropdown = (Spinner)promptView.findViewById(R.id.sex_spinner);
+        String[] items = new String[]{"Sedentary - little to no exercise",
+                                      "Lightly Active - exercise/sports 1-3 times/week",
+                                      "Moderately Active - exercise/sports 3-5 times/week",
+                                      "Very Active - exercise/sports 6-7 times/week",
+                                      "Extra Active - very hard exercise/sports or physical job",};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        dropdown.setAdapter(adapter);
+
+        dropdown.setOnItemSelectedListener((new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                String s = (String) parent.getItemAtPosition(position);
+                if(s.charAt(0) == 'S')
+                {
+                    activityLvl = "1.2";
+                }
+                else if(s.charAt(0) == 'L')
+                {
+                    activityLvl = "1.3";
+                }
+                else if(s.charAt(0) == 'M')
+                {
+                    activityLvl = "1.5";
+                }
+                else if(s.charAt(0) == 'V')
+                {
+                    activityLvl = "1.7";
+                }
+                else if(s.charAt(0) == 'E')
+                {
+                    activityLvl = "1.9";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        }));
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                db.child("activityLevel").setValue(activityLvl);
+                refreshUserInfo();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    private void handleChangeCalorieGoal() {
+        LayoutInflater layoutInflater = LayoutInflater.from(UserInfoActivity.this);
+        final View promptView = layoutInflater.inflate(R.layout.input_dialog_settings_goal, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserInfoActivity.this);
+        builder.setView(promptView);
+
+        TextView title = (TextView) promptView.findViewById(R.id.input_dialog_text_msg);
+        title.setText("Enter Daily Calorie Goal:");
+        final EditText et = (EditText) promptView.findViewById(R.id.edittext_input_dialog);
+        Button recGoal = (Button) promptView.findViewById(R.id.getRecGoal);
+        recGoal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(calc.isFilled())
+                {
+                    et.setText(calc.getTEE());
+                }
+                else
+                {
+                    onErrorResponse("Please fill out all previous fields (gender, age, weight, height)");
+                }
+
+            }
+        });
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String goal = et.getText().toString().trim();
+                if(!isNumeric(goal) || goal.length() > 4)
+                {
+                    onErrorResponse("Please enter a valid number");
+                }
+                else if(!TextUtils.isEmpty(goal))
+                {
+                    db.child("calorieGoal").setValue(goal);
+                    refreshUserInfo();
+                }
+
+
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    private void getCalorieGoal()
+    {
+        if(calc.isFilled())
+        {
+            db.child("calorieGoal").setValue(calc.getTEE());
+            refreshUserInfo();
+        }
+        else
+        {
+            if(clicked) {
+                onErrorResponse("Please fill out all previous fields (sex, age, weight, height)");
+            }
+        }
+
+        clicked = false;
+    }
+
+
+    private String parseLvl(String lvl)
+    {
+        if(lvl.equals("1.2"))
+        {
+            return "Sedentary";
+        }
+        if(lvl.equals("1.3"))
+        {
+            return "Lightly Active";
+        }
+        if(lvl.equals("1.5"))
+        {
+            return "Moderately Active";
+        }
+        if(lvl.equals("1.7"))
+        {
+            return "Very Active";
+        }
+        else
+        {
+            return "Extra Active";
+        }
+
+    }
+
 
     public void onErrorResponse(String error) {
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
