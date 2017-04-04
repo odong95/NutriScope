@@ -1,9 +1,11 @@
 package edu.utdallas.csdesign.spring17.nutriscope.settings;
 
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
@@ -28,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
+import java.util.Calendar;
 
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
@@ -136,7 +140,6 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 {
                     textCalorieGoal.setText(user.getCalorieGoal());
                 }
-                getCalorieGoal();
             }
 
             @Override
@@ -223,40 +226,46 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void handleChangeAge() {
-        LayoutInflater layoutInflater = LayoutInflater.from(UserInfoActivity.this);
-        final View promptView = layoutInflater.inflate(R.layout.input_dialog_settings, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(UserInfoActivity.this);
-        builder.setView(promptView);
+        final Calendar myCalendar = Calendar.getInstance();
 
-        TextView title = (TextView) promptView.findViewById(R.id.input_dialog_text_msg);
-        title.setText("Enter Age:");
-        final EditText et = (EditText) promptView.findViewById(R.id.edittext_input_dialog);
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String age = et.getText().toString().trim();
-                if(!isNumeric(age) || age.length() > 3)
-                {
-                    onErrorResponse("Please enter a valid number");
-                }
-                else if(!TextUtils.isEmpty(age))
-                {
-                    db.child("age").setValue(age);
-                    refreshUserInfo();
-                }
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                String age = getAge(year,monthOfYear,dayOfMonth);
+                db.child("age").setValue(age);
+                refreshUserInfo();
+            }
+
+        };
+
+        DatePickerDialog dialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog, date, myCalendar
+                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH));
+
+        dialog.setTitle("Enter Date of Birth:");
+        dialog.show();
 
 
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.show();
+    }
+
+    private String getAge(int year, int month, int day){
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        Integer ageInt = new Integer(age);
+        String ageS = ageInt.toString();
+
+        return ageS;
     }
 
     private void handleChangeSex() {
