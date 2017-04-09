@@ -140,6 +140,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 {
                     textCalorieGoal.setText(user.getCalorieGoal());
                 }
+
             }
 
             @Override
@@ -422,11 +423,11 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 }
                 else if(s.charAt(0) == 'L')
                 {
-                    activityLvl = "1.3";
+                    activityLvl = "1.375";
                 }
                 else if(s.charAt(0) == 'M')
                 {
-                    activityLvl = "1.5";
+                    activityLvl = "1.55";
                 }
                 else if(s.charAt(0) == 'V')
                 {

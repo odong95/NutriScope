@@ -358,6 +358,8 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
                             Log.d("", "signInWithCredential:onComplete:" + task.isSuccessful());
 
                             showLoadingDialog();
+                            final String uid = user.getUid();
+                            db.child(uid).removeValue();
                             user.delete()
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override

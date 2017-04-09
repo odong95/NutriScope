@@ -1,20 +1,28 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.facebook.AccessToken;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-/**
- * Created by john on 3/16/17.
- */
+import java.util.concurrent.Executor;
+
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
+
 
 public class LoginInteractor implements LoginContract.Interactor {
 
     final private FirebaseAuth auth = FirebaseAuth.getInstance();
-
+    DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users");
     private LoginContract.Presenter presenter;
 
     public LoginInteractor() {
@@ -39,23 +47,30 @@ public class LoginInteractor implements LoginContract.Interactor {
             }
         });
 
+    }
 
-/*
-        OnCo
+    @Override
+    public void loginfb(AccessToken accessToken, Activity a) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+        auth.signInWithCredential(credential)
                 .addOnCompleteListener(a, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Log.w("AUTH", "signInWithEmail:failed", task.getException());
-                            onErrorResponse("Login failed, please try again");
-                        } else {
-                            Log.d("AUTH", "signInWithEmail:success:" + auth.getCurrentUser().getEmail());
+                            Log.w("", "signInWithCredential", task.getException());
                         }
+                        else
+                        {
+                            setupUserInfo(new User(auth.getCurrentUser().getUid(), auth.getCurrentUser().getEmail()));
+                        }
+
                     }
-                });*/
-
-
+                });
     }
 
+    private void setupUserInfo(User user) {
+        db.child(user.getUid()).setValue(user);
+        presenter.loginSuccessful();
+    }
 
 }
