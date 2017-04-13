@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +30,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
+import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 
@@ -45,7 +49,7 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseUser user;
     private ProgressDialog mProgressDialog;
-
+    private Toolbar toolbar;
 
     DatabaseReference db;
     @Override
@@ -59,6 +63,11 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
         changePasswordB = (Button) findViewById(R.id.change_password_button);
         deleteAccountB = (Button) findViewById(R.id.delete_account_button);
         backB = (Button) findViewById(R.id.go_back_button);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        this.setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         changeUserSettingsB.setOnClickListener(this);
         changeEmailB.setOnClickListener(this);
@@ -105,10 +114,18 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
                 handleDeleteAccount();
                 break;
             case R.id.go_back_button:
-                startActivity(new Intent(this, OverviewActivity.class));
+                FirebaseAuth.getInstance().signOut();
+                LoginManager.getInstance().logOut();
+                startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 
     private void handleChangeEmail() {

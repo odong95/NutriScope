@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ import java.util.Calendar;
 
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
+import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 
 
 public class UserInfoActivity extends AppCompatActivity implements View.OnClickListener {
@@ -46,7 +48,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     private Button editActivityLvlB;
     private Button editCalorieGoalB;
     private Button getRecommendCalB;
-    private Button goBackB;
+    private Toolbar toolbar;
     private TextView textNickname;
     private TextView textAge;
     private TextView textSex;
@@ -75,8 +77,11 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         editActivityLvlB = (Button) findViewById(R.id.user_settings_changeActivityLevel);
         editCalorieGoalB = (Button) findViewById(R.id.user_settings_changecalories);
         getRecommendCalB = (Button) findViewById(R.id.getRecGoal);
-        goBackB = (Button) findViewById(R.id.go_back_button);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        this.setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
         calc = new TEECalculator();
         refreshUserInfo();
 
@@ -88,7 +93,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         editActivityLvlB.setOnClickListener(this);
         editCalorieGoalB.setOnClickListener(this);
         getRecommendCalB.setOnClickListener(this);
-        goBackB.setOnClickListener(this);
+
 
     }
 
@@ -181,13 +186,15 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                 clicked = true;
                 getCalorieGoal();
                 break;
-            case R.id.go_back_button:
-                startActivity(new Intent(this, ProfileSettingsActivity.class));
-                finish();
-                break;
         }
     }
 
+    @Override
+    public boolean onSupportNavigateUp(){
+        startActivity(new Intent(this, ProfileSettingsActivity.class));
+        finish();
+        return true;
+    }
 
     private void handleChangeNickname() {
         LayoutInflater layoutInflater = LayoutInflater.from(UserInfoActivity.this);

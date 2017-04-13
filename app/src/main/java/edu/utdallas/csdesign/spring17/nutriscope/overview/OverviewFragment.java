@@ -35,7 +35,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryItem;
-import edu.utdallas.csdesign.spring17.nutriscope.graph.DemoGraphActivity;
+import edu.utdallas.csdesign.spring17.nutriscope.graph.GraphActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.settings.ProfileSettingsActivity;
 
@@ -219,7 +219,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
     }
 
     public void openGraph() {
-        Intent intent = new Intent(getActivity(), DemoGraphActivity.class);
+        Intent intent = new Intent(getActivity(), GraphActivity.class);
         startActivity(intent);
 
     }
