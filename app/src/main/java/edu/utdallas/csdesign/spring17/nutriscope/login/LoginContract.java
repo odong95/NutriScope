@@ -1,6 +1,10 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
 
+import android.app.Activity;
+
+import com.facebook.AccessToken;
+
 import edu.utdallas.csdesign.spring17.nutriscope.BaseInteractor;
 import edu.utdallas.csdesign.spring17.nutriscope.BasePresenter;
 import edu.utdallas.csdesign.spring17.nutriscope.BaseView;
@@ -18,6 +22,8 @@ public interface LoginContract {
 
         void login(String email, String password);
 
+        void loginfb(AccessToken accessToken, Activity a);
+
         void loginSuccessful();
 
         void onErrorResponse(String error);
@@ -28,6 +34,7 @@ public interface LoginContract {
 
         void login(String email, String password);
 
+        void loginfb(AccessToken accessToken, Activity a);
 
         //void createUser();
 

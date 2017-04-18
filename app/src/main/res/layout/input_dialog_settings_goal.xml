@@ -21,4 +21,11 @@
         android:layout_marginBottom="10dp"
         android:padding="10dp" />
 
+    <Button
+        android:id="@+id/getRecGoal"
+        android:layout_width="339dp"
+        android:layout_height="wrap_content"
+        android:text="Get Recommended Calorie Goal"
+        android:layout_weight="0.14" />
+
 </LinearLayout>

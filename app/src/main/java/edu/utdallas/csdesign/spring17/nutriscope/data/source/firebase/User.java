@@ -12,6 +12,11 @@ public class User {
     private String age;
     private String sex;
     private String height;
+    private String weight;
+    private String activityLevel;
+    private String calorieGoal;
+    private String hft;
+    private String hin;
 
     public User() {
 
@@ -80,9 +85,12 @@ public class User {
 
     ;
 
-    public void setHeight(String height) {
-        this.height = height;
-    }
+    public String getHft(){return hft;};
 
-    ;
+    public void setHft(String hft){this.hft = hft;};
+
+    public String getHin(){return hin;};
+
+    public void setHin(String hin){this.hin = hin;};
+
 }
