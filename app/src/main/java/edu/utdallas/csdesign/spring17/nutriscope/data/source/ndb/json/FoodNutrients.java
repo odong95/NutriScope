@@ -9,7 +9,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.R;
 
 
 public enum FoodNutrients {
-    FAT(204, getString(R.string.food_name)),
+    FAT(204, getString(R.string.fat)),
     PROTEIN(203, getString(R.string.protein)),
     CARBOHYDRATE(205, getString(R.string.carbohydrate)),
     CALORIE(208, getString(R.string.kcalorie)),

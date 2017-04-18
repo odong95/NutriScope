@@ -11,10 +11,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import edu.utdallas.csdesign.spring17.nutriscope.R;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
 
 public class GraphRecyclerViewAdapter extends RecyclerView.Adapter<GraphRecyclerViewAdapter.ViewHolder>{
-    private List<String> items;
-    public GraphRecyclerViewAdapter(List<String> items) {
+    private List<FoodNutrients> items;
+    public GraphRecyclerViewAdapter(List<FoodNutrients> items) {
         this.items = items;
     }
     @Override
@@ -27,7 +28,7 @@ public class GraphRecyclerViewAdapter extends RecyclerView.Adapter<GraphRecycler
 
 
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.mTextView.setText(items.get(position));
+        viewHolder.mTextView.setText(items.get(position).getNutrientString());
     }
 
     @Override
@@ -35,7 +36,7 @@ public class GraphRecyclerViewAdapter extends RecyclerView.Adapter<GraphRecycler
         return items.size();
     }
 
-    public void add(String item) {
+    public void add(FoodNutrients item) {
         items.add(item);
         notifyItemInserted(items.size()-1);
         notifyDataSetChanged();

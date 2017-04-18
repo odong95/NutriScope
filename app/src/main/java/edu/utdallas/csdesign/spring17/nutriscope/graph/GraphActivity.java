@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.utdallas.csdesign.spring17.nutriscope.R;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
 import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 
 
@@ -50,7 +51,7 @@ public class GraphActivity extends AppCompatActivity implements View.OnClickList
     private RecyclerView recyclerView;
     private GraphRecyclerViewAdapter adapter;
     private Toolbar toolbar;
-    private ArrayList<String> nutrientList;
+    private ArrayList<FoodNutrients> nutrientList;
     private SharedPreferences sharedPref;
     int[] mColors = ColorTemplate.PASTEL_COLORS;
     int counter = 0;
@@ -93,8 +94,9 @@ public class GraphActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         if(view.getId() == R.id.fab_add_nutrient)
         {
-            new AddNutrient(sharedPref,this,adapter);
-            addSampleData();
+            AddNutrient an = new AddNutrient(sharedPref,this,adapter);
+
+
         }
     }
 
@@ -184,6 +186,16 @@ public class GraphActivity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent(this, OverviewActivity.class);
         startActivity(intent);
         return true;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        finish();
+        sharedPref.edit().clear().commit();
+        Intent intent = new Intent(this, OverviewActivity.class);
+        startActivity(intent);
     }
     
 }
