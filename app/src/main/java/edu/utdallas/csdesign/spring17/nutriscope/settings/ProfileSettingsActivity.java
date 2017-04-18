@@ -52,6 +52,7 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
     private Toolbar toolbar;
 
     DatabaseReference db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

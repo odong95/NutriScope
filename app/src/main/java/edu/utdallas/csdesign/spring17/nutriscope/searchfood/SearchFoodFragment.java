@@ -45,8 +45,8 @@ public class SearchFoodFragment extends Fragment implements SearchFoodContract.V
     @BindView(R2.id.search_food_text) EditText searchFoodEditText;
     RecyclerView searchFoodRecyclerView;
 
-/*    @BindView(R2.id.search_food_button)
-    Button searchFoodButton;*/
+    /*    @BindView(R2.id.search_food_button)
+        Button searchFoodButton;*/
     private SearchFoodContract.Presenter presenter;
     private ItemAdapter resultAdapter;
 

@@ -1,5 +1,9 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.food;
 
+import com.google.common.collect.ImmutableList;
+
+import java.util.List;
+
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
 
 /**
@@ -8,18 +12,14 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
 
 public class FoodSpecification implements Specification {
 
-    private String id;
+    private List<String> ids;
 
-    public FoodSpecification(String id) {
-        this.id = id;
+    public FoodSpecification(ImmutableList<String> ids) {
+        this.ids = ids;
     }
 
-
-    public String toRealmQuery() {
-        return id;
-
+    public List<String> getIds() {
+        return ids;
     }
-
-
 }
 

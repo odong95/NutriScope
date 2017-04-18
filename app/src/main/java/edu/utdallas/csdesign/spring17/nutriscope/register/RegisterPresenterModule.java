@@ -18,11 +18,13 @@ public class RegisterPresenterModule {
         this.interactor = interactor;
     }
 
-    @Provides RegisterContract.View provideRegisterContractView() {
+    @Provides
+    RegisterContract.View provideRegisterContractView() {
         return view;
     }
 
-    @Provides RegisterContract.Interactor provideRegisterContractInteractor() {
+    @Provides
+    RegisterContract.Interactor provideRegisterContractInteractor() {
         return interactor;
     }
 

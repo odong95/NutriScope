@@ -30,7 +30,7 @@ public class HistoryRepository implements Repository<HistoryItem> {
 
     List<RepositoryInfo<Trackable>> repos = new LinkedList<>();
 
-    public void putRepo(RepositoryInfo<Trackable> repo){
+    public void putRepo(RepositoryInfo<Trackable> repo) {
         repos.add(repo);
     }
 
@@ -62,16 +62,19 @@ public class HistoryRepository implements Repository<HistoryItem> {
     public void queryItem(Specification specification, final QueryCallback<HistoryItem> callback) {
         // return entire sorted list if spec is null
         if (specification == null) {
-
+            Log.d(TAG, "history query called");
             // the first time, go to each child repo and query full contents
             if (!isInit) {
+                Log.d(TAG, "first time");
                 history.clear();
                 for (int i = 0; i < repos.size(); i++) {
+                    Log.d(TAG, "for each repo");
 
                     final int index = i;
                     repos.get(i).getRepo().queryItem(specification, new QueryCallback<Trackable>() {
                         @Override
                         public void onQueryComplete(List<Trackable> items) {
+                            Log.d(TAG, "retrieved repo's items");
                             for (Trackable item : items) {
                                 history.add(new HistoryItem(repos.get(index).getType(), item.getKey(), item));
                             }

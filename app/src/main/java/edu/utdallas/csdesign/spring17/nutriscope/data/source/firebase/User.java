@@ -43,33 +43,47 @@ public class User {
         this.email = email;
     }
 
-    public String getNickname(){return nickname;};
+    public String getNickname() {
+        return nickname;
+    }
 
-    public void setNickname(String nickname){this.nickname = nickname;};
+    ;
 
-    public String getAge(){return age;};
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
-    public void setAge(String age){this.age = age;};
+    ;
 
-    public String getSex(){return sex;};
+    public String getAge() {
+        return age;
+    }
 
-    public void setSex(String sex){this.sex = sex;};
+    ;
 
-    public String getWeight(){return weight;};
+    public void setAge(String age) {
+        this.age = age;
+    }
 
-    public void setWeight(String weight){this.weight = weight;};
+    ;
 
-    public String getHeight(){return height;};
+    public String getSex() {
+        return sex;
+    }
 
-    public void setHeight(String height){this.height = height;};
+    ;
 
-    public String getActivityLevel(){return activityLevel;};
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
-    public void setActivityLevel(String activityLevel){this.activityLevel = activityLevel;};
+    ;
 
-    public String getCalorieGoal(){return calorieGoal;};
+    public String getHeight() {
+        return height;
+    }
 
-    public void setCalorieGoal(String calorieGoal){this.calorieGoal = calorieGoal;};
+    ;
 
     public String getHft(){return hft;};
 

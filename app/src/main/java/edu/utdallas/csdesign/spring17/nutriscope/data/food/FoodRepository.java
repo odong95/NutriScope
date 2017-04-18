@@ -2,10 +2,8 @@ package edu.utdallas.csdesign.spring17.nutriscope.data.food;
 
 import android.util.Log;
 
-import com.google.common.collect.Lists;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -23,13 +21,12 @@ import retrofit2.Response;
  */
 
 
-public class FoodRepository implements Repository<Food> {
+final public class FoodRepository implements Repository<Food> {
 
     private final static String TAG = "FoodRepository";
 
 
-    FoodReportService foodReportService;
-    Map<String, Food> foodCache = new HashMap<>();
+    private FoodReportService foodReportService;
 
     public FoodRepository() {
 
@@ -53,41 +50,47 @@ public class FoodRepository implements Repository<Food> {
     }
 
     @Override
-    public void queryItem(Specification specification, final QueryCallback callback) {
+    public void queryItem(Specification specification, final QueryCallback<Food> callback) {
+        final List<Food> output = new ArrayList<>();
 
-        FoodSpecification spec = (FoodSpecification) specification;
+        final FoodSpecification spec = (FoodSpecification) specification;
 
-        String id = spec.toRealmQuery();
-        //check realm for id if doesn't exit
+        for (int i = 0; i < spec.getIds().size(); i++) {
+            final int index = i;
 
-        // get new data
-        Call<FoodReport> call = foodReportService.listReport(id);
+            // get new data
+            Call<FoodReport> call = foodReportService.listReport(spec.getIds().get(i));
 
-        call.enqueue(new Callback<FoodReport>() {
-            @Override
-            public void onResponse(Call<FoodReport> call, Response<FoodReport> response) {
-                FoodReport report = response.body();
+            call.enqueue(new Callback<FoodReport>() {
+                @Override
+                public void onResponse(Call<FoodReport> call, Response<FoodReport> response) {
+                    if(response.isSuccessful()) {
+                        FoodReport report = response.body();
 
-                if (report != null) {
-                    Food food = report.getFoods().get(0).getFood();
+                        if (report != null) {
+                            Food food = report.getFoods().get(0).getFood();
 
-                    Log.d(TAG, food.getDesc().getName());
-
-                    callback.onQueryComplete(Lists.newArrayList(food));
-                } else {
-                    callback.onDataNotAvailable();
+                            Log.d(TAG, food.getDesc().getName());
+                            output.add(food);
+                            if (index == spec.getIds().size() - 1) {
+                                Log.d(TAG, "send up " + output.size());
+                                callback.onQueryComplete(output);
+                            }
+                        } else {
+                            callback.onDataNotAvailable();
+                        }
+                    }
                 }
 
-            }
+                @Override
+                public void onFailure(Call<FoodReport> call, Throwable t) {
+                    Log.d(TAG, "food report failure");
+                    callback.onDataNotAvailable();
 
-            @Override
-            public void onFailure(Call<FoodReport> call, Throwable t) {
-                Log.d(TAG, "food report failure");
-                callback.onDataNotAvailable();
+                }
+            });
 
-            }
-        });
-
+        }
 
     }
 

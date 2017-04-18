@@ -16,6 +16,7 @@ public interface OverviewContract {
     interface View extends BaseView<Presenter> {
 
         void showHistory(List<HistoryItem> data);
+
         void showAddEditFood(String ndbNo);
 
 
