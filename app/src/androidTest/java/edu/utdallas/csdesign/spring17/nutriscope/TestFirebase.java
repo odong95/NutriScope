@@ -1,3 +1,4 @@
+/*
 package edu.utdallas.csdesign.spring17.nutriscope;
 
 import android.support.annotation.NonNull;
@@ -24,8 +25,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
-import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodClass;
 
+*/
 /**
  * {
  * "rules": {
@@ -66,7 +67,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodClass;
  * <p>
  * }
  * }
- */
+ *//*
+
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -183,3 +185,4 @@ public class TestFirebase {
 
 
 }
+*/

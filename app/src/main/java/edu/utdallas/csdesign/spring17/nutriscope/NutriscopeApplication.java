@@ -22,6 +22,11 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.history.DaggerHistoryRepos
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepositoryComponent;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepositoryModule;
+import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.DaggerNutritionRepositoryComponent;
+import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebaseRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepositoryComponent;
+import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepositoryModule;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.category.CategoryDbHelper;
 import edu.utdallas.csdesign.spring17.nutriscope.util.FirebaseLogger;
 
@@ -34,6 +39,7 @@ public class NutriscopeApplication extends Application {
     private HistoryRepositoryComponent historyRepositoryComponent;
     private ConsumedFoodRepositoryComponent consumedFoodRepositoryComponent;
     private FoodRepositoryComponent foodRepositoryComponent;
+    private NutritionRepositoryComponent nutritionRepositoryComponent;
     private NetComponent netComponent;
 
     public static Context getContext() {
@@ -68,6 +74,12 @@ public class NutriscopeApplication extends Application {
                                 new ConsumedFoodFirebaseRepository())))
                 .build();
 
+        nutritionRepositoryComponent = DaggerNutritionRepositoryComponent.builder()
+                .nutritionRepositoryModule(new NutritionRepositoryModule(
+                        new NutritionRepository(new NutritionFirebaseRepository())))
+                .build();
+
+
 
         SQLiteDatabase db = new CategoryDbHelper(getContext()).getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from category", null);
@@ -92,9 +104,8 @@ public class NutriscopeApplication extends Application {
         return foodRepositoryComponent;
     }
 
-
-
-
-
+    public NutritionRepositoryComponent getNutritionRepositoryComponent() {
+        return nutritionRepositoryComponent;
+    }
 }
 
