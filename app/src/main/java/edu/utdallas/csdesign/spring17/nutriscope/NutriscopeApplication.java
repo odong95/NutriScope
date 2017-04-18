@@ -2,6 +2,9 @@ package edu.utdallas.csdesign.spring17.nutriscope;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
@@ -19,6 +22,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.history.DaggerHistoryRepos
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepositoryComponent;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepositoryModule;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.category.CategoryDbHelper;
 import edu.utdallas.csdesign.spring17.nutriscope.util.FirebaseLogger;
 
 
@@ -63,6 +67,13 @@ public class NutriscopeApplication extends Application {
                                 historyRepositoryComponent.getHistoryRepository(),
                                 new ConsumedFoodFirebaseRepository())))
                 .build();
+
+
+        SQLiteDatabase db = new CategoryDbHelper(getContext()).getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from category", null);
+        Log.d(TAG," count " + cursor.getCount());
+        cursor.close();
+
     }
 
     public NetComponent getNetComponent() {
@@ -80,6 +91,9 @@ public class NutriscopeApplication extends Application {
     public FoodRepositoryComponent getFoodRepositoryComponent() {
         return foodRepositoryComponent;
     }
+
+
+
 
 
 }
