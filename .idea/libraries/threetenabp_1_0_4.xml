@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="threetenabp-1.0.4">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/f3f00b04c8388af4cedb0fb16623ed42c1813f9f/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/f3f00b04c8388af4cedb0fb16623ed42c1813f9f/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/d8fd7b674dc3deb9c8d525477ce6e8be40120edf/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/d8fd7b674dc3deb9c8d525477ce6e8be40120edf/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

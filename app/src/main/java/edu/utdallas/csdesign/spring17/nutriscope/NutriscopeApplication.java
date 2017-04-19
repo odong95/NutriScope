@@ -81,10 +81,10 @@ public class NutriscopeApplication extends Application {
 
 
 
-        SQLiteDatabase db = new CategoryDbHelper(getContext()).getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from category", null);
-        Log.d(TAG," count " + cursor.getCount());
-        cursor.close();
+       // SQLiteDatabase db = new CategoryDbHelper(getContext()).getReadableDatabase();
+       // Cursor cursor = db.rawQuery("select * from category", null);
+        //Log.d(TAG," count " + cursor.getCount());
+       // cursor.close();
 
     }
 
