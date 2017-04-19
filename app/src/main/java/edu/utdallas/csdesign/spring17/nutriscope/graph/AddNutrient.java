@@ -22,14 +22,16 @@ public class AddNutrient implements View.OnClickListener{
     private Activity activity;
     private GraphRecyclerViewAdapter adapter;
     private ArrayList<FoodNutrients> list;
-
-    public AddNutrient(SharedPreferences sharedPref, Activity act,GraphRecyclerViewAdapter adapter)
+    private AlertDialog dialog;
+    private Callback callback;
+    private CheckBox calcium,calories,carbs,cholesterol,fat,fiber,folicAcid,iron,magnesium,niacin,phosphorus,potassium,protein,riboflavin,selenium;
+    private CheckBox sodium,sugar,thiamin,vita, vitb6,vitb12,vitc,vitd,vitk,zinc;
+    public AddNutrient(SharedPreferences sharedPref, Activity act,GraphRecyclerViewAdapter adapter, Callback callback)
     {
-
         this.activity = act;
         this.adapter = adapter;
+        this.callback = callback;
         setup(sharedPref);
-
     }
 
     private void setup(SharedPreferences sf)
@@ -40,56 +42,57 @@ public class AddNutrient implements View.OnClickListener{
         builder.setView(promptView);
         sharedPref = sf;
 
-        final CheckBox calcium = (CheckBox) promptView.findViewById(R.id.calciumBox);
+        calcium = (CheckBox) promptView.findViewById(R.id.calciumBox);
         calcium.setChecked(sharedPref.getBoolean("calcium",false));
-        final CheckBox calories = (CheckBox) promptView.findViewById(R.id.caloriesBox);
+        calories = (CheckBox) promptView.findViewById(R.id.caloriesBox);
         calories.setChecked(sharedPref.getBoolean("calorie",false));
-        final CheckBox carbs = (CheckBox) promptView.findViewById(R.id.carbsBox);
+        carbs = (CheckBox) promptView.findViewById(R.id.carbsBox);
         carbs.setChecked(sharedPref.getBoolean("carbohydrate",false));
-        final CheckBox cholesterol = (CheckBox) promptView.findViewById(R.id.cholesterolBox);
+        cholesterol = (CheckBox) promptView.findViewById(R.id.cholesterolBox);
         cholesterol.setChecked(sharedPref.getBoolean("cholesterol",false));
-        final CheckBox fat = (CheckBox) promptView.findViewById(R.id.fatBox);
+        fat = (CheckBox) promptView.findViewById(R.id.fatBox);
         fat.setChecked(sharedPref.getBoolean("fat",false));
-        final CheckBox fiber = (CheckBox) promptView.findViewById(R.id.fiberBox);
+        fiber = (CheckBox) promptView.findViewById(R.id.fiberBox);
         fiber.setChecked(sharedPref.getBoolean("fiber",false));
-        final CheckBox folicAcid = (CheckBox) promptView.findViewById(R.id.folicBox);
-        folicAcid.setChecked(sharedPref.getBoolean("folicAcid",false));
-        final CheckBox iron = (CheckBox) promptView.findViewById(R.id.ironBox);
+        folicAcid = (CheckBox) promptView.findViewById(R.id.folicBox);
+        folicAcid.setChecked(sharedPref.getBoolean("folic acid",false));
+        iron = (CheckBox) promptView.findViewById(R.id.ironBox);
         iron.setChecked(sharedPref.getBoolean("iron",false));
-        final CheckBox magnesium = (CheckBox) promptView.findViewById(R.id.magnesiumBox);
+        magnesium = (CheckBox) promptView.findViewById(R.id.magnesiumBox);
         magnesium.setChecked(sharedPref.getBoolean("magnesium",false));
-        final CheckBox niacin = (CheckBox) promptView.findViewById(R.id.niacinBox);
+        niacin = (CheckBox) promptView.findViewById(R.id.niacinBox);
         niacin.setChecked(sharedPref.getBoolean("niacin",false));
-        final CheckBox phosphorus = (CheckBox) promptView.findViewById(R.id.phosBox);
+        phosphorus = (CheckBox) promptView.findViewById(R.id.phosBox);
         phosphorus.setChecked(sharedPref.getBoolean("phosphorus",false));
-        final CheckBox potassium = (CheckBox) promptView.findViewById(R.id.potassiumBox);
+        potassium = (CheckBox) promptView.findViewById(R.id.potassiumBox);
         potassium.setChecked(sharedPref.getBoolean("potassium",false));
-        final CheckBox protein = (CheckBox) promptView.findViewById(R.id.proteinBox);
+        protein = (CheckBox) promptView.findViewById(R.id.proteinBox);
         protein.setChecked(sharedPref.getBoolean("protein",false));
-        final CheckBox riboflavin = (CheckBox) promptView.findViewById(R.id.riboBox);
+        riboflavin = (CheckBox) promptView.findViewById(R.id.riboBox);
         riboflavin.setChecked(sharedPref.getBoolean("riboflavin",false));
-        final CheckBox selenium = (CheckBox) promptView.findViewById(R.id.seleniumBox);
+        selenium = (CheckBox) promptView.findViewById(R.id.seleniumBox);
         selenium.setChecked(sharedPref.getBoolean("selenium",false));
-        final CheckBox sodium = (CheckBox) promptView.findViewById(R.id.sodiumBox);
+        sodium = (CheckBox) promptView.findViewById(R.id.sodiumBox);
         sodium.setChecked(sharedPref.getBoolean("sodium",false));
-        final CheckBox sugar = (CheckBox) promptView.findViewById(R.id.sugarBox);
+        sugar = (CheckBox) promptView.findViewById(R.id.sugarBox);
         sugar.setChecked(sharedPref.getBoolean("sugars",false));
-        final CheckBox thiamin = (CheckBox) promptView.findViewById(R.id.thiaminBox);
+        thiamin = (CheckBox) promptView.findViewById(R.id.thiaminBox);
         thiamin.setChecked(sharedPref.getBoolean("thiamin",false));
-        final CheckBox vita = (CheckBox) promptView.findViewById(R.id.vitaBox);
+        vita = (CheckBox) promptView.findViewById(R.id.vitaBox);
         vita.setChecked(sharedPref.getBoolean("vitamin a",false));
-        final CheckBox vitb6 = (CheckBox) promptView.findViewById(R.id.vitb6Box);
+        vitb6 = (CheckBox) promptView.findViewById(R.id.vitb6Box);
         vitb6.setChecked(sharedPref.getBoolean("vitamin b6",false));
-        final CheckBox vitb12 = (CheckBox) promptView.findViewById(R.id.vitb12Box);
+        vitb12 = (CheckBox) promptView.findViewById(R.id.vitb12Box);
         vitb12.setChecked(sharedPref.getBoolean("vitamin b12",false));
-        final CheckBox vitc = (CheckBox) promptView.findViewById(R.id.vitcBox);
+        vitc = (CheckBox) promptView.findViewById(R.id.vitcBox);
         vitc.setChecked(sharedPref.getBoolean("vitamin c",false));
-        final CheckBox vitd = (CheckBox) promptView.findViewById(R.id.vitdBox);
+        vitd = (CheckBox) promptView.findViewById(R.id.vitdBox);
         vitd.setChecked(sharedPref.getBoolean("vitamin d",false));
-        final CheckBox vitk = (CheckBox) promptView.findViewById(R.id.vitkBox);
+        vitk = (CheckBox) promptView.findViewById(R.id.vitkBox);
         vitk.setChecked(sharedPref.getBoolean("vitamin k",false));
-        final CheckBox zinc = (CheckBox) promptView.findViewById(R.id.zincBox);
+        zinc = (CheckBox) promptView.findViewById(R.id.zincBox);
         zinc.setChecked(sharedPref.getBoolean("zinc",false));
+
 
         calories.setOnClickListener(this);
         carbs.setOnClickListener(this);
@@ -118,11 +121,15 @@ public class AddNutrient implements View.OnClickListener{
         vitk.setOnClickListener(this);
         zinc.setOnClickListener(this);
 
+
         adapter.clear();
         list = new ArrayList<FoodNutrients>();
+
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 if(calories.isChecked())
                 {
                     list.add(FoodNutrients.CALORIE);
@@ -236,19 +243,25 @@ public class AddNutrient implements View.OnClickListener{
                 {
                     adapter.add(s);
                 }
+                callback.onComplete();
                 dialog.dismiss();
             }
         });
 
-        builder.show();
+        dialog = builder.create();
+        dialog.show();
     }
-
-
 
     @Override
     public void onClick(View view) {
         SharedPreferences.Editor editor = sharedPref.edit();
-
+        if(!maxedOut()) {
+             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+        }
+        else
+        {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        }
         switch(view.getId()) {
             case R.id.caloriesBox:
                 editor.putBoolean("calorie", ((CheckBox) view).isChecked());
@@ -355,6 +368,127 @@ public class AddNutrient implements View.OnClickListener{
 
     }
 
+    private boolean maxedOut()
+    {
+        int counter = 0;
+        if(calories.isChecked())
+        {
+            counter++;
+        }
+        if (carbs.isChecked())
+        {
+            counter++;
+        }
+        if (protein.isChecked())
+        {
+            counter++;
+        }
+        if (fat.isChecked())
+        {
+            counter++;
+        }
+        if (calcium.isChecked())
+        {
+            counter++;
+        }
+        if (cholesterol.isChecked())
+        {
+            counter++;
+        }
+        if (fiber.isChecked())
+        {
+            counter++;
+        }
+        if (folicAcid.isChecked())
+        {
+            counter++;
+        }
+        if (iron.isChecked())
+        {
+            counter++;
+        }
+        if (magnesium.isChecked())
+        {
+            counter++;
+        }
+        if (niacin.isChecked())
+        {
+            counter++;
+        }
+        if (phosphorus.isChecked())
+        {
+            counter++;
+        }
+        if (potassium.isChecked())
+        {
+            counter++;
+        }
+        if (riboflavin.isChecked())
+        {
+            counter++;
+        }
+        if (selenium.isChecked())
+        {
+            counter++;
+        }
+        if (sodium.isChecked())
+        {
+            counter++;
+        }
+        if (sugar.isChecked())
+        {
+            counter++;
+        }
+        if (thiamin.isChecked())
+        {
+            counter++;
+        }
+        if (vita.isChecked())
+        {
+            counter++;
+        }
+        if (vitb6.isChecked())
+        {
+            counter++;
+        }
+        if (vitb12.isChecked())
+        {
+            counter++;
+        }
+        if (vitc.isChecked())
+        {
+            counter++;
+        }
+        if (vitd.isChecked())
+        {
+            counter++;
+        }
+        if (vitk.isChecked())
+        {
+            counter++;
+        }
+        if (zinc.isChecked())
+        {
+            counter++;
+        }
 
+        if(counter > 7)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
+    interface Callback {
+        void onComplete();
+    }
+
+    public static class CallBackImpl implements Callback {
+        public void onComplete() {
+
+        }
+    }
 }

@@ -4,7 +4,11 @@ import com.google.auto.value.AutoValue;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZoneOffset;
 
 import java.util.Map;
 
@@ -40,11 +44,16 @@ public class Nutrition implements Trackable {
     public Map<String, Integer> getNutrients() {
         return nutrients;
     }
+    public void setNutrients(Map<String,Integer> map){this.nutrients = map;}
 
     @Exclude
     public LocalDate getLocalDate() {
-        return LocalDate.ofEpochDay(dateStamp);
+        LocalDateTime t = LocalDateTime.ofEpochSecond(dateStamp, 0, ZoneOffset.UTC);
+        return  t.toLocalDate();
 
     }
+
+    public long getDateStamp(){return dateStamp;}
+    public void setDateStamp(Long dateStamp){this.dateStamp=dateStamp;}
 
 }
