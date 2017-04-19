@@ -19,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -61,6 +62,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.Nutrition;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebaseRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
 import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 
@@ -111,11 +113,15 @@ public class GraphActivity extends AppCompatActivity implements View.OnClickList
         chart.invalidate();
         repo = new NutritionRepository(new NutritionFirebaseRepository());
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        db = FirebaseDatabase.getInstance().getReference().child("users").child(auth.getCurrentUser().getUid()).child("calorieGoal");
+        db = FirebaseDatabase.getInstance().getReference().child("users").child(auth.getCurrentUser().getUid());
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                calGoal = Integer.parseInt(dataSnapshot.getValue().toString());
+                User u = dataSnapshot.getValue(User.class);
+                if(!TextUtils.isEmpty(u.getCalorieGoal())){
+                    calGoal = Integer.parseInt(dataSnapshot.getValue().toString());
+                }
+
             }
 
             @Override
