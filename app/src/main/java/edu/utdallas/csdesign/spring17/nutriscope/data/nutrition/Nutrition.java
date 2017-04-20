@@ -18,6 +18,10 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 @IgnoreExtraProperties
 public class Nutrition implements Trackable {
 
+
+    /**
+     * This time stamp should be a UNIX Epoch that specifies a day
+     */
     private long dateStamp;
     private Map<String, Integer> nutrients;
 

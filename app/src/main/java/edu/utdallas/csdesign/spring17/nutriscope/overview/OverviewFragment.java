@@ -97,32 +97,32 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_hamburger));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_graph));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_calendar));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_recipe));
+       // tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_calendar));
+       // tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_recipe));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_gear));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_search));
+       // tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_search));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tabLayout.getSelectedTabPosition() == 0) {
-                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                   //  Toast.makeText(getActivity(), "Open Overview", Toast.LENGTH_LONG).show();
                 } else if (tabLayout.getSelectedTabPosition() == 1) {
                     openGraph();
-                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                } else if (tabLayout.getSelectedTabPosition() == 2) {
+                    //Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                } /*else if (tabLayout.getSelectedTabPosition() == 2) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                 } else if (tabLayout.getSelectedTabPosition() == 3) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                } else if (tabLayout.getSelectedTabPosition() == 4) {
+                }*/ else if (tabLayout.getSelectedTabPosition() == 2) {
 
                     showPopup(tabLayout);
 
 
+                    //Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+                }/* else if (tabLayout.getSelectedTabPosition() == 5) {
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                } else if (tabLayout.getSelectedTabPosition() == 5) {
-                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                }
+                }*/
             }
 
             @Override
@@ -230,8 +230,9 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
     @OnClick(R2.id.fab_add_overview)
     public void showBottomSheet() {
-        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        fab.setVisibility(View.INVISIBLE);
+        showAddEditFood();
+        /*behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        fab.setVisibility(View.INVISIBLE);*/
 
     }
 

@@ -18,7 +18,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
 
 /**
- * Created by john on 4/17/17.
+ * Keeps track of the Nutrition history for a user in Firebase db.
  */
 
 final public class NutritionFirebaseRepository implements Repository<Nutrition> {
@@ -37,14 +37,33 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
 
     }
 
-
+    /**
+     *  Not a necessary operation
+     */
     public void createItem(Nutrition item, CreateCallback callback) {
-
+        throw new UnsupportedOperationException();
     }
+
+    /**
+     * This class should update the Nutrition info for 1 day.
+     *
+     * @param item
+     * @param callback
+     */
 
     public void updateItem(Nutrition item, UpdateCallback callback) {
 
+
     }
+
+    /**
+     * This class should query the nutrition info.
+     *
+     * The specification should specify the number of days to return.
+     *
+     * @param specification
+     * @param callback
+     */
 
     public void queryItem(Specification specification, final QueryCallback<Nutrition> callback) {
         final List<Nutrition> list = new LinkedList<>();
@@ -79,8 +98,11 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
         }
     }
 
+    /**
+     * Will not be implemented     *
+     */
     public void deleteItem(Nutrition id, DeleteCallback callback) {
-
+        throw new UnsupportedOperationException();
     }
 
 

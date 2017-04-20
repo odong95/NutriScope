@@ -260,5 +260,5 @@
         android:clickable="true"
         app:layout_anchor="@id/overview_bottom_sheet"
         app:layout_anchorGravity="top|end"
-        app:srcCompat="@drawable/ic_done"/>
+        app:srcCompat="@drawable/ic_add"/>
 </android.support.design.widget.CoordinatorLayout>
