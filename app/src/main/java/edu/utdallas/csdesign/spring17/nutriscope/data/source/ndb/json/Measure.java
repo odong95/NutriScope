@@ -74,4 +74,9 @@ public class Measure {
         this.value = value;
     }
 
+    static public Measure measureGram() {
+        return new Measure("grams", 1.0, "g", 1.0, "");
+    }
+
+
 }

@@ -11,7 +11,7 @@
         android:id="@+id/text_input_wrapper_add_edit_food"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="4">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/edit_text_add_edit_food"
@@ -29,7 +29,7 @@
         android:id="@+id/spinner_quantity"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="9"
         android:layout_margin="4dp"/>
 
 </LinearLayout>

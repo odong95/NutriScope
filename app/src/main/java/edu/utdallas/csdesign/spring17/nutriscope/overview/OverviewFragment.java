@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -243,6 +242,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
     public void showAddEditFood(String ndbNo) {
         Intent intent = new Intent(getActivity(), AddEditFoodActivity.class);
         intent.putExtra(AddEditFoodActivity.EXTRA_NDB_ID, ndbNo);
+        intent.putExtra(AddEditFoodActivity.EXTRA_CONSUMED_FOOD, true);
         startActivity(intent);
 
     }
@@ -268,35 +268,37 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
     }
 
-    class ViewHolderFood extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.food_name)
-        TextView foodName;
 
-        private ConsumedFood consumedFood;
+    class OverviewRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        public ViewHolderFood(View v) {
-            super(v);
-            ButterKnife.bind(this, v);
-            v.setOnClickListener(this);
+        class ViewHolderFood extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+            @BindView(R.id.food_name) TextView foodName;
+            @BindView(R.id.quantity_consumed) TextView textViewQtyCons;
+
+            private ConsumedFood consumedFood;
+
+            public ViewHolderFood(View v) {
+                super(v);
+                ButterKnife.bind(this, v);
+                v.setOnClickListener(this);
+            }
+
+            public void bindFood(ConsumedFood consumedFood) {
+                this.consumedFood = consumedFood;
+                foodName.setText(consumedFood.getFood().getDesc().getName());
+                textViewQtyCons.setText((consumedFood.getQuantity() + "\ngrams"));
+            }
+
+
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "vhf clicked");
+                presenter.openAddEditFood(consumedFood);
+            }
+
         }
-
-        public void bindFood(ConsumedFood consumedFood) {
-            this.consumedFood = consumedFood;
-            foodName.setText(consumedFood.getFood().getDesc().getName());
-        }
-
-
-        @Override
-        public void onClick(View v) {
-            Log.d(TAG, "vhf clicked");
-            presenter.openAddEditFood(consumedFood);
-        }
-
-    }
-
-
-    private class OverviewRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private final int FOOD = 0;
         // The items to display in your RecyclerView

@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -117,7 +119,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        ArrayList<Object> defaultNutrients = Lists.newArrayList(new FoodName(""), new Quantity("0", Lists.newArrayList(new Measure("g", 1.0, "g", 1.0, "1"))), FoodNutrients.CALORIE, FoodNutrients.FAT, FoodNutrients.PROTEIN);
+        ArrayList<Object> defaultNutrients = Lists.newArrayList(new FoodName(""), new Quantity(0, Lists.newArrayList(new Measure("g", 1.0, "g", 1.0, "1"))), FoodNutrients.CALORIE, FoodNutrients.FAT, FoodNutrients.PROTEIN);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_add_edit_food);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -167,162 +169,203 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
 
     }
 
-    class ViewHolderFoodName extends RecyclerView.ViewHolder {
-
-        @BindView(R2.id.edit_text_add_edit_food) TextInputEditText foodName;
-        @BindView(R2.id.text_input_wrapper_add_edit_food) TextInputLayout textInputLayout;
+    class AddEditFoodRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
-        ViewHolderFoodName(View v) {
-            super(v);
-            ButterKnife.bind(this, v);
+        class ViewHolderFoodName extends RecyclerView.ViewHolder {
 
-        }
-
-        private void setFoodName(String name) {
-            foodName.setText(name);
-        }
-
-        private void setHint(String hint) {
-            textInputLayout.setHint(hint);
-        }
-
-    }
+            @BindView(R2.id.edit_text_add_edit_food) TextInputEditText foodName;
+            @BindView(R2.id.text_input_wrapper_add_edit_food) TextInputLayout textInputLayout;
 
 
-    class ViewHolderQuantity extends RecyclerView.ViewHolder implements AdapterView.OnItemSelectedListener {
+            ViewHolderFoodName(View v) {
+                super(v);
+                ButterKnife.bind(this, v);
 
-        @BindView(R2.id.edit_text_add_edit_food) TextInputEditText quantity;
-        @BindView(R2.id.text_input_wrapper_add_edit_food) TextInputLayout textInputLayout;
-        @BindView(R2.id.spinner_quantity) Spinner spinnerMeasure;
-
-
-        ViewHolderQuantity(View v) {
-            super(v);
-            ButterKnife.bind(this, v);
-
-        }
-
-        private void setSpinnerMeasures(List<Measure> measures) {
-            MeasureArrayAdapter adapter = new MeasureArrayAdapter(getContext(), measures);
-            spinnerMeasure.setAdapter(adapter);
-        }
-
-        private void setQuantity(String quantity) {
-            this.quantity.setText(quantity);
-        }
-
-        private void setHint(String hint) {
-            textInputLayout.setHint(hint);
-        }
-
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            Log.d(TAG, "selected " + i);
-
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
-
-        }
-
-        class MeasureArrayAdapter extends ArrayAdapter<Measure> {
-
-            private List<Measure> measures;
-            private Context context;
-
-            public MeasureArrayAdapter(Context context, List<Measure> measures) {
-                super(context, android.R.layout.simple_spinner_item, measures);
-                this.measures = measures;
-                this.context = context;
             }
 
-            @Nullable
-            @Override
-            public Measure getItem(int position) {
-                return measures.get(position);
+            private void setFoodName(String name) {
+                foodName.setText(name);
             }
 
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View v = convertView;
+            private void setHint(String hint) {
+                textInputLayout.setHint(hint);
+            }
 
-                if (v == null) {
-                    LayoutInflater inflater = getActivity().getLayoutInflater();
-                    v = inflater.inflate(R.layout.support_simple_spinner_dropdown_item, null);
+        }
+
+
+        class ViewHolderQuantity extends RecyclerView.ViewHolder implements AdapterView.OnItemSelectedListener {
+
+            @BindView(R2.id.edit_text_add_edit_food) TextInputEditText editTextQuantity;
+            @BindView(R2.id.text_input_wrapper_add_edit_food) TextInputLayout textInputLayout;
+            @BindView(R2.id.spinner_quantity) Spinner spinnerMeasure;
+
+            private Quantity quantity;
+
+
+            ViewHolderQuantity(View v) {
+                super(v);
+                ButterKnife.bind(this, v);
+
+
+
+            }
+
+
+            public Quantity getQuantity() {
+                return quantity;
+            }
+
+            public void setQuantity(Quantity quantity) {
+                this.quantity = quantity;
+            }
+
+            private void setPosition(final int position) {
+                editTextQuantity.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        try {
+                            ((Quantity) items.get(position)).setQuantity(Float.parseFloat(charSequence.toString()));
+                        } catch (NumberFormatException ex) {
+                            ((Quantity) items.get(position)).setQuantity(0);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+
+                    }
+                });
+            }
+
+            private void setSpinnerMeasures(List<Measure> measures) {
+                MeasureArrayAdapter adapter = new MeasureArrayAdapter(getContext(), measures);
+                spinnerMeasure.setAdapter(adapter);
+                spinnerMeasure.setOnItemSelectedListener(this);
+            }
+
+            private void setEditTextQuantity(String editTextQuantity) {
+                this.editTextQuantity.setText(editTextQuantity);
+
+            }
+
+            private void setHint(String hint) {
+                textInputLayout.setHint(hint);
+            }
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d(TAG, "selected " + i);
+                quantity.setSelectedMeasure(i);
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+
+            class MeasureArrayAdapter extends ArrayAdapter<Measure> {
+
+                private List<Measure> measures;
+                private Context context;
+
+                public MeasureArrayAdapter(Context context, List<Measure> measures) {
+                    super(context, android.R.layout.simple_spinner_item, measures);
+                    this.measures = measures;
+                    this.context = context;
                 }
 
-                TextView textView = (TextView) v.findViewById(android.R.id.text1);
-                textView.setText(measures.get(position).getLabel());
-
-                return v;
-            }
-
-            @Override
-            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                TextView v = (TextView) super.getView(position, convertView, parent);
-
-                if (v == null) {
-                    v = new TextView(context);
+                @Nullable
+                @Override
+                public Measure getItem(int position) {
+                    return measures.get(position);
                 }
-                v.setText(measures.get(position).getLabel());
 
-                return v;
+                @NonNull
+                @Override
+                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                    View v = convertView;
+
+                    if (v == null) {
+                        LayoutInflater inflater = getActivity().getLayoutInflater();
+                        v = inflater.inflate(R.layout.support_simple_spinner_dropdown_item, null);
+                    }
+
+                    TextView textView = (TextView) v.findViewById(android.R.id.text1);
+                    textView.setText(measures.get(position).getLabel());
+
+                    return v;
+                }
+
+                @Override
+                public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                    TextView v = (TextView) super.getView(position, convertView, parent);
+
+                    if (v == null) {
+                        v = new TextView(context);
+                    }
+                    v.setText(measures.get(position).getLabel());
+
+                    return v;
+                }
             }
-        }
-
-    }
-
-    class ViewHolderFoodNutrient extends RecyclerView.ViewHolder {
-
-        @BindView(R2.id.edit_text_add_edit_food) TextInputEditText nutrient;
-        @BindView(R2.id.text_input_wrapper_add_edit_food) TextInputLayout textInputLayout;
-
-
-        ViewHolderFoodNutrient(View v) {
-            super(v);
-            ButterKnife.bind(this, v);
 
         }
 
-        private void setNutrient(String nutrient) {
-            this.nutrient.setText(nutrient);
-        }
+        class ViewHolderFoodNutrient extends RecyclerView.ViewHolder {
 
-        private void setHint(String hint) {
-            textInputLayout.setHint(hint);
-        }
-
-    }
+            @BindView(R2.id.edit_text_add_edit_food) TextInputEditText nutrient;
+            @BindView(R2.id.text_input_wrapper_add_edit_food) TextInputLayout textInputLayout;
 
 
-    class ViewHolderNutrient extends RecyclerView.ViewHolder {
+            ViewHolderFoodNutrient(View v) {
+                super(v);
+                ButterKnife.bind(this, v);
 
-        @BindView(R2.id.edit_text_add_edit_food) TextInputEditText nutrient;
-        @BindView(R2.id.text_input_wrapper_add_edit_food) TextInputLayout textInputLayout;
+            }
 
+            private void setNutrient(String nutrient) {
+                this.nutrient.setText(nutrient);
+            }
 
-        ViewHolderNutrient(View v) {
-            super(v);
-            ButterKnife.bind(this, v);
+            private void setHint(String hint) {
+                textInputLayout.setHint(hint);
+            }
 
-        }
-
-        private void setNutrient(String nutrient) {
-            this.nutrient.setText(nutrient);
-        }
-
-        private void setHint(String hint) {
-            textInputLayout.setHint(hint);
         }
 
 
-    }
+        class ViewHolderNutrient extends RecyclerView.ViewHolder {
+
+            @BindView(R2.id.edit_text_add_edit_food) TextInputEditText nutrient;
+            @BindView(R2.id.text_input_wrapper_add_edit_food) TextInputLayout textInputLayout;
 
 
-    private class AddEditFoodRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+            ViewHolderNutrient(View v) {
+                super(v);
+                ButterKnife.bind(this, v);
+
+            }
+
+            private void setNutrient(String nutrient) {
+                this.nutrient.setText(nutrient);
+            }
+
+            private void setHint(String hint) {
+                textInputLayout.setHint(hint);
+            }
+
+
+        }
 
         private final int NUTRIENT = 0;
         private final int QUANTITY = 1;
@@ -459,9 +502,11 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
                 ViewHolderQuantity viewHolderQuantity, int position) {
             Quantity quantity = (Quantity) items.get(position);
             if (quantity != null) {
+                viewHolderQuantity.setQuantity(quantity);
                 viewHolderQuantity.setHint(quantity.label);
-                viewHolderQuantity.setQuantity(quantity.quantity);
+                viewHolderQuantity.setEditTextQuantity(String.valueOf(quantity.getQuantity()));
                 viewHolderQuantity.setSpinnerMeasures(quantity.getMeasures());
+                viewHolderQuantity.setPosition(position);
             }
         }
 

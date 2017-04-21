@@ -25,6 +25,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodRepositoryCompone
 public interface AddEditFoodComponent {
     void inject(AddEditFoodActivity activity);
 
+    boolean provideIsConsumedFood();
+
 
     @Named("ndbId")
     @Nullable

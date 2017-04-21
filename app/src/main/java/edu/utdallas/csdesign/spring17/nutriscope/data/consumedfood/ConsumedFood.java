@@ -21,7 +21,7 @@ public class ConsumedFood implements Trackable {
 
     private Food food;
     private String ndbNo;
-    private String quantity;
+    private double quantity;
     private long dateTimeConsumed;
 
     public ConsumedFood() {
@@ -29,7 +29,7 @@ public class ConsumedFood implements Trackable {
 
     }
 
-    public ConsumedFood(Food food, String ndbNo, String quantity, long dateTimeConsumed) {
+    public ConsumedFood(Food food, String ndbNo, double quantity, long dateTimeConsumed) {
         this.food = food;
         this.ndbNo = ndbNo;
         this.quantity = quantity;
@@ -40,7 +40,7 @@ public class ConsumedFood implements Trackable {
         return ndbNo;
     }
 
-    public String getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 

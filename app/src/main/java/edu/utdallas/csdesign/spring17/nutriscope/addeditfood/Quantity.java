@@ -11,15 +11,33 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Measure;
 
 class Quantity {
     final String label = "Quantity";
-    final String quantity;
-    final List<Measure> measures;
+    private double quantity;
+    private int selectedMeasure;
+    private final List<Measure> measures;
 
-    Quantity(String quantity, List<Measure> measures) {
+    Quantity(double quantity, List<Measure> measures) {
         this.quantity = quantity;
         this.measures = measures;
+        measures.add(0, Measure.measureGram());
     }
 
     public List<Measure> getMeasures() {
         return Collections.unmodifiableList(measures);
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getSelectedMeasure() {
+        return selectedMeasure;
+    }
+
+    public void setSelectedMeasure(int selectedMeasure) {
+        this.selectedMeasure = selectedMeasure;
     }
 }
