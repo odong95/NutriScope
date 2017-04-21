@@ -1,5 +1,6 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.nutrition;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -11,6 +12,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +21,7 @@ import java.util.Map;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
 
 /**
  * Keeps track of the Nutrition history for a user in Firebase db.
@@ -32,6 +36,7 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
 
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
+    private int calGoal = 0;
 
 
     public NutritionFirebaseRepository() {
@@ -72,7 +77,7 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
                         for (DataSnapshot data : nodes) {
                             nutrition = (Nutrition) data.getValue();
 
-                            for (Map.Entry<String, Float> entry : item.getNutrients().entrySet()) {
+                            for (Map.Entry<String, Double> entry : item.getNutrients().entrySet()) {
                                 if (nutrition.getNutrients().containsKey(entry.getKey())) {
                                     nutrition.getNutrients().put(entry.getKey(), entry.getValue() + nutrition.getNutrients().get(entry.getKey()));
                                 } else {
@@ -126,17 +131,17 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
         final List<Nutrition> list = new LinkedList<>();
 
         FirebaseUser usr = auth.getCurrentUser();
-
+        long start = ((NutritionFirebaseSpecification)specification).getStartDay();
+        long end = ((NutritionFirebaseSpecification)specification).getEndDay();
         if (usr != null) {
 
-            Query query = databaseReference.child("nutrition").child(usr.getUid());
+            Query query = databaseReference.child("nutrition").child(usr.getUid()).orderByChild("dateStamp").startAt(start).endAt(end);
 
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     for (DataSnapshot node : dataSnapshot.getChildren()) {
-
                        list.add(node.getValue(Nutrition.class));
 
                     }
@@ -160,6 +165,40 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
      */
     public void deleteItem(Nutrition id, DeleteCallback callback) {
         throw new UnsupportedOperationException();
+    }
+
+    public void getCalorieGoal(final CalorieCallback callback)
+    {
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users").child(auth.getCurrentUser().getUid());
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User u = dataSnapshot.getValue(User.class);
+                if(!TextUtils.isEmpty(u.getCalorieGoal())){
+                    calGoal = Integer.parseInt(u.getCalorieGoal());
+                    callback.onChanged(calGoal);
+                }
+                else
+                {
+                    callback.onChanged(0);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        db.addListenerForSingleValueEvent(valueEventListener);
+
+    }
+
+
+
+    public interface CalorieCallback{
+        void onChanged(int calGoal);
     }
 
 

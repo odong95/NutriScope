@@ -41,7 +41,7 @@ public class NutritionRepository implements Repository<Nutrition> {
     }
 
     public void queryItem(Specification specification, final QueryCallback<Nutrition> callback) {
-        nutritionFirebaseRepository.queryItem(null, new QueryCallback<Nutrition>() {
+        nutritionFirebaseRepository.queryItem(specification, new QueryCallback<Nutrition>() {
             @Override
             public void onQueryComplete(List<Nutrition> items) {
                 callback.onQueryComplete(items);
@@ -56,6 +56,11 @@ public class NutritionRepository implements Repository<Nutrition> {
 
     public void deleteItem(Nutrition id, DeleteCallback callback) {
 
+    }
+
+    public void getCalorieGoal(NutritionFirebaseRepository.CalorieCallback callback)
+    {
+         nutritionFirebaseRepository.getCalorieGoal(callback);
     }
 
 

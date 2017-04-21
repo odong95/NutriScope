@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Nutrient;
 
 @AutoValue
@@ -25,7 +26,7 @@ public class Nutrition implements Trackable {
      * let's use Java.Time toEpochDay() to specify the day
      */
     private long dateStamp;
-    private Map<String, Float> nutrients = new HashMap<>();
+    private Map<String, Double> nutrients = new HashMap<>();
 
     public Nutrition() {
 
@@ -40,29 +41,26 @@ public class Nutrition implements Trackable {
         return Long.toString(dateStamp);
     }
 
-    public void addNutrient(String nutrient, Float amount) {
+    public void addNutrient(String nutrient, double amount) {
         nutrients.put(nutrient, amount);
     }
 
-    public Float getNutrient(String nutrient) {
+    public double getNutrient(String nutrient) {
         return nutrients.get(nutrient);
     }
 
-    public Map<String, Float> getNutrients() {
+    public Map<String, Double> getNutrients() {
         return nutrients;
     }
-    public void setNutrients(Map<String, Float> map){this.nutrients = map;}
+    public void setNutrients(Map<String, Double> map){this.nutrients = map;}
 
     @Exclude
     public LocalDate getLocalDate() {
-        LocalDateTime t = LocalDateTime.ofEpochSecond(dateStamp, 0, ZoneOffset.UTC);
-        return  t.toLocalDate();
-
+        return LocalDate.ofEpochDay(dateStamp);
     }
 
     public long getDateStamp(){return dateStamp;}
     public void setDateStamp(Long dateStamp){this.dateStamp=dateStamp;}
-
 
     public static Nutrition ndbToNutrition(long datestamp, List<Nutrient> nutrients) {
 
@@ -71,13 +69,12 @@ public class Nutrition implements Trackable {
         for(Nutrient nutrient: nutrients) {
             if (nutrient.getUnit().equals("g")) {
                 nutrition.addNutrient(nutrient.getNutrientId(),
-                                      Float.parseFloat(nutrient.getValue()));
+                        Double.parseDouble(nutrient.getValue()));
             }
         }
 
         return nutrition;
     }
-
 
 
 }
