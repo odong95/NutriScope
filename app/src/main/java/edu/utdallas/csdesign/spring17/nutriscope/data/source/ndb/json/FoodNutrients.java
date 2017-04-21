@@ -12,7 +12,7 @@ public enum FoodNutrients {
     FAT(204, getString(R.string.fat), 65),
     PROTEIN(203, getString(R.string.protein), 50),
     CARBOHYDRATE(205, getString(R.string.carbohydrate),300),
-    CALORIE(208, getString(R.string.kcalorie),0),
+    CALORIE(208, getString(R.string.kcalorie),1),
     NONE(0, "Does not exist.",0),
     FIBER(291, getString(R.string.fiber),25),
     SUGARS(269, getString(R.string.sugars), 30),

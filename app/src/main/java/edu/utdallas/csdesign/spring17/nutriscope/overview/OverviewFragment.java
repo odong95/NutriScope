@@ -24,8 +24,13 @@ import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 
+import org.w3c.dom.Text;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +40,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryItem;
+import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.Nutrition;
 import edu.utdallas.csdesign.spring17.nutriscope.graph.GraphActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.settings.ProfileSettingsActivity;
@@ -49,10 +55,24 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class OverviewFragment extends Fragment implements OverviewContract.View {
 
     final private static String TAG = "OverviewFragment";
-    @BindView(R2.id.fab_add_overview) FloatingActionButton fab;
-    @BindView(R2.id.overview_tabs) TabLayout tabLayout;
-    @BindView(R2.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.overview_bottom_sheet) LinearLayout bottomSheet;
+    @BindView(R2.id.fab_add_overview)
+    FloatingActionButton fab;
+    @BindView(R2.id.overview_tabs)
+    TabLayout tabLayout;
+    @BindView(R2.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.overview_bottom_sheet)
+    LinearLayout bottomSheet;
+    @BindView(R.id.calgoal_percentage)
+    TextView calGoal;
+    @BindView(R.id.calremain_percentage)
+    TextView calRemaining;
+    @BindView(R.id.carbs_percentage)
+    TextView carbs;
+    @BindView(R.id.protein_percentage)
+    TextView protein;
+    @BindView(R.id.fat_percentage)
+    TextView fat;
     PopupMenu popup;
     private RecyclerView overviewRecyclerView;
     private OverviewRecyclerViewAdapter adapter;
@@ -71,8 +91,8 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
     public void onResume() {
         Log.d(TAG, "onResume");
         super.onResume();
-
         presenter.start();
+        presenter.loadNutritionProgress();
     }
 
     @Override
@@ -266,6 +286,27 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         }
 
     }
+
+
+    @Override
+    public void showNutritionProgress(HashMap<String, String> data) {
+        if (data.containsKey("Calorie Goal")) {
+            calGoal.setText(data.get("Calorie Goal"));
+        }
+        if (data.containsKey("Calorie")) {
+            calRemaining.setText(data.get("Calorie"));
+        }
+        if (data.containsKey("Carbohydrate")) {
+            carbs.setText(data.get("Carbohydrate"));
+        }
+        if (data.containsKey("Protein")) {
+            protein.setText(data.get("Protein"));
+        }
+        if (data.containsKey("Fat")) {
+            fat.setText(data.get("Fat"));
+        }
+    }
+
 
     class ViewHolderFood extends RecyclerView.ViewHolder implements View.OnClickListener {
 

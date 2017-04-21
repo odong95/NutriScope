@@ -61,6 +61,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.Nutrition;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebaseRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebaseSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
@@ -119,7 +120,7 @@ public class GraphActivity extends AppCompatActivity implements View.OnClickList
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User u = dataSnapshot.getValue(User.class);
                 if(!TextUtils.isEmpty(u.getCalorieGoal())){
-                    calGoal = Integer.parseInt(dataSnapshot.getValue().toString());
+                    calGoal = Integer.parseInt(u.getCalorieGoal());
                 }
 
             }
@@ -143,7 +144,7 @@ public class GraphActivity extends AppCompatActivity implements View.OnClickList
                 public void onComplete() {
                     LineData data = chart.getData();
                     data.clearValues();
-                    repo.queryItem(null, new Repository.QueryCallback<Nutrition>() {
+                    repo.queryItem(new NutritionFirebaseSpecification(LocalDate.now().minusDays(14).toEpochDay(), LocalDate.now().toEpochDay()), new Repository.QueryCallback<Nutrition>() {
                         @Override
                         public void onQueryComplete(List<Nutrition> items) {
                             for (int n = 0; n < nutrientList.size(); n++) {
@@ -220,19 +221,22 @@ public class GraphActivity extends AppCompatActivity implements View.OnClickList
         LineDataSet set = new LineDataSet(entries, p1);
         set.setLineWidth(2.5f);
         set.setCircleRadius(4.5f);
+
         set.setValueFormatter(new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
                 DecimalFormat mFormat = new DecimalFormat("###,###,##0.0");
-                return mFormat.format(value * 100) + " %";
+                //return mFormat.format(value * 100) + " %";
+                return "";
             }
         });
+
+
         Random rnd = new Random();
         int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
 
         set.setColor(color);
-        set.setValueTextSize(10f);
-        set.setValueTextColor(Color.BLACK);
+
 
 
         data.addDataSet(set);

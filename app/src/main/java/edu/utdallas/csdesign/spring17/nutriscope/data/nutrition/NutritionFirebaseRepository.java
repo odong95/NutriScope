@@ -1,5 +1,7 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.nutrition;
 
+import android.text.TextUtils;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
 
 /**
  * Created by john on 4/17/17.
@@ -28,13 +31,14 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
 
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
+    private int calGoal = 50;
 
 
     public NutritionFirebaseRepository() {
 
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-
+        setCalorieGoal();
     }
 
 
@@ -50,17 +54,17 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
         final List<Nutrition> list = new LinkedList<>();
 
         FirebaseUser usr = auth.getCurrentUser();
-
+        long start = ((NutritionFirebaseSpecification)specification).getStartDay();
+        long end = ((NutritionFirebaseSpecification)specification).getEndDay();
         if (usr != null) {
 
-            Query query = databaseReference.child("nutrition").child(usr.getUid());
+            Query query = databaseReference.child("nutrition").child(usr.getUid()).orderByChild("dateStamp").startAt(start).endAt(end);
 
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     for (DataSnapshot node : dataSnapshot.getChildren()) {
-
                        list.add(node.getValue(Nutrition.class));
 
                     }
@@ -81,6 +85,35 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
 
     public void deleteItem(Nutrition id, DeleteCallback callback) {
 
+    }
+
+    public void setCalorieGoal()
+    {
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users").child(auth.getCurrentUser().getUid());
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User u = dataSnapshot.getValue(User.class);
+                if(!TextUtils.isEmpty(u.getCalorieGoal())){
+                    calGoal = Integer.parseInt(u.getCalorieGoal());
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        db.addListenerForSingleValueEvent(valueEventListener);
+
+    }
+
+    public int getCalGoal()
+    {
+        return calGoal;
     }
 
 

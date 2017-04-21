@@ -13,13 +13,14 @@ import org.threeten.bp.ZoneOffset;
 import java.util.Map;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
 
 @AutoValue
 @IgnoreExtraProperties
 public class Nutrition implements Trackable {
 
     private long dateStamp;
-    private Map<String, Integer> nutrients;
+    private Map<String, Float> nutrients;
 
     public Nutrition() {
 
@@ -33,27 +34,26 @@ public class Nutrition implements Trackable {
         return Long.toString(dateStamp);
     }
 
-    public void addNutrient(String nutrient, int amount) {
+    public void addNutrient(String nutrient, float amount) {
         nutrients.put(nutrient, amount);
     }
 
-    public int getNutrient(String nutrient) {
+    public float getNutrient(String nutrient) {
         return nutrients.get(nutrient);
     }
 
-    public Map<String, Integer> getNutrients() {
+    public Map<String, Float> getNutrients() {
         return nutrients;
     }
-    public void setNutrients(Map<String,Integer> map){this.nutrients = map;}
+    public void setNutrients(Map<String,Float> map){this.nutrients = map;}
 
     @Exclude
     public LocalDate getLocalDate() {
-        LocalDateTime t = LocalDateTime.ofEpochSecond(dateStamp, 0, ZoneOffset.UTC);
-        return  t.toLocalDate();
-
+        return LocalDate.ofEpochDay(dateStamp);
     }
 
     public long getDateStamp(){return dateStamp;}
     public void setDateStamp(Long dateStamp){this.dateStamp=dateStamp;}
+
 
 }

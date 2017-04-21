@@ -31,20 +31,20 @@
                 app:layout_collapseParallaxMultiplier="0.3">
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/calgoal_percentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="8dp"
                     android:gravity="bottom|center"
-                    android:text="2200"
+                    android:text="0"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView2"
+                    app:layout_constraintBottom_toBottomOf="@+id/calremain_percentage"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/textView2"
+                    app:layout_constraintRight_toLeftOf="@+id/calremain_percentage"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.526"/>
+                    app:layout_constraintVertical_bias="0.526" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -56,24 +56,24 @@
                     android:textColor="@android:color/white"
                     android:textSize="10sp"
                     app:layout_constraintHorizontal_bias="0.545"
-                    app:layout_constraintLeft_toLeftOf="@+id/textView"
-                    app:layout_constraintRight_toRightOf="@+id/textView"
-                    app:layout_constraintTop_toBottomOf="@+id/textView"/>
+                    app:layout_constraintLeft_toLeftOf="@+id/calgoal_percentage"
+                    app:layout_constraintRight_toRightOf="@+id/calgoal_percentage"
+                    app:layout_constraintTop_toBottomOf="@+id/calgoal_percentage"/>
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/calremain_percentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="8dp"
                     android:gravity="bottom|center"
-                    android:text="789"
+                    android:text="0"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/carbs_percentage"
-                    app:layout_constraintLeft_toRightOf="@+id/textView"
+                    app:layout_constraintLeft_toRightOf="@+id/calgoal_percentage"
                     app:layout_constraintRight_toLeftOf="@+id/carbs_percentage"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -83,8 +83,8 @@
                     android:textColor="@android:color/white"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView3"
-                    app:layout_constraintLeft_toLeftOf="@+id/textView2"
-                    app:layout_constraintRight_toRightOf="@+id/textView2"
+                    app:layout_constraintLeft_toLeftOf="@+id/calremain_percentage"
+                    app:layout_constraintRight_toRightOf="@+id/calremain_percentage"
                     app:layout_constraintTop_toTopOf="@+id/textView3"/>
 
                 <TextView
@@ -94,13 +94,13 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="8dp"
                     android:gravity="bottom|center"
-                    android:text="45%"
+                    android:text="0%"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/protein_percentage"
-                    app:layout_constraintLeft_toRightOf="@+id/textView2"
+                    app:layout_constraintLeft_toRightOf="@+id/calremain_percentage"
                     app:layout_constraintRight_toLeftOf="@+id/protein_percentage"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -121,13 +121,13 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="8dp"
                     android:gravity="bottom|center"
-                    android:text="25%"
+                    android:text="0%"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView10"
+                    app:layout_constraintBottom_toBottomOf="@+id/fat_percentage"
                     app:layout_constraintLeft_toRightOf="@+id/carbs_percentage"
-                    app:layout_constraintRight_toLeftOf="@+id/textView10"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintRight_toLeftOf="@+id/fat_percentage"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -144,17 +144,17 @@
                     app:layout_constraintTop_toBottomOf="@+id/protein_percentage"/>
 
                 <TextView
-                    android:id="@+id/textView10"
+                    android:id="@+id/fat_percentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:gravity="bottom|center"
-                    android:text="30%"
+                    android:text="0%"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/protein_percentage"
                     app:layout_constraintLeft_toRightOf="@+id/protein_percentage"
-                    app:layout_constraintRight_toRightOf="parent"/>
+                    app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
                     android:id="@+id/textView11"
@@ -165,9 +165,9 @@
                     android:text="Fat"
                     android:textColor="@android:color/white"
                     android:textSize="12sp"
-                    app:layout_constraintLeft_toLeftOf="@+id/textView10"
-                    app:layout_constraintRight_toRightOf="@+id/textView10"
-                    app:layout_constraintTop_toBottomOf="@+id/textView10"/>
+                    app:layout_constraintLeft_toLeftOf="@+id/fat_percentage"
+                    app:layout_constraintRight_toRightOf="@+id/fat_percentage"
+                    app:layout_constraintTop_toBottomOf="@+id/fat_percentage"/>
 
             </android.support.constraint.ConstraintLayout>
         </android.support.design.widget.CollapsingToolbarLayout>
