@@ -102,7 +102,9 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
 
                     contentList = new LinkedList<Object>();
                     contentList.add(new FoodName(food.getDesc().getName()));
-                    contentList.add(new Quantity(""));
+
+
+                    contentList.add(new Quantity("", ((Food) items.get(0)).getNutrients().get(0).getMeasures()));
                     for (Nutrient nutrient : ((Food) items.get(0)).getNutrients()) {
                         contentList.add(nutrient);
 

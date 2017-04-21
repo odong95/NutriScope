@@ -1,7 +1,9 @@
 package edu.utdallas.csdesign.spring17.nutriscope.addeditfood;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
@@ -18,6 +20,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.common.collect.Lists;
 
@@ -30,6 +36,7 @@ import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Measure;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Nutrient;
 import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.searchfood.SearchFoodActivity;
@@ -110,7 +117,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        ArrayList<Object> defaultNutrients = Lists.newArrayList(new FoodName(""), new Quantity(""), FoodNutrients.CALORIE, FoodNutrients.FAT, FoodNutrients.PROTEIN);
+        ArrayList<Object> defaultNutrients = Lists.newArrayList(new FoodName(""), new Quantity("0", Lists.newArrayList(new Measure("g", 1.0, "g", 1.0, "1"))), FoodNutrients.CALORIE, FoodNutrients.FAT, FoodNutrients.PROTEIN);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_add_edit_food);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -183,10 +190,11 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
     }
 
 
-    class ViewHolderQuantity extends RecyclerView.ViewHolder {
+    class ViewHolderQuantity extends RecyclerView.ViewHolder implements AdapterView.OnItemSelectedListener {
 
         @BindView(R2.id.edit_text_add_edit_food) TextInputEditText quantity;
         @BindView(R2.id.text_input_wrapper_add_edit_food) TextInputLayout textInputLayout;
+        @BindView(R2.id.spinner_quantity) Spinner spinnerMeasure;
 
 
         ViewHolderQuantity(View v) {
@@ -195,12 +203,74 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
 
         }
 
+        private void setSpinnerMeasures(List<Measure> measures) {
+            MeasureArrayAdapter adapter = new MeasureArrayAdapter(getContext(), measures);
+            spinnerMeasure.setAdapter(adapter);
+        }
+
         private void setQuantity(String quantity) {
             this.quantity.setText(quantity);
         }
 
         private void setHint(String hint) {
             textInputLayout.setHint(hint);
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            Log.d(TAG, "selected " + i);
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
+
+        class MeasureArrayAdapter extends ArrayAdapter<Measure> {
+
+            private List<Measure> measures;
+            private Context context;
+
+            public MeasureArrayAdapter(Context context, List<Measure> measures) {
+                super(context, android.R.layout.simple_spinner_item, measures);
+                this.measures = measures;
+                this.context = context;
+            }
+
+            @Nullable
+            @Override
+            public Measure getItem(int position) {
+                return measures.get(position);
+            }
+
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v = convertView;
+
+                if (v == null) {
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    v = inflater.inflate(R.layout.support_simple_spinner_dropdown_item, null);
+                }
+
+                TextView textView = (TextView) v.findViewById(android.R.id.text1);
+                textView.setText(measures.get(position).getLabel());
+
+                return v;
+            }
+
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                TextView v = (TextView) super.getView(position, convertView, parent);
+
+                if (v == null) {
+                    v = new TextView(context);
+                }
+                v.setText(measures.get(position).getLabel());
+
+                return v;
+            }
         }
 
     }
@@ -310,7 +380,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
                     viewHolder = new ViewHolderNutrient(v1);
                     break;
                 case QUANTITY:
-                    View v2 = inflater.inflate(R.layout.list_item_addeditfood, viewGroup, false);
+                    View v2 = inflater.inflate(R.layout.list_item_addeditfood_quantity, viewGroup, false);
                     viewHolder = new ViewHolderQuantity(v2);
                     break;
                 case NAME:
@@ -391,6 +461,7 @@ public class AddEditFoodFragment extends Fragment implements AddEditFoodContract
             if (quantity != null) {
                 viewHolderQuantity.setHint(quantity.label);
                 viewHolderQuantity.setQuantity(quantity.quantity);
+                viewHolderQuantity.setSpinnerMeasures(quantity.getMeasures());
             }
         }
 

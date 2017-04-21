@@ -22,6 +22,18 @@ public class Measure {
     @Expose
     private String value;
 
+    public Measure() {
+
+    }
+
+    public Measure(String label, Double eqv, String eunit, Double qty, String value) {
+        this.label = label;
+        this.eqv = eqv;
+        this.eunit = eunit;
+        this.qty = qty;
+        this.value = value;
+    }
+
     public String getLabel() {
         return label;
     }

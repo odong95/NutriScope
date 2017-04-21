@@ -2,9 +2,6 @@ package edu.utdallas.csdesign.spring17.nutriscope;
 
 import android.app.Application;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
@@ -27,7 +24,6 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebas
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepositoryComponent;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepositoryModule;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.category.CategoryDbHelper;
 import edu.utdallas.csdesign.spring17.nutriscope.util.FirebaseLogger;
 
 
@@ -66,19 +62,19 @@ public class NutriscopeApplication extends Application {
         foodRepositoryComponent = DaggerFoodRepositoryComponent.builder()
                 .foodRepositoryModule(new FoodRepositoryModule()).build();
 
-        consumedFoodRepositoryComponent = DaggerConsumedFoodRepositoryComponent.builder()
-                .consumedFoodRepositoryModule(new ConsumedFoodRepositoryModule(
-                        new ConsumedFoodRepository(
-                                foodRepositoryComponent.getFoodRepository(),
-                                historyRepositoryComponent.getHistoryRepository(),
-                                new ConsumedFoodFirebaseRepository())))
-                .build();
-
         nutritionRepositoryComponent = DaggerNutritionRepositoryComponent.builder()
                 .nutritionRepositoryModule(new NutritionRepositoryModule(
                         new NutritionRepository(new NutritionFirebaseRepository())))
                 .build();
 
+        consumedFoodRepositoryComponent = DaggerConsumedFoodRepositoryComponent.builder()
+                .consumedFoodRepositoryModule(new ConsumedFoodRepositoryModule(
+                        new ConsumedFoodRepository(
+                                foodRepositoryComponent.getFoodRepository(),
+                                historyRepositoryComponent.getHistoryRepository(),
+                                new ConsumedFoodFirebaseRepository(),
+                                nutritionRepositoryComponent.getNutritionRepository())))
+                .build();
 
 
        // SQLiteDatabase db = new CategoryDbHelper(getContext()).getReadableDatabase();
