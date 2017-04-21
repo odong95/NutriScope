@@ -31,14 +31,14 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
 
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
-    private int calGoal = 50;
+    private int calGoal = 0;
 
 
     public NutritionFirebaseRepository() {
 
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        setCalorieGoal();
+
     }
 
 
@@ -87,7 +87,7 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
 
     }
 
-    public void setCalorieGoal()
+    public void getCalorieGoal(final CalorieCallback callback)
     {
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users").child(auth.getCurrentUser().getUid());
@@ -97,7 +97,11 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
                 User u = dataSnapshot.getValue(User.class);
                 if(!TextUtils.isEmpty(u.getCalorieGoal())){
                     calGoal = Integer.parseInt(u.getCalorieGoal());
-
+                    callback.onChanged(calGoal);
+                }
+                else
+                {
+                    callback.onChanged(0);
                 }
 
             }
@@ -111,9 +115,10 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
 
     }
 
-    public int getCalGoal()
-    {
-        return calGoal;
+
+
+    public interface CalorieCallback{
+        void onChanged(int calGoal);
     }
 
 

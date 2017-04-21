@@ -105,42 +105,48 @@ final class OverviewPresenter implements OverviewContract.Presenter {
     @Override
     public void loadNutritionProgress()
     {
-        nutritionRepository.queryItem(new NutritionFirebaseSpecification(LocalDate.now().toEpochDay(), LocalDate.now().toEpochDay()), new Repository.QueryCallback<Nutrition>() {
+        nutritionRepository.getCalorieGoal(new NutritionFirebaseRepository.CalorieCallback() {
             @Override
-            public void onQueryComplete(List<Nutrition> items) {
-                HashMap<String,String> map = new HashMap<String, String>();
-                if(items.size() > 0) {
-                    Iterator it = items.get(0).getNutrients().entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry pair = (Map.Entry) it.next();
+            public void onChanged(final int calGoal) {
+                nutritionRepository.queryItem(new NutritionFirebaseSpecification(LocalDate.now().toEpochDay(), LocalDate.now().toEpochDay()), new Repository.QueryCallback<Nutrition>() {
+                    @Override
+                    public void onQueryComplete(List<Nutrition> items) {
+                        HashMap<String,String> map = new HashMap<String, String>();
+                        if(items.size() > 0) {
+                            Iterator it = items.get(0).getNutrients().entrySet().iterator();
+                            while (it.hasNext()) {
+                                Map.Entry pair = (Map.Entry) it.next();
 
-                        FoodNutrients fn = FoodNutrients.getValue(Integer.parseInt(pair.getKey().toString()));
-                        float val = (float) pair.getValue();
-                        double goal = fn.getNutrientValue();
-                        String p = "";
-                        if (fn.equal(208)) {
-                            int i = (int) nutritionRepository.getCalGoal() - (int) val;
-                            p = Integer.toString(i);
-                        } else {
-                            val /= goal;
-                            val *= 100;
-                            p = new DecimalFormat("##").format(val) + "%";
+                                FoodNutrients fn = FoodNutrients.getValue(Integer.parseInt(pair.getKey().toString()));
+                                float val = (float) pair.getValue();
+                                double goal = fn.getNutrientValue();
+                                String p = "";
+                                if (fn.equal(208)) {
+                                    int i = calGoal - (int) val;
+                                    p = Integer.toString(i);
+                                } else {
+                                    val /= goal;
+                                    val *= 100;
+                                    p = new DecimalFormat("##").format(val) + "%";
+                                }
+
+                                map.put(fn.getNutrientString(), p);
+                                it.remove();
+                            }
+
+                            map.put("Calorie Goal", Integer.toString(calGoal));
+                            view.showNutritionProgress(map);
                         }
-
-                        map.put(fn.getNutrientString(), p);
-                        it.remove();
                     }
 
-                    map.put("Calorie Goal", Integer.toString(nutritionRepository.getCalGoal()));
-                    view.showNutritionProgress(map);
-                }
-            }
+                    @Override
+                    public void onDataNotAvailable() {
 
-            @Override
-            public void onDataNotAvailable() {
-
+                    }
+                });
             }
         });
+
     }
 
 

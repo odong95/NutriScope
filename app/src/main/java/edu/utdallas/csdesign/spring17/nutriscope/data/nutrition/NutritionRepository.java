@@ -47,9 +47,9 @@ public class NutritionRepository implements Repository<Nutrition> {
 
     }
 
-    public int getCalGoal()
+    public void getCalorieGoal(NutritionFirebaseRepository.CalorieCallback callback)
     {
-        return nutritionFirebaseRepository.getCalGoal();
+         nutritionFirebaseRepository.getCalorieGoal(callback);
     }
 
 
