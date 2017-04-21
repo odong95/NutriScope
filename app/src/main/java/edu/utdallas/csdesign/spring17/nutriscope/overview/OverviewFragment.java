@@ -63,6 +63,8 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
     Toolbar toolbar;
     @BindView(R.id.overview_bottom_sheet)
     LinearLayout bottomSheet;
+    @BindView(R.id.welcomeView)
+    LinearLayout welcomeView;
     @BindView(R.id.calgoal_percentage)
     TextView calGoal;
     @BindView(R.id.calremain_percentage)
@@ -190,7 +192,6 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
             }
         });
 
-
         return view;
     }
 
@@ -280,6 +281,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
             adapter = new OverviewRecyclerViewAdapter(list);
             overviewRecyclerView.setAdapter(adapter);
+            dismiss();
         } else {
             adapter.setList(list);
             adapter.notifyDataSetChanged();
@@ -305,6 +307,12 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         if (data.containsKey("Fat")) {
             fat.setText(data.get("Fat"));
         }
+    }
+
+
+    public void dismiss()
+    {
+        welcomeView.setVisibility(View.INVISIBLE);
     }
 
 
