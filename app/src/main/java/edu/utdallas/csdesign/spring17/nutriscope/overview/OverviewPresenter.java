@@ -133,10 +133,9 @@ final class OverviewPresenter implements OverviewContract.Presenter {
                                 map.put(fn.getNutrientString(), p);
                                 it.remove();
                             }
-
-                            map.put("Calorie Goal", Integer.toString(calGoal));
-                            view.showNutritionProgress(map);
                         }
+                        map.put("Calorie Goal", Integer.toString(calGoal));
+                        view.showNutritionProgress(map);
                     }
 
                     @Override
