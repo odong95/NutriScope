@@ -186,7 +186,6 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public boolean onSupportNavigateUp(){
-        startActivity(new Intent(this, ProfileSettingsActivity.class));
         finish();
         return true;
     }

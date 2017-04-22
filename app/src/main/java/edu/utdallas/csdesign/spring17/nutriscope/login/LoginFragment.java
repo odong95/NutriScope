@@ -92,6 +92,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
         hideProgressDialog();
         Intent intent = new Intent(getActivity(), OverviewActivity.class);
         startActivity(intent);
+        getActivity().finish();
     }
 
 
