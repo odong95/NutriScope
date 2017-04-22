@@ -4,6 +4,9 @@ import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
 
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneOffset;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +19,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryItem;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.RepositoryInfo;
+import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.Nutrition;
+import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
 
 /**
@@ -32,6 +37,8 @@ public class ConsumedFoodRepository implements Repository<ConsumedFood> {
     private ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository;
     private HistoryRepository historyRepository;
 
+    private NutritionRepository nutritionRepository;
+
 
     /**
      * Need to cast Repository type from ConsumedFood to Trackable
@@ -41,23 +48,35 @@ public class ConsumedFoodRepository implements Repository<ConsumedFood> {
     public ConsumedFoodRepository(
             FoodRepository foodRepository,
             HistoryRepository historyRepository,
-            ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository) {
+            ConsumedFoodFirebaseRepository consumedFoodFirebaseRepository,
+            NutritionRepository nutritionRepository) {
         this.foodRepository = foodRepository;
         this.consumedFoodFirebaseRepository = consumedFoodFirebaseRepository;
         this.historyRepository = historyRepository;
+        this.nutritionRepository = nutritionRepository;
+
         historyRepository.putRepo(
                 new RepositoryInfo<>(ConsumedFood.class, (Repository<Trackable>) (Object) this));
     }
 
-    List<ConsumedFood> consumedFoodCache = new ArrayList<>();
 
     @Override
     public void createItem(ConsumedFood item, CreateCallback callback) {
         consumedFoodFirebaseRepository.createItem(item, callback);
-        historyRepository.createItem(new HistoryItem(ConsumedFood.class, item.getKey(), item), callback);
+        nutritionRepository.updateItem(Nutrition.ndbToNutrition(LocalDateTime.ofEpochSecond(item.getDateTimeConsumed(), 0, ZoneOffset.UTC).toLocalDate().toEpochDay(),
+                item.getFood().getNutrients()), new UpdateCallback() {
+                    @Override
+                    public void onUpdateComplete() {
 
-        consumedFoodCache.add(item);
+                    }
 
+                    @Override
+                    public void onUpdateFailed() {
+
+                    }
+                });
+
+                historyRepository.createItem(new HistoryItem(ConsumedFood.class, item.getKey(), item), callback);
     }
 
     @Override

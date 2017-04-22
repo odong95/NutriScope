@@ -24,7 +24,7 @@ public interface AddEditFoodContract {
 
     interface Presenter extends BasePresenter {
 
-        void populateFood();
+   //     void populateFood();
 
         void deleteFood();
 

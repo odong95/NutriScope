@@ -6,12 +6,13 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "edu.utdallas.csdesign.spring17.nutriscope"
-        minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion 25
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        // vectorDrawables.useSupportLibrary = true
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {

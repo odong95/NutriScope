@@ -17,11 +17,13 @@ public class AddEditFoodPresenterModule {
     private final AddEditFoodContract.View view;
     private String ndbId;
     private String foodName;
+    private boolean isConsumedFood;
 
-    public AddEditFoodPresenterModule(AddEditFoodContract.View view, @Nullable String ndbId, @Nullable String foodName) {
+    public AddEditFoodPresenterModule(AddEditFoodContract.View view, @Nullable String ndbId, @Nullable String foodName, boolean isConsumedFood) {
         this.view = view;
         this.ndbId = ndbId;
         this.foodName = foodName;
+        this.isConsumedFood = isConsumedFood;
     }
 
     @Provides
@@ -41,6 +43,11 @@ public class AddEditFoodPresenterModule {
     @Nullable
     String provideFoodName() {
         return foodName;
+    }
+
+    @Provides
+    boolean provideIsConsumedFood() {
+        return isConsumedFood;
     }
 
 }

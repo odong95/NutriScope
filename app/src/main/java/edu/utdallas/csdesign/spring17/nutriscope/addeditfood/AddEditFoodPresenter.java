@@ -32,6 +32,7 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     private static final String TAG = "AddEditFoodPresenter";
     @Inject @Nullable @Named("foodName") String foodName;
     @Inject @Nullable @Named("ndbId") String ndbId;
+    @Inject Boolean isConsumedFood;
     private ConsumedFoodRepository consumedFoodRepository;
     private FoodRepository foodRepository;
     private AddEditFoodContract.View view;
@@ -54,7 +55,7 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
 
     @Override
     public void start() {
-        populateFood();
+        lookupFood();
 
     }
 
@@ -67,8 +68,7 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     public void addFood(int quantity) {
         if (getFood() != null) {
 
-
-		ConsumedFood consumedFood = new ConsumedFood(getFood(), getFood().getDesc().getNdbno(), String.valueOf(quantity), LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
+		ConsumedFood consumedFood = new ConsumedFood(getFood(), getFood().getDesc().getNdbno(), getQuantity(), LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
 		consumedFood.setDateTimeConsumed(LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond());
 
 		consumedFoodRepository.createItem(consumedFood, new Repository.CreateCallback() {
@@ -88,35 +88,59 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
 
     }
 
-    @Override
-    public void populateFood() {
 
+    private void populateFood(Food food, double quantity) {
+        setFood(food);
+        contentList = new LinkedList<>();
+        contentList.add(new FoodName(food.getDesc().getName()));
+        contentList.add(new Quantity(quantity, food.getNutrients().get(0).getMeasures()));
+        for (Nutrient nutrient : food.getNutrients()) {
+            contentList.add(nutrient);
+
+        }
+
+        view.populateContent(contentList);
+    }
+
+
+    private void lookupFood() {
         if (ndbId != null) {
             Log.d(TAG, "ndbid not null");
-            foodRepository.queryItem(new FoodSpecification(new ImmutableList.Builder<String>().add(ndbId).build()), new FoodRepository.QueryCallback<Food>() {
-                @Override
-                public void onQueryComplete(List items) {
-                    Food food = (Food) items.get(0);
-                    setFood(food);
 
+            if (isConsumedFood) {
+                Log.d(TAG, "consumed food");
+                consumedFoodRepository.queryItem(null, new ConsumedFoodRepository.QueryCallback<ConsumedFood>() {
 
-                    contentList = new LinkedList<Object>();
-                    contentList.add(new FoodName(food.getDesc().getName()));
-                    contentList.add(new Quantity(""));
-                    for (Nutrient nutrient : ((Food) items.get(0)).getNutrients()) {
-                        contentList.add(nutrient);
+                    @Override
+                    public void onQueryComplete(List<ConsumedFood> items) {
+                        for(ConsumedFood item: items) {
+                            if(item.getNdbNo().equals(ndbId)) {
+                                populateFood(item.getFood(), item.getQuantity());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+
+                    }
+                });
+            }
+            else {
+                foodRepository.queryItem(new FoodSpecification(new ImmutableList.Builder<String>().add(ndbId).build()), new FoodRepository.QueryCallback<Food>() {
+                    @Override
+                    public void onQueryComplete(List items) {
+                        Food food = (Food) items.get(0);
+                        populateFood(food, 0.0);
 
                     }
 
-                    view.populateContent(contentList);
+                    @Override
+                    public void onDataNotAvailable() {
 
-                }
-
-                @Override
-                public void onDataNotAvailable() {
-
-                }
-            });
+                    }
+                });
+            }
         }
 
 
@@ -135,4 +159,22 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
     public void setFood(Food food) {
         this.food = food;
     }
+
+    /**
+     * This will calculate the quantity in grames based on the qty. and measure user selected.
+     * @return
+     */
+    private double getQuantity() {
+        for (Object obj: contentList) {
+            if (obj instanceof Quantity) {
+                Quantity q = ((Quantity) obj);
+                if (q.getMeasures().get(q.getSelectedMeasure()).getEunit().equals("g"))
+                    return q.getQuantity() * q.getMeasures().get(q.getSelectedMeasure()).getEqv();
+                else
+                    throw new RuntimeException("Unknown Eunit");
+            }
+        }
+        return 0;
+    }
+
 }

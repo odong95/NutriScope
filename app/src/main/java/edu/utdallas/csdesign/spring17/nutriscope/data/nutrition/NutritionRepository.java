@@ -23,10 +23,21 @@ public class NutritionRepository implements Repository<Nutrition> {
 
     public void createItem(Nutrition item, CreateCallback callback) {
 
+
     }
 
-    public void updateItem(Nutrition item, UpdateCallback callback) {
+    public void updateItem(Nutrition item, final UpdateCallback callback) {
+        nutritionFirebaseRepository.updateItem(item, new UpdateCallback() {
+            @Override
+            public void onUpdateComplete() {
+                callback.onUpdateComplete();
+            }
 
+            @Override
+            public void onUpdateFailed() {
+                callback.onUpdateFailed();
+            }
+        });
     }
 
     public void queryItem(Specification specification, final QueryCallback<Nutrition> callback) {

@@ -16,6 +16,7 @@ public class AddEditFoodActivity extends AppCompatActivity {
 
     public static final String EXTRA_FOOD_ID = "FOOD_ID";
     public static final String EXTRA_NDB_ID = "NDB_ID";
+    public static final String EXTRA_CONSUMED_FOOD = "CONSUMED_FOOD";
 
     @Inject AddEditFoodPresenter addEditFoodPresenter;
 
@@ -27,6 +28,7 @@ public class AddEditFoodActivity extends AppCompatActivity {
 
         String foodId = getIntent().getStringExtra(EXTRA_FOOD_ID);
         String ndbId = getIntent().getStringExtra(EXTRA_NDB_ID);
+        boolean isConsumedFood = getIntent().getBooleanExtra(EXTRA_CONSUMED_FOOD, false);
 
         AddEditFoodFragment addEditFoodFragment = (AddEditFoodFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
@@ -37,6 +39,7 @@ public class AddEditFoodActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString(EXTRA_FOOD_ID, foodId);
                 bundle.putString(EXTRA_NDB_ID, ndbId);
+                bundle.putBoolean(EXTRA_CONSUMED_FOOD, isConsumedFood);
                 addEditFoodFragment.setArguments(bundle);
             }
 
@@ -46,7 +49,7 @@ public class AddEditFoodActivity extends AppCompatActivity {
         }
 
         DaggerAddEditFoodComponent.builder()
-                .addEditFoodPresenterModule(new AddEditFoodPresenterModule(addEditFoodFragment, ndbId, foodId))
+                .addEditFoodPresenterModule(new AddEditFoodPresenterModule(addEditFoodFragment, ndbId, foodId, isConsumedFood))
                 .consumedFoodRepositoryComponent(((NutriscopeApplication) getApplication()).getConsumedFoodRepositoryComponent())
                 .foodRepositoryComponent(((NutriscopeApplication) getApplication()).getFoodRepositoryComponent())
                 .build().inject(this);

@@ -118,12 +118,12 @@ final class OverviewPresenter implements OverviewContract.Presenter {
                                 Map.Entry pair = (Map.Entry) it.next();
 
                                 FoodNutrients fn = FoodNutrients.getValue(Integer.parseInt(pair.getKey().toString()));
-                                float val = (float) pair.getValue();
+                                Double val = (Double) pair.getValue();
                                 double goal = fn.getNutrientValue();
                                 String p = "";
                                 if (fn.equal(208)) {
-                                    int i = calGoal - (int) val;
-                                    p = Integer.toString(i);
+                                    double i = calGoal - val;
+                                    p = Double.toString(i);
                                 } else {
                                     val /= goal;
                                     val *= 100;
