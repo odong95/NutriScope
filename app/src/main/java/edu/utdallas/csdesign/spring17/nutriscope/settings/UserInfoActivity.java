@@ -186,7 +186,6 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public boolean onSupportNavigateUp(){
-        startActivity(new Intent(this, ProfileSettingsActivity.class));
         finish();
         return true;
     }
@@ -536,11 +535,11 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         {
             return "Sedentary";
         }
-        if(lvl.equals("1.3"))
+        if(lvl.equals("1.375"))
         {
             return "Lightly Active";
         }
-        if(lvl.equals("1.5"))
+        if(lvl.equals("1.55"))
         {
             return "Moderately Active";
         }

@@ -135,17 +135,17 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
         long end = ((NutritionFirebaseSpecification)specification).getEndDay();
         if (usr != null) {
 
-            Query query = databaseReference.child("nutrition").child(usr.getUid()).orderByChild("dateStamp").startAt(start).endAt(end);
+            Query query = databaseReference.child(FB_TREE).child(usr.getUid()).orderByChild("dateStamp").startAt(start).endAt(end);
 
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
+
                     for (DataSnapshot node : dataSnapshot.getChildren()) {
                        list.add(node.getValue(Nutrition.class));
 
                     }
-
                     callback.onQueryComplete(list);
 
 

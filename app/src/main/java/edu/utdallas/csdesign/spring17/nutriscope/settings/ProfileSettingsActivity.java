@@ -103,7 +103,6 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
         switch (view.getId()) {
             case R.id.change_usersettings_button:
                 startActivity(new Intent(this, UserInfoActivity.class));
-                finish();
                 break;
             case R.id.change_email_button:
                 handleChangeEmail();
@@ -117,8 +116,9 @@ public class ProfileSettingsActivity extends AppCompatActivity implements View.O
             case R.id.go_back_button:
                 FirebaseAuth.getInstance().signOut();
                 LoginManager.getInstance().logOut();
-                startActivity(new Intent(this, LoginActivity.class));
                 finish();
+                startActivity(new Intent(this, LoginActivity.class));
+
                 break;
         }
     }
