@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
 
 /**
  * Created by john on 3/18/17.

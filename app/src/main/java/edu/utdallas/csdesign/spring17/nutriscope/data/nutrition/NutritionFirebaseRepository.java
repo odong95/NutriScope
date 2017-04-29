@@ -12,8 +12,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import org.threeten.bp.LocalDate;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +19,7 @@ import java.util.Map;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
 
 /**
  * Keeps track of the Nutrition history for a user in Firebase db.

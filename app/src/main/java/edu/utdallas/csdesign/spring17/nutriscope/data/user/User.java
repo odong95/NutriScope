@@ -1,4 +1,4 @@
-package edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase;
+package edu.utdallas.csdesign.spring17.nutriscope.data.user;
 
 /**
  * Created by john on 3/18/17.

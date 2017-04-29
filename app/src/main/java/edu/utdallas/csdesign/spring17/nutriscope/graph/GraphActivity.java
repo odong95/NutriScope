@@ -50,8 +50,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.Nutrition;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebaseRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebaseSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
 import edu.utdallas.csdesign.spring17.nutriscope.overview.OverviewActivity;
 
 

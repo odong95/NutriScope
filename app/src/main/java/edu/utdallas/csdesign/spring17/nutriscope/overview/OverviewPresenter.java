@@ -1,20 +1,11 @@
 package edu.utdallas.csdesign.spring17.nutriscope.overview;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.util.Log;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.threeten.bp.LocalDate;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,7 +21,6 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.Nutrition;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebaseRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebaseSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
 
 import static com.google.common.base.Preconditions.checkNotNull;

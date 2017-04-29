@@ -14,9 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.concurrent.Executor;
-
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
 
 
 public class LoginInteractor implements LoginContract.Interactor {

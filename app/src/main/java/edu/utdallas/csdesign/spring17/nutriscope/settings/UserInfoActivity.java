@@ -2,10 +2,7 @@ package edu.utdallas.csdesign.spring17.nutriscope.settings;
 
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -31,12 +28,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
 import java.util.Calendar;
 
 import edu.utdallas.csdesign.spring17.nutriscope.R;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.firebase.User;
-import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
 
 
 public class UserInfoActivity extends AppCompatActivity implements View.OnClickListener {
