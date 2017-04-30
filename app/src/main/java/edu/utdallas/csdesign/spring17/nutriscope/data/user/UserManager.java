@@ -34,6 +34,7 @@ public class UserManager {
 
     private String last_uid = null;
     private String uid = null;
+    private boolean didLogOut;
     private CountDownLatch didAuthListenerFire = new CountDownLatch(1);
 
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -46,9 +47,6 @@ public class UserManager {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() == null) {
                     Log.d(TAG, "User Logged Out " + uid);
-                    last_uid = uid;
-                    uid = null;
-                    user = null;
                     userLoggedOut();
                 }
                 else {
@@ -59,6 +57,7 @@ public class UserManager {
                     } else {
                         if (uid.equals(last_uid)) {
                             Log.d(TAG, "User Token refresh" + uid);
+                            userLoggedIn();
                         }
                         else if (!uid.equals(last_uid) && last_uid != null) {
                             Log.d(TAG, "User Switched " + uid + " last: " + last_uid);
@@ -93,6 +92,8 @@ public class UserManager {
     }
 
     private void userLoggedIn() {
+        Log.d(TAG, "user logged in");
+        didLogOut = false;
         getUserDataFromFirebase(new TaskStatus() {
             @Override
             public void success(UserStatus msg) {
@@ -113,6 +114,10 @@ public class UserManager {
     }
 
     private void userLoggedOut() {
+        last_uid = uid;
+        uid = null;
+        user = null;
+        didLogOut = true;
         for (UserListener userListener: userListeners) {
             userListener.userLoggedOut();
         }
@@ -240,19 +245,23 @@ public class UserManager {
 
     }
 
-    private void getUserDataFromFirebase(TaskStatus taskStatus) {
-        db.child(uid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "retrieved user data");
-                setUser(dataSnapshot.getValue(User.class));
-            }
+    private void getUserDataFromFirebase(final TaskStatus taskStatus) {
+        if (uid != null) {
+            db.child(uid).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    setUser(dataSnapshot.getValue(User.class));
+                    Log.d(TAG, "retrieved user data");
+                    taskStatus.success(UserStatus.SUCCESS);
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                    taskStatus.failure(UserStatus.FAILURE);
+                }
+            });
+        }
 
     }
 

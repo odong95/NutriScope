@@ -8,11 +8,11 @@ import dagger.Provides;
  */
 
 @Module
-public class OverviewPresenterModule {
+public class OverviewModule {
 
     private final OverviewContract.View view;
 
-    public OverviewPresenterModule(OverviewContract.View view) {
+    public OverviewModule(OverviewContract.View view) {
         this.view = view;
     }
 

@@ -3,13 +3,13 @@ package edu.utdallas.csdesign.spring17.nutriscope.settings;
 
 import android.text.TextUtils;
 
-public class TEECalculator
+public class TdeeCalculator
 {
 
     private String gender = "";
     private double weight = 0,height = 0,age = 0;
     private double activityLvl = 0;
-    public TEECalculator()
+    public TdeeCalculator()
     {
 
     }

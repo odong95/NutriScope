@@ -10,7 +10,11 @@ public enum UserStatus {
     USER_SWITCHED,
     REGISTRATION_FAILED,
     REGISTRATION_SUCCESS,
-    LOGIN_FAILED
+    LOGIN_FAILED,
+    SUCCESS,
+    FAILURE,
+
+
 
 
 }

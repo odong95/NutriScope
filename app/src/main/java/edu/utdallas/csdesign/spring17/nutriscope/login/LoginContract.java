@@ -9,6 +9,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.BaseView;
 public interface LoginContract {
     interface View extends BaseView<Presenter> {
 
+        boolean isActive();
+
         void onErrorResponse(String error);
 
         void loginSuccessful();

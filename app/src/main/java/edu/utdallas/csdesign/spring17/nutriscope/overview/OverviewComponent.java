@@ -14,7 +14,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepositoryC
                 HistoryRepositoryComponent.class
         },
         modules = {
-                OverviewPresenterModule.class
+                OverviewModule.class
         })
 public interface OverviewComponent {
     void inject(OverviewActivity activity);

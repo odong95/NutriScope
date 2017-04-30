@@ -38,7 +38,7 @@ public class OverviewActivity extends AppCompatActivity {
 
         DaggerOverviewComponent.builder()
                 .historyRepositoryComponent(((NutriscopeApplication) getApplication()).getHistoryRepositoryComponent())
-                .overviewPresenterModule(new OverviewPresenterModule(fragment))
+                .overviewModule(new OverviewModule(fragment))
                 .build()
                 .inject(this);
     }

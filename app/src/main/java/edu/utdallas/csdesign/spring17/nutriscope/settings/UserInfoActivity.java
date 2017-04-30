@@ -53,7 +53,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
     private TextView textCalorieGoal;
     private String sex, ftTxt,inTxt;
     private String activityLvl;
-    private TEECalculator calc;
+    private TdeeCalculator calc;
     private boolean clicked;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users").child(auth.getCurrentUser().getUid());
@@ -77,7 +77,7 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
         this.setSupportActionBar(toolbar);
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
-        calc = new TEECalculator();
+        calc = new TdeeCalculator();
         refreshUserInfo();
 
         editNicknameB.setOnClickListener(this);

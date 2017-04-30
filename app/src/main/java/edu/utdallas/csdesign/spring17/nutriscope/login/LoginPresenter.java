@@ -1,5 +1,7 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
+import android.util.Log;
+
 import com.facebook.AccessToken;
 
 import javax.inject.Inject;
@@ -10,6 +12,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManager;
 import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserStatus;
 
 public class LoginPresenter implements LoginContract.Presenter, UserListener {
+
+    private static final String TAG = "LoginPresenter";
 
     private LoginContract.View view;
     private UserManager userManager;
@@ -51,7 +55,10 @@ public class LoginPresenter implements LoginContract.Presenter, UserListener {
 
     @Override
     public void loginSuccessful() {
-        view.loginSuccessful();
+        Log.d(TAG, "loginSuccessful");
+        if (view.isActive()) {
+            view.loginSuccessful();
+        }
     }
 
     @Override
@@ -78,6 +85,7 @@ public class LoginPresenter implements LoginContract.Presenter, UserListener {
 
     @Override
     public void userLoggedIn() {
+        Log.d(TAG, "userLoggedIn() listener");
         loginSuccessful();
     }
 
