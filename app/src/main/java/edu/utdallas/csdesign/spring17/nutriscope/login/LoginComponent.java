@@ -2,6 +2,7 @@ package edu.utdallas.csdesign.spring17.nutriscope.login;
 
 import dagger.Component;
 import edu.utdallas.csdesign.spring17.nutriscope.FragmentScoped;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManagerComponent;
 
 /**
  * Created by john on 3/18/17.
@@ -9,7 +10,10 @@ import edu.utdallas.csdesign.spring17.nutriscope.FragmentScoped;
 
 @FragmentScoped
 @Component(
-        dependencies = {},
+        dependencies = {
+                UserManagerComponent.class
+
+        },
         modules = {
                 LoginPresenterModule.class
         })

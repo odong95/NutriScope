@@ -116,7 +116,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
             @Override
             public void onSuccess(LoginResult loginResult) {
                 showProgressDialog();
-                presenter.loginfb(loginResult.getAccessToken(),getActivity());
+                presenter.registerLoginFB(loginResult.getAccessToken());
             }
 
             @Override

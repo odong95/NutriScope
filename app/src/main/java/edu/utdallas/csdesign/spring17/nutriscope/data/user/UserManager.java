@@ -3,9 +3,12 @@ package edu.utdallas.csdesign.spring17.nutriscope.data.user;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.facebook.AccessToken;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -125,24 +128,67 @@ public class UserManager {
                             Log.w("AUTH", "createUserWithEmail:failed", task.getException());
                             taskStatus.failure(UserStatus.REGISTRATION_FAILED);
                         } else {
-                            Log.d("AUTH", "createUserWithEmail:success:" + auth.getCurrentUser().getEmail());
-                            taskStatus.success(UserStatus.REGISTRATION_SUCCESS);
+                            Log.d("AUTH", "createUserWithEmail:success:");
+                            createUser(new TaskStatus() {
+                                @Override
+                                public void success(UserStatus msg) {
+                                    taskStatus.success(UserStatus.REGISTRATION_SUCCESS);
+                                }
+
+                                @Override
+                                public void failure(UserStatus msg) {
+                                    taskStatus.success(UserStatus.REGISTRATION_FAILED);
+                                }
+                            });
                         }
                     }
                 });
 
     }
 
-    //public void registerUserFacebook()
+    public void registerUserFacebook(AccessToken accessToken, final TaskStatus taskStatus) {
+            AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+            auth.signInWithCredential(credential)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "Facebook sign-in did not work");
+                                taskStatus.failure(UserStatus.REGISTRATION_FAILED);
+                            }
+                            else
+                            {
+                            createUser(new TaskStatus() {
+                                @Override
+                                public void success(UserStatus msg) {
+                                    taskStatus.success(UserStatus.REGISTRATION_SUCCESS);
+                                }
 
-    public void createUser() {
+                                @Override
+                                public void failure(UserStatus msg) {
+                                    taskStatus.success(UserStatus.REGISTRATION_FAILED);
+                                }
+                            });
+                            }
+
+                        }
+                    });
+    }
+
+    private void createUser(TaskStatus taskStatus) {
+        String email;
+        User user;
         try {
-            this.user = new User(auth.getCurrentUser().getUid(), auth.getCurrentUser().getEmail());
+            email = auth.getCurrentUser().getEmail();
+            user = new User(uid, email);
+            db.child(user.getUid()).setValue(user);
+            taskStatus.success(UserStatus.REGISTRATION_SUCCESS);
         } catch (NullPointerException ex) {
-            Log.w(TAG, "Could not get current user UID, could not create user");
+            ex.printStackTrace();
+            taskStatus.failure(UserStatus.LOGIN_FAILED);
         }
 
-        db.child(user.getUid()).setValue(user);
+
     }
 
     public void loginUser(String email, String password, final TaskStatus taskStatus) {

@@ -1,28 +1,30 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
-import android.app.Activity;
-
 import com.facebook.AccessToken;
-
 
 import javax.inject.Inject;
 
-public class LoginPresenter implements LoginContract.Presenter {
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.TaskStatus;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserListener;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManager;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserStatus;
+
+public class LoginPresenter implements LoginContract.Presenter, UserListener {
 
     private LoginContract.View view;
-    private LoginContract.Interactor interactor;
+    private UserManager userManager;
 
 
     @Inject
-    public LoginPresenter(LoginContract.Interactor interactor, LoginContract.View view) {
-        this.interactor = interactor;
+    public LoginPresenter(LoginContract.View view, UserManager userManager) {
         this.view = view;
+        this.userManager = userManager;
+        userManager.addListener(this);
     }
 
     @Inject
     void setupListeners() {
         view.setPresenter(this);
-        interactor.setPresenter(this);
     }
 
 
@@ -33,7 +35,18 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void login(String email, String password) {
-        interactor.login(email, password);
+        userManager.loginUser(email, password, new TaskStatus() {
+            @Override
+            public void success(UserStatus msg) {
+                // Should be taken care of by listener userLoggedIn;
+            }
+
+            @Override
+            public void failure(UserStatus msg) {
+                onErrorResponse("Login Failed");
+            }
+        });
+
     }
 
     @Override
@@ -41,8 +54,20 @@ public class LoginPresenter implements LoginContract.Presenter {
         view.loginSuccessful();
     }
 
-    public void loginfb(AccessToken accessToken, Activity a) {
-        interactor.loginfb(accessToken, a);
+    @Override
+    public void registerLoginFB(AccessToken accessToken) {
+        userManager.registerUserFacebook(accessToken, new TaskStatus() {
+            @Override
+            public void success(UserStatus msg) {
+                // Should be taken care of by listener userLoggedIn;
+            }
+
+            @Override
+            public void failure(UserStatus msg) {
+                onErrorResponse("Facebook Login Failed");
+
+            }
+        });
     }
 
 
@@ -51,5 +76,13 @@ public class LoginPresenter implements LoginContract.Presenter {
         view.onErrorResponse(error);
     }
 
+    @Override
+    public void userLoggedIn() {
+        loginSuccessful();
+    }
 
+    @Override
+    public void userLoggedOut() {
+
+    }
 }

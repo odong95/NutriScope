@@ -5,7 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
+import edu.utdallas.csdesign.spring17.nutriscope.NutriscopeApplication;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.DaggerUserManagerComponent;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManager;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManagerModule;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -25,9 +29,11 @@ public class LoginActivity extends AppCompatActivity {
                 .commit();
 
         DaggerLoginComponent.builder()
-                .loginPresenterModule(new LoginPresenterModule(fragment, new LoginInteractor()))
+                .loginPresenterModule(new LoginPresenterModule(fragment))
+                .userManagerComponent(((NutriscopeApplication) getApplication()).getUserManagerComponent())
                 .build()
                 .inject(this);
+
     }
 
     @Override
