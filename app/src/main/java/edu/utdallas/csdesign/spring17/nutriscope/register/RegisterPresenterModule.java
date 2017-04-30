@@ -11,22 +11,13 @@ import dagger.Provides;
 public class RegisterPresenterModule {
 
     private RegisterContract.View view;
-    private RegisterContract.Interactor interactor;
 
-    public RegisterPresenterModule(RegisterContract.View view, RegisterContract.Interactor interactor) {
+    public RegisterPresenterModule(RegisterContract.View view) {
         this.view = view;
-        this.interactor = interactor;
     }
 
     @Provides
     RegisterContract.View provideRegisterContractView() {
         return view;
     }
-
-    @Provides
-    RegisterContract.Interactor provideRegisterContractInteractor() {
-        return interactor;
-    }
-
-
 }

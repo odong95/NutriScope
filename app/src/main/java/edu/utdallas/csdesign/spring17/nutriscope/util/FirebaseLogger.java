@@ -1,9 +1,7 @@
 package edu.utdallas.csdesign.spring17.nutriscope.util;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,14 +13,17 @@ import java.util.Observer;
 
 /**
  * Created by john on 3/18/17.
+ *
+ * https://stackoverflow.com/questions/37673616/firebase-android-onauthstatechanged-called-twice
+ *
  */
 
 public class FirebaseLogger {
 
     final private static String TAG = "FirebaseLogger";
 
-    String last_uid;
-    String uid;
+    String last_uid = null;
+    String uid = null;
 
 
     public FirebaseLogger() {
@@ -44,52 +45,6 @@ public class FirebaseLogger {
 
             }
         });
-
-
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
-        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                // user signed out
-                if (firebaseAuth.getCurrentUser() == null) {
-                    getLoginState().setUserStatus(UserStatus.USER_LOGGED_OUT);
-                    Log.d(TAG, "User Logged Out " + uid);
-                    last_uid = uid;
-                    uid = null;
-
-
-                }
-                // user signed in
-                else {
-
-                    if (uid == null && last_uid == null) {
-
-                        uid = firebaseAuth.getCurrentUser().getUid();
-                        getLoginState().setUserStatus(UserStatus.USER_LOGGED_IN);
-                        Log.d(TAG, "User Logged In " + uid);
-                    } else {
-
-                        uid = firebaseAuth.getCurrentUser().getUid();
-                        // token refresh
-                        if (last_uid == uid) {
-
-                            Log.d(TAG, "User Token refresh" + uid);
-
-                        }
-                        // user switched
-                        else {
-                            getLoginState().setUserStatus(UserStatus.USER_SWITCHED);
-                            Log.d(TAG, "User Switched " + uid + " last: " + last_uid);
-                        }
-                    }
-
-                }
-
-
-            }
-        });
-
 
     }
 

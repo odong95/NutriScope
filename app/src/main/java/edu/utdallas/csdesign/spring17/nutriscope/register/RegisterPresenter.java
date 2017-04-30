@@ -2,21 +2,25 @@ package edu.utdallas.csdesign.spring17.nutriscope.register;
 
 import javax.inject.Inject;
 
-public class RegisterPresenter implements RegisterContract.Presenter {
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.TaskStatus;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManager;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserStatus;
 
-    private RegisterContract.View view;
-    private RegisterContract.Interactor interactor;
+final public class RegisterPresenter implements RegisterContract.Presenter {
+
+    private final RegisterContract.View view;
+
+    private final UserManager userManager;
 
     @Inject
-    public RegisterPresenter(RegisterContract.View view, RegisterContract.Interactor interactor) {
+    public RegisterPresenter(RegisterContract.View view, UserManager userManager) {
         this.view = view;
-        this.interactor = interactor;
+        this.userManager = userManager;
     }
 
     @Inject
     void setupListeners() {
         view.setPresenter(this);
-        interactor.setPresenter(this);
     }
 
     @Override
@@ -26,7 +30,17 @@ public class RegisterPresenter implements RegisterContract.Presenter {
 
     @Override
     public void register(String email, String password) {
-        interactor.register(email, password);
+        userManager.registerUserEmail(email, password, new TaskStatus() {
+            @Override
+            public void success(UserStatus userStatus) {
+                onRegisterComplete();
+            }
+
+            @Override
+            public void failure(UserStatus userStatus) {
+                onErrorResponse("Could not register");
+            }
+        });
     }
 
     @Override

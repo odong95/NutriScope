@@ -32,6 +32,7 @@ final public class ConsumedFoodFirebaseRepository implements Repository<Consumed
     private FirebaseAuth auth;
 
 
+
     public ConsumedFoodFirebaseRepository() {
 
         auth = FirebaseAuth.getInstance();

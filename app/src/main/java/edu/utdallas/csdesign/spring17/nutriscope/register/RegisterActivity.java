@@ -25,7 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         DaggerRegisterComponent.builder()
                 .registerPresenterModule(
-                        new RegisterPresenterModule(fragment, new RegisterInteractor()))
+                        new RegisterPresenterModule(fragment))
                 .build().inject(this);
     }
 

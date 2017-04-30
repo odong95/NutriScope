@@ -105,4 +105,5 @@
     <string name="change_password">Change Password</string>
     <string name="new_pass">New Password</string>
     <string name="hint_new_email">New Email</string>
+    <string name="title_activity_login_check">LoginCheckActivity</string>
 </resources>

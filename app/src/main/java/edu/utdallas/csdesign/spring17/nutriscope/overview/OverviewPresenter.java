@@ -3,25 +3,15 @@ package edu.utdallas.csdesign.spring17.nutriscope.overview;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import org.threeten.bp.LocalDate;
-
-import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
-import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryItem;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.Nutrition;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebaseRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebaseSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -44,7 +34,7 @@ final class OverviewPresenter implements OverviewContract.Presenter {
     public OverviewPresenter(@NonNull OverviewContract.View view, HistoryRepository historyRepository) {
         this.view = checkNotNull(view);
         this.historyRepository = historyRepository;
-        this.nutritionRepository = new NutritionRepository(new NutritionFirebaseRepository());
+        this.nutritionRepository = new NutritionRepository(new NutritionFirebaseRepository()); // FIXME
 
     }
 
@@ -95,7 +85,7 @@ final class OverviewPresenter implements OverviewContract.Presenter {
     @Override
     public void loadNutritionProgress()
     {
-        nutritionRepository.getCalorieGoal(new NutritionFirebaseRepository.CalorieCallback() {
+        /*nutritionRepository.getCalorieGoal(new NutritionFirebaseRepository.CalorieCallback() {
             @Override
             public void onChanged(final int calGoal) {
                 nutritionRepository.queryItem(new NutritionFirebaseSpecification(LocalDate.now().toEpochDay(), LocalDate.now().toEpochDay()), new Repository.QueryCallback<Nutrition>() {
@@ -135,7 +125,7 @@ final class OverviewPresenter implements OverviewContract.Presenter {
                 });
             }
         });
-
+*/
     }
 
 

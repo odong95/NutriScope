@@ -24,6 +24,10 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebas
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepositoryComponent;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepositoryModule;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.DaggerUserManagerComponent;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManager;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManagerComponent;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManagerModule;
 import edu.utdallas.csdesign.spring17.nutriscope.util.FirebaseLogger;
 
 
@@ -37,6 +41,7 @@ public class NutriscopeApplication extends Application {
     private FoodRepositoryComponent foodRepositoryComponent;
     private NutritionRepositoryComponent nutritionRepositoryComponent;
     private NetComponent netComponent;
+    private UserManagerComponent userManagerComponent;
 
     public static Context getContext() {
 
@@ -76,6 +81,9 @@ public class NutriscopeApplication extends Application {
                                 nutritionRepositoryComponent.getNutritionRepository())))
                 .build();
 
+        userManagerComponent = DaggerUserManagerComponent.builder()
+                .userManagerModule(new UserManagerModule(new UserManager())).build();
+
 
        // SQLiteDatabase db = new CategoryDbHelper(getContext()).getReadableDatabase();
        // Cursor cursor = db.rawQuery("select * from category", null);
@@ -102,6 +110,10 @@ public class NutriscopeApplication extends Application {
 
     public NutritionRepositoryComponent getNutritionRepositoryComponent() {
         return nutritionRepositoryComponent;
+    }
+
+    public UserManagerComponent getUserManagerComponent() {
+        return userManagerComponent;
     }
 }
 
