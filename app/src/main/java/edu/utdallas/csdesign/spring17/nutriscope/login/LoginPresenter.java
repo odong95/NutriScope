@@ -1,37 +1,55 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
+import android.app.Activity;
 
-import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
+import com.facebook.AccessToken;
+
+
+import javax.inject.Inject;
 
 public class LoginPresenter implements LoginContract.Presenter {
 
-    private LoginModel model;
     private LoginContract.View view;
+    private LoginContract.Interactor interactor;
 
-    public LoginPresenter(LoginContract.View view, MobileServiceClient client) {
+
+    @Inject
+    public LoginPresenter(LoginContract.Interactor interactor, LoginContract.View view) {
+        this.interactor = interactor;
         this.view = view;
-        this.model = new LoginModel(this, client);
+    }
+
+    @Inject
+    void setupListeners() {
+        view.setPresenter(this);
+        interactor.setPresenter(this);
     }
 
 
     @Override
-    public void login(String username, String password) {
-        model.login(username, password);
+    public void start() {
+
     }
 
     @Override
-    public void register(String username, String password) {
-        model.register(username, password);
+    public void login(String email, String password) {
+        interactor.login(email, password);
+    }
+
+    @Override
+    public void loginSuccessful() {
+        view.loginSuccessful();
+    }
+
+    public void loginfb(AccessToken accessToken, Activity a) {
+        interactor.loginfb(accessToken, a);
     }
 
 
     @Override
-    public void onLoginResponse(boolean isLoggedIn) {
-        view.onLoginResponse(isLoggedIn);
+    public void onErrorResponse(String error) {
+        view.onErrorResponse(error);
     }
 
-    @Override
-    public void onRegisterResponse(boolean isRegistered) {
-        view.onRegisterResponse(isRegistered);
-    }
+
 }

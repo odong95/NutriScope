@@ -1,28 +1,43 @@
 package edu.utdallas.csdesign.spring17.nutriscope.login;
 
-public class LoginContract {
-    public interface View {
-        void onLoginResponse(boolean isLoggedIn);
 
-        void onRegisterResponse(boolean isRegistered);
+import android.app.Activity;
+
+import com.facebook.AccessToken;
+
+import edu.utdallas.csdesign.spring17.nutriscope.BaseInteractor;
+import edu.utdallas.csdesign.spring17.nutriscope.BasePresenter;
+import edu.utdallas.csdesign.spring17.nutriscope.BaseView;
+
+public interface LoginContract {
+    interface View extends BaseView<Presenter> {
+
+        void onErrorResponse(String error);
+
+        void loginSuccessful();
+
     }
 
-    public interface Presenter {
+    interface Presenter extends BasePresenter {
 
-        void login(String username, String password);
+        void login(String email, String password);
 
-        void register(String username, String password);
+        void loginfb(AccessToken accessToken, Activity a);
 
-        void onLoginResponse(boolean isLoggedIn);
+        void loginSuccessful();
 
-        void onRegisterResponse(boolean isRegistered);
+        void onErrorResponse(String error);
+
     }
 
-    public interface Model {
+    interface Interactor extends BaseInteractor<Presenter> {
 
-        void login(String username, String password);
+        void login(String email, String password);
 
-        void register(String username, String password);
+        void loginfb(AccessToken accessToken, Activity a);
+
+        //void createUser();
+
 
     }
 
