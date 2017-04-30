@@ -33,7 +33,8 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         DaggerProfileSettingsComponent.builder()
                 .userManagerComponent(((NutriscopeApplication) getApplication()).getUserManagerComponent())
                 .profileSettingsModule(new ProfileSettingsModule(fragment))
-                .build();
+                .build()
+                .inject(this);
     }
 
 }

@@ -21,6 +21,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManager;
 import edu.utdallas.csdesign.spring17.nutriscope.settings.dialogs.SettingsDialogFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -51,6 +53,11 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
         this.presenter = checkNotNull(presenter);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.start();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -83,12 +90,18 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
     @Override
     public void OnDialogSetBundle(Bundle bundle) {
         String type = bundle.getString(SettingsDialogFragment.SETTINGS_TYPE);
-        String msg = bundle.getString(SettingsDialogFragment.SETTINGS_MSG);
+        final String msg = bundle.getString(SettingsDialogFragment.SETTINGS_MSG);
 
         try {
             switch (type) {
                 case SettingsDialogFragment.NICKNAME:
-                    setNickname(msg);
+                    presenter.getUser(new ProfileSettingsContract.RetrieveUser() {
+                        @Override
+                        public void getUser(User user) {
+                            user.setNickname(msg);
+                            presenter.modifyUser(user);
+                        }
+                    });
                     break;
             }
 
@@ -97,6 +110,11 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
             ex.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void populateUser(User user) {
+        setNickname(user.getNickname());
     }
 
     @OnClick(R2.id.nickname)

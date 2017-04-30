@@ -28,6 +28,7 @@ public class UserManager {
 
     private static final String TAG = "UserManager";
 
+    private boolean isDirty = true;
     private User user;
 
     private final List<UserListener> userListeners = new LinkedList<>();
@@ -75,12 +76,31 @@ public class UserManager {
         });
     }
 
-    public User getUser() {
-        return user;
+    public interface  GetUser{
+        void getUser(User user);
+    }
+
+    public void getUser(final GetUser getUser) {
+        if(!isDirty) {
+            getUser.getUser(user);
+        } else {
+            getUserDataFromFirebase(new TaskStatus() {
+                @Override
+                public void success(UserStatus msg) {
+                    getUser.getUser(user);
+                }
+
+                @Override
+                public void failure(UserStatus msg) {
+                    getUser.getUser(new NullUser());
+                }
+            });
+        }
     }
 
     public void setUser(User user) {
         this.user = user;
+        sendUserDataToFirebase();
     }
 
     public String getUid() {
@@ -267,7 +287,7 @@ public class UserManager {
 
     private void sendUserDataToFirebase() {
         Log.d(TAG, "sent user data to firebase");
-        db.child(uid).setValue(getUser());
+        db.child(uid).setValue(this.user);
     }
 
 

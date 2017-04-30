@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -18,6 +19,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.R;
  */
 
 public class SettingsDialogFragment extends DialogFragment {
+
+    private final static String TAG = "SettingsDialog";
 
     public final static String SETTINGS_TYPE = "TYPE";
     public final static String NICKNAME = "NICKNAME";
@@ -75,6 +78,7 @@ public class SettingsDialogFragment extends DialogFragment {
                             Bundle bundle = new Bundle();
                             bundle.putString(SETTINGS_TYPE, NICKNAME);
                             bundle.putString(SETTINGS_MSG, input.getText().toString());
+                            Log.d(TAG, "OK " + input.getText().toString());
                             listener.OnDialogSetBundle(bundle);
 
                         }
