@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 
@@ -24,6 +25,7 @@ public class SettingsDialogFragment extends DialogFragment {
 
     public final static String SETTINGS_TYPE = "TYPE";
     public final static String NICKNAME = "NICKNAME";
+    public final static String CALORIE_GOAL = "CALORIE_GOAL";
 
     public final static String SETTINGS_VIEW = "VIEW";
     public final static String SETTINGS_MSG = "MSG";
@@ -69,6 +71,8 @@ public class SettingsDialogFragment extends DialogFragment {
                     LayoutInflater inflater = getActivity().getLayoutInflater();
                     View view = inflater.inflate(R.layout.input_dialog_settings, null);
 
+                    final TextView title = (TextView) view.findViewById(R.id.input_dialog_text_msg);
+                    title.setText(R.string.nickname);
                     final EditText input = (EditText) view.findViewById(R.id.edittext_input_dialog);
 
                     builder.setView(view)
@@ -86,8 +90,35 @@ public class SettingsDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         SettingsDialogFragment.this.getDialog().cancel();
                     }
-                }).create();
-                return builder.create();
+                    }).create();
+                    return builder.create();
+
+                case CALORIE_GOAL:
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
+                    LayoutInflater inflater2 = getActivity().getLayoutInflater();
+                    View view2 = inflater2.inflate(R.layout.input_dialog_settings, null);
+
+                    final TextView title2 = (TextView) view2.findViewById(R.id.input_dialog_text_msg);
+                    title2.setText(R.string.calorie_goal);
+                    final EditText input2 = (EditText) view2.findViewById(R.id.edittext_input_dialog);
+
+                    builder2.setView(view2)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString(SETTINGS_TYPE, CALORIE_GOAL);
+                                    bundle.putInt(SETTINGS_MSG, Integer.parseInt(input2.getText().toString()));
+                                    Log.d(TAG, "OK " + input2.getText().toString());
+                                    listener.OnDialogSetBundle(bundle);
+
+                                }
+                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            SettingsDialogFragment.this.getDialog().cancel();
+                        }
+                    }).create();
+                    return builder2.create();
 
 
             }
@@ -99,6 +130,8 @@ public class SettingsDialogFragment extends DialogFragment {
 
         return super.onCreateDialog(savedInstanceState);
     }
+
+
 
 
 

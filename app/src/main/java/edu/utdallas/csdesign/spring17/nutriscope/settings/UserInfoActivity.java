@@ -131,10 +131,12 @@ public class UserInfoActivity extends AppCompatActivity implements View.OnClickL
                     textActivityLevel.setText(parseLvl(user.getActivityLevel()));
                     calc.setActivityLevel(user.getActivityLevel());
                 }
+                /* FIXME
                 if(!TextUtils.isEmpty(user.getCalorieGoal()))
                 {
                     textCalorieGoal.setText(user.getCalorieGoal());
                 }
+                */
 
             }
 

@@ -164,7 +164,7 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
     public void deleteItem(Nutrition id, DeleteCallback callback) {
         throw new UnsupportedOperationException();
     }
-
+/* FIXME
     public void getCalorieGoal(final CalorieCallback callback)
     {
 
@@ -199,5 +199,5 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
         void onChanged(int calGoal);
     }
 
-
+*/
 }

@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.NullUser;
 import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
 import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManager;
 import edu.utdallas.csdesign.spring17.nutriscope.settings.dialogs.SettingsDialogFragment;
@@ -87,22 +88,40 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
     }
 
 
+
+
     @Override
     public void OnDialogSetBundle(Bundle bundle) {
         String type = bundle.getString(SettingsDialogFragment.SETTINGS_TYPE);
-        final String msg = bundle.getString(SettingsDialogFragment.SETTINGS_MSG);
+
+
 
         try {
             switch (type) {
                 case SettingsDialogFragment.NICKNAME:
+                    final String msg = bundle.getString(SettingsDialogFragment.SETTINGS_MSG);
                     presenter.getUser(new ProfileSettingsContract.RetrieveUser() {
                         @Override
                         public void getUser(User user) {
                             user.setNickname(msg);
                             presenter.modifyUser(user);
+
                         }
                     });
+
                     break;
+                case SettingsDialogFragment.CALORIE_GOAL:
+                    final int calorieGoal = bundle.getInt(SettingsDialogFragment.SETTINGS_MSG);
+                    presenter.getUser(new ProfileSettingsContract.RetrieveUser() {
+                        @Override
+                        public void getUser(User user) {
+                            user.setCalorieGoal(calorieGoal);
+                            presenter.modifyUser(user);
+
+                        }
+                    });
+
+
             }
 
 
@@ -115,6 +134,7 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
     @Override
     public void populateUser(User user) {
         setNickname(user.getNickname());
+        setCalorieGoal(user.getCalorieGoal());
     }
 
     @OnClick(R2.id.nickname)
@@ -129,6 +149,21 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
     @BindView(R2.id.text_nickname) TextView nickName;
     void setNickname(String nickname) {
         this.nickName.setText(nickname);
+
+    }
+
+    @OnClick(R2.id.calorie_goal)
+    void changeCalorieGoal() {
+        Bundle bundle = new Bundle();
+        bundle.putString(SettingsDialogFragment.SETTINGS_TYPE, SettingsDialogFragment.CALORIE_GOAL);
+        SettingsDialogFragment dialog = SettingsDialogFragment.newInstance(bundle);
+        dialog.setTargetFragment(this, 0);
+        dialog.show(getActivity().getSupportFragmentManager(), "dialog");
+    }
+
+    @BindView(R2.id.text_calorie_goal) TextView calorieGoal;
+    void setCalorieGoal(int calorieGoal) {
+        this.calorieGoal.setText(String.valueOf(calorieGoal));
 
     }
 

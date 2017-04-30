@@ -106,10 +106,11 @@ public class GraphActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User u = dataSnapshot.getValue(User.class);
+                /* FIXME
                 if(!TextUtils.isEmpty(u.getCalorieGoal())){
                     calGoal = Integer.parseInt(u.getCalorieGoal());
                 }
-
+                */
             }
 
             @Override

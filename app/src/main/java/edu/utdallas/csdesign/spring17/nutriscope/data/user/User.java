@@ -14,7 +14,7 @@ public class User {
     private String height;
     private String weight;
     private String activityLevel;
-    private String calorieGoal;
+    private int calorieGoal;
     private String hft;
     private String hin;
 
@@ -103,11 +103,11 @@ public class User {
         this.activityLevel = activityLevel;
     }
 
-    public String getCalorieGoal() {
+    public int getCalorieGoal() {
         return calorieGoal;
     }
 
-    public void setCalorieGoal(String calorieGoal) {
+    public void setCalorieGoal(int calorieGoal) {
         this.calorieGoal = calorieGoal;
     }
 
