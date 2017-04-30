@@ -34,16 +34,6 @@ public class LoginInteractor implements LoginContract.Interactor {
 
     @Override
     public void login(String email, String password) {
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    presenter.loginSuccessful();
-                } else {
-                    presenter.onErrorResponse("Login failed, please try again");
-                }
-            }
-        });
 
     }
 
