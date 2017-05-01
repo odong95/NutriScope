@@ -92,7 +92,6 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         Log.d(TAG, "onResume");
         super.onResume();
         presenter.start();
-        presenter.loadNutritionProgress();
     }
 
     @Override

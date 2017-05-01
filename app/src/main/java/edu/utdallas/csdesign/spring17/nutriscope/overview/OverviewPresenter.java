@@ -3,14 +3,26 @@ package edu.utdallas.csdesign.spring17.nutriscope.overview;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import org.threeten.bp.LocalDate;
+
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
+import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryItem;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.Nutrition;
+import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebaseSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepository;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManager;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -28,12 +40,15 @@ final class OverviewPresenter implements OverviewContract.Presenter {
 
     private final NutritionRepository nutritionRepository;
 
+    private final UserManager userManager;
+
 
     @Inject
-    public OverviewPresenter(@NonNull OverviewContract.View view, HistoryRepository historyRepository, NutritionRepository nutritionRepository) {
+    public OverviewPresenter(@NonNull OverviewContract.View view, HistoryRepository historyRepository, NutritionRepository nutritionRepository, UserManager userManager) {
         this.view = checkNotNull(view);
         this.historyRepository = historyRepository;
-        this.nutritionRepository = nutritionRepository; // FIXME
+        this.nutritionRepository = nutritionRepository;
+        this.userManager = userManager;
 
     }
 
@@ -48,6 +63,7 @@ final class OverviewPresenter implements OverviewContract.Presenter {
     public void start() {
         Log.d(TAG, "start");
         loadHistory();
+        loadNutritionProgress();
     }
 
     @Override
@@ -83,17 +99,17 @@ final class OverviewPresenter implements OverviewContract.Presenter {
     }
 
     @Override
-    public void loadNutritionProgress()
-    {
-        /* FIXME
-        nutritionRepository.getCalorieGoal(new NutritionFirebaseRepository.CalorieCallback() {
+    public void loadNutritionProgress() {
+
+        userManager.getUser(new UserManager.GetUser() {
             @Override
-            public void onChanged(final int calGoal) {
+            public void getUser(final User user) {
+
                 nutritionRepository.queryItem(new NutritionFirebaseSpecification(LocalDate.now().toEpochDay(), LocalDate.now().toEpochDay()), new Repository.QueryCallback<Nutrition>() {
                     @Override
                     public void onQueryComplete(List<Nutrition> items) {
-                        HashMap<String,String> map = new HashMap<String, String>();
-                        if(items.size() > 0) {
+                        HashMap<String, String> map = new HashMap<String, String>();
+                        if (items.size() > 0) {
                             Iterator it = items.get(0).getNutrients().entrySet().iterator();
                             while (it.hasNext()) {
                                 Map.Entry pair = (Map.Entry) it.next();
@@ -103,7 +119,7 @@ final class OverviewPresenter implements OverviewContract.Presenter {
                                 double goal = fn.getNutrientValue();
                                 String p = "";
                                 if (fn.equal(208)) {
-                                    double i = calGoal - val;
+                                    double i = user.getCalorieGoal() - val;
                                     p = Double.toString(i);
                                 } else {
                                     val /= goal;
@@ -115,7 +131,7 @@ final class OverviewPresenter implements OverviewContract.Presenter {
                                 it.remove();
                             }
                         }
-                        map.put("Calorie Goal", Integer.toString(calGoal));
+                        map.put("Calorie Goal", Integer.toString(user.getCalorieGoal()));
                         view.showNutritionProgress(map);
                     }
 
@@ -125,10 +141,9 @@ final class OverviewPresenter implements OverviewContract.Presenter {
                     }
                 });
             }
+
+
         });
-*/
     }
-
-
 
 }
