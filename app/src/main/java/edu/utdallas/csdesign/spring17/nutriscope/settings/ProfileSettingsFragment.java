@@ -21,9 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
-import edu.utdallas.csdesign.spring17.nutriscope.data.user.NullUser;
 import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
-import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManager;
 import edu.utdallas.csdesign.spring17.nutriscope.settings.dialogs.SettingsDialogFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;

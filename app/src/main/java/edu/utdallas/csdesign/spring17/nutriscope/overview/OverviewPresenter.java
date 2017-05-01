@@ -9,7 +9,6 @@ import org.threeten.bp.LocalDate;
 
 import java.text.DecimalFormat;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +17,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryItem;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;

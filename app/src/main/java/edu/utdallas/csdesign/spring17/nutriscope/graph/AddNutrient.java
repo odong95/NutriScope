@@ -12,7 +12,6 @@ import android.widget.CheckBox;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;

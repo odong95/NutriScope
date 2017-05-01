@@ -4,10 +4,8 @@ import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
 
-import org.threeten.bp.DateTimeUtils;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneOffset;
-import org.threeten.bp.ZonedDateTime;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,9 +7,6 @@ import javax.inject.Inject;
 
 import edu.utdallas.csdesign.spring17.nutriscope.NutriscopeApplication;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
-import edu.utdallas.csdesign.spring17.nutriscope.data.user.DaggerUserManagerComponent;
-import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManager;
-import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManagerModule;
 
 
 public class LoginActivity extends AppCompatActivity {
