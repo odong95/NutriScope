@@ -1,5 +1,5 @@
 # NutriScope
-Nutriscope ia an open source Android application to track Nutrition. The app implements Model-View-Presenter and Repository pattern.  Depedency injection is handled with Dagger2. 
+Nutriscope is an open source Android application to track Nutrition. The app implements Model-View-Presenter and Repository pattern.  Dependency injection is handled with Dagger2. 
 
 ## Nutriscope can:
 * Find nutrition for 180k foods
