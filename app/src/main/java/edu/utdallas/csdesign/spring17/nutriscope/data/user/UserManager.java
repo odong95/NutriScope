@@ -134,6 +134,7 @@ public class UserManager {
     }
 
     private void userLoggedOut() {
+        isDirty = true;
         last_uid = uid;
         uid = null;
         user = null;
@@ -272,6 +273,7 @@ public class UserManager {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     setUser(dataSnapshot.getValue(User.class));
                     Log.d(TAG, "retrieved user data");
+                    isDirty = false;
                     taskStatus.success(UserStatus.SUCCESS);
                 }
 

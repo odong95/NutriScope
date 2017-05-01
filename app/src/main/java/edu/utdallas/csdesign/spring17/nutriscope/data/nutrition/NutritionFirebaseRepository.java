@@ -1,6 +1,5 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.nutrition;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -12,14 +11,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
-import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
 
 /**
  * Keeps track of the Nutrition history for a user in Firebase db.
@@ -28,7 +25,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
 final public class NutritionFirebaseRepository implements Repository<Nutrition> {
 
 
-    private final static String TAG = "CFFirebaseRepo";
+    private final static String TAG = "FBNutritionRepo";
 
     private final static String FB_TREE = "nutrition";
 
@@ -60,40 +57,46 @@ final public class NutritionFirebaseRepository implements Repository<Nutrition> 
 
     public void updateItem(final Nutrition item, UpdateCallback callback) {
 
+
+
         FirebaseUser user = auth.getCurrentUser();
 
         if (user != null) {
-            Query query = databaseReference.child(FB_TREE).child(user.getUid()).equalTo(item.getKey());
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
+            Log.d(TAG, item.getKey());
+            DatabaseReference nutritionRef = databaseReference.child(FB_TREE).child(user.getUid()).child(item.getKey());
+            nutritionRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
                 Nutrition nutrition;
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Iterable<DataSnapshot> nodes = dataSnapshot.getChildren();
-                    if (nodes.iterator().hasNext()) {
-                        for (DataSnapshot data : nodes) {
-                            nutrition = (Nutrition) data.getValue();
+                    if (dataSnapshot.getValue() != null) {
+
+                            nutrition = dataSnapshot.getValue(Nutrition.class);
+                            Log.d(TAG, "get old nutrition data");
 
                             for (Map.Entry<String, Double> entry : item.getNutrients().entrySet()) {
                                 if (nutrition.getNutrients().containsKey(entry.getKey())) {
-                                    nutrition.getNutrients().put(entry.getKey(), entry.getValue() + nutrition.getNutrients().get(entry.getKey()));
+                                    Log.d(TAG, "nutrient same");
+                                    item.getNutrients().put(entry.getKey(), entry.getValue() + nutrition.getNutrients().get(entry.getKey()));
                                 } else {
-                                    nutrition.getNutrients().put(entry.getKey(), entry.getValue());
+                                    Log.d(TAG, "nutrient different");
+                                    item.getNutrients().put(entry.getKey(), entry.getValue());
                                 }
 
-                            }
 
-                            data.getRef().setValue(item);
+
+                                databaseReference.child(FB_TREE).child(auth.getCurrentUser().getUid()).child(item.getKey()).setValue(item);
 
                         }
 
                     }
 
                     else {
-                        Map<String, Object> childUpdates = new HashMap<>();
-                        childUpdates.put("/" + FB_TREE + "/" + auth.getCurrentUser().getUid() + "/" + item.getKey(), item);
-                        databaseReference.updateChildren(childUpdates);
+                        Log.d(TAG, "nutrition day doesn't exist yet");
+                        databaseReference.child(FB_TREE).child(auth.getCurrentUser().getUid()).child(item.getKey()).setValue(item);
+
+
                     }
 
                 }

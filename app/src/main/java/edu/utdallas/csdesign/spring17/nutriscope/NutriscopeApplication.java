@@ -72,17 +72,19 @@ public class NutriscopeApplication extends Application {
                         new NutritionRepository(new NutritionFirebaseRepository())))
                 .build();
 
+
+
+        userManagerComponent = DaggerUserManagerComponent.builder()
+                .userManagerModule(new UserManagerModule(new UserManager())).build();
+
         consumedFoodRepositoryComponent = DaggerConsumedFoodRepositoryComponent.builder()
                 .consumedFoodRepositoryModule(new ConsumedFoodRepositoryModule(
                         new ConsumedFoodRepository(
                                 foodRepositoryComponent.getFoodRepository(),
                                 historyRepositoryComponent.getHistoryRepository(),
-                                new ConsumedFoodFirebaseRepository(),
+                                new ConsumedFoodFirebaseRepository(userManagerComponent.getUserManager()),
                                 nutritionRepositoryComponent.getNutritionRepository())))
                 .build();
-
-        userManagerComponent = DaggerUserManagerComponent.builder()
-                .userManagerModule(new UserManagerModule(new UserManager())).build();
 
 
        // SQLiteDatabase db = new CategoryDbHelper(getContext()).getReadableDatabase();

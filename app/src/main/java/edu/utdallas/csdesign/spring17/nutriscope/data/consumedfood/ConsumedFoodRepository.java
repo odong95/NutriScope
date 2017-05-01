@@ -64,7 +64,7 @@ public class ConsumedFoodRepository implements Repository<ConsumedFood> {
     public void createItem(ConsumedFood item, CreateCallback callback) {
         consumedFoodFirebaseRepository.createItem(item, callback);
         nutritionRepository.updateItem(Nutrition.ndbToNutrition(LocalDateTime.ofEpochSecond(item.getDateTimeConsumed(), 0, ZoneOffset.UTC).toLocalDate().toEpochDay(),
-                item.getFood().getNutrients()), new UpdateCallback() {
+                item), new UpdateCallback() {
                     @Override
                     public void onUpdateComplete() {
 

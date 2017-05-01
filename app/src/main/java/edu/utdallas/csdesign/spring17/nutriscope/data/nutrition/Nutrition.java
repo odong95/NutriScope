@@ -1,25 +1,27 @@
 package edu.utdallas.csdesign.spring17.nutriscope.data.nutrition;
 
+import android.util.Log;
+
 import com.google.auto.value.AutoValue;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.ZoneOffset;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
-import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
+import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Nutrient;
 
 @AutoValue
 @IgnoreExtraProperties
 public class Nutrition implements Trackable {
 
+
+    private static final String TAG = "Nutrition";
 
     /**
      * Timezones can be tricky with an app like this,
@@ -62,14 +64,30 @@ public class Nutrition implements Trackable {
     public long getDateStamp(){return dateStamp;}
     public void setDateStamp(Long dateStamp){this.dateStamp=dateStamp;}
 
-    public static Nutrition ndbToNutrition(long datestamp, List<Nutrient> nutrients) {
+    public static Nutrition ndbToNutrition(long datestamp, ConsumedFood consumedFood) {
+
+        // ndb measure nutrition per 100 grams
+        double quantity = consumedFood.getQuantity() / 100;
+
+        List<Nutrient> nutrients = consumedFood.getFood().getNutrients();
 
         Nutrition nutrition = new Nutrition(datestamp);
 
         for(Nutrient nutrient: nutrients) {
             if (nutrient.getUnit().equals("g")) {
                 nutrition.addNutrient(nutrient.getNutrientId(),
-                        Double.parseDouble(nutrient.getValue()));
+                        Double.parseDouble(nutrient.getValue()) * quantity);
+            }
+            else if (nutrient.getUnit().equals("mg")) {
+                nutrition.addNutrient(nutrient.getNutrientId(),
+                        Double.parseDouble(nutrient.getValue()) * quantity / 1000);
+            }
+            else if (nutrient.getUnit().equals("µg")) {
+                nutrition.addNutrient(nutrient.getNutrientId(),
+                        Double.parseDouble(nutrient.getValue()) * quantity / (1000*1000));
+            }
+            else {
+                Log.w(TAG, "unsupported unit " + nutrient.getUnit());
             }
         }
 
