@@ -131,7 +131,7 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
                     @Override
                     public void onQueryComplete(List items) {
                         Food food = (Food) items.get(0);
-                        populateFood(food, 0.0);
+                        populateFood(food, 1.0);
 
                     }
 
