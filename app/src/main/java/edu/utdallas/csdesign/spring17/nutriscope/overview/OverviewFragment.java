@@ -116,32 +116,18 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_hamburger));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_graph));
-       // tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_calendar));
-       // tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_recipe));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_menu_gear));
-       // tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_search));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tabLayout.getSelectedTabPosition() == 0) {
-                   //  Toast.makeText(getActivity(), "Open Overview", Toast.LENGTH_LONG).show();
+
                 } else if (tabLayout.getSelectedTabPosition() == 1) {
                     openGraph();
-                    //Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                } /*else if (tabLayout.getSelectedTabPosition() == 2) {
-                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                } else if (tabLayout.getSelectedTabPosition() == 3) {
-                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                }*/ else if (tabLayout.getSelectedTabPosition() == 2) {
-
+                } else if (tabLayout.getSelectedTabPosition() == 2) {
                     showPopup(((ViewGroup) tabLayout.getChildAt(0)).getChildAt(2));
-
-
-                    //Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                }/* else if (tabLayout.getSelectedTabPosition() == 5) {
-                    Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
-                }*/
+                }
             }
 
             @Override
