@@ -105,13 +105,13 @@ public class GraphActivity extends AppCompatActivity implements View.OnClickList
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User u = dataSnapshot.getValue(User.class);
-                /* FIXME
-                if(!TextUtils.isEmpty(u.getCalorieGoal())){
-                    calGoal = Integer.parseInt(u.getCalorieGoal());
+                if (dataSnapshot.getValue() != null) {
+                    User u = dataSnapshot.getValue(User.class);
+                    calGoal = u.getCalorieGoal();
+
                 }
-                */
             }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
