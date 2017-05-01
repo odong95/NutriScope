@@ -38,7 +38,7 @@
             android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".searchfood.SearchFoodActivity"
-            android:parentActivityName=".addeditfood.AddEditFoodActivity">
+            android:parentActivityName=".overview.OverviewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
