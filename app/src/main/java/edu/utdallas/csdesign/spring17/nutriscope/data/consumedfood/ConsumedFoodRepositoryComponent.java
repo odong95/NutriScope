@@ -9,7 +9,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.ApplicationScope;
  */
 
 @ApplicationScope
-@Component(modules = {ConsumedFoodRepositoryModule.class, ApplicationModule.class})
+@Component(
+        modules = {ConsumedFoodRepositoryModule.class, ApplicationModule.class})
 public interface ConsumedFoodRepositoryComponent {
 
     ConsumedFoodRepository getConsumedFoodRepository();

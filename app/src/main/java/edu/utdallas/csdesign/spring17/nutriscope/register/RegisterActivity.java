@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
+import edu.utdallas.csdesign.spring17.nutriscope.NutriscopeApplication;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 
 
@@ -26,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
         DaggerRegisterComponent.builder()
                 .registerPresenterModule(
                         new RegisterPresenterModule(fragment))
+                .userManagerComponent(((NutriscopeApplication) getApplication()).getUserManagerComponent())
                 .build().inject(this);
     }
 

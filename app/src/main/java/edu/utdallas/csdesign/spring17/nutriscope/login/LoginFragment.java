@@ -29,6 +29,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.register.RegisterActivity;
 
 public class LoginFragment extends Fragment implements LoginContract.View, View.OnClickListener {
 
+    final static private String TAG = "LoginFragment";
+
 
     @BindView(R.id.email)
     EditText emailText;
@@ -89,6 +91,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
 
     @Override
     public void loginSuccessful() {
+        Log.d(TAG, "login successful called");
         hideProgressDialog();
         Intent intent = new Intent(getActivity(), OverviewActivity.class);
         startActivity(intent);
@@ -116,7 +119,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
             @Override
             public void onSuccess(LoginResult loginResult) {
                 showProgressDialog();
-                presenter.loginfb(loginResult.getAccessToken(),getActivity());
+                presenter.registerLoginFB(loginResult.getAccessToken());
             }
 
             @Override
@@ -169,4 +172,8 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
         }
     }
 
+    @Override
+    public boolean isActive() {
+        return isAdded();
+    }
 }

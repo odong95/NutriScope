@@ -57,11 +57,11 @@ public class NutritionRepository implements Repository<Nutrition> {
     public void deleteItem(Nutrition id, DeleteCallback callback) {
 
     }
-
+/* FIXME
     public void getCalorieGoal(NutritionFirebaseRepository.CalorieCallback callback)
     {
          nutritionFirebaseRepository.getCalorieGoal(callback);
     }
-
+*/
 
 }

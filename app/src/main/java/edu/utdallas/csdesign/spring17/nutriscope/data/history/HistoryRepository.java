@@ -25,7 +25,6 @@ public class HistoryRepository implements Repository<HistoryItem> {
 
     private boolean isInit = false;
 
-
     List<HistoryItem> history = new ArrayList<>();
 
     List<RepositoryInfo<Trackable>> repos = new LinkedList<>();
@@ -37,6 +36,7 @@ public class HistoryRepository implements Repository<HistoryItem> {
 
     @Inject
     public HistoryRepository() {
+
 
     }
 
@@ -64,7 +64,7 @@ public class HistoryRepository implements Repository<HistoryItem> {
         if (specification == null) {
             Log.d(TAG, "history query called");
             // the first time, go to each child repo and query full contents
-            if (!isInit) {
+            if (true) {
                 Log.d(TAG, "first time");
                 history.clear();
                 for (int i = 0; i < repos.size(); i++) {

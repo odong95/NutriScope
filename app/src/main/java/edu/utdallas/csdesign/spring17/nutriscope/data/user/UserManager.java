@@ -3,13 +3,21 @@ package edu.utdallas.csdesign.spring17.nutriscope.data.user;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.facebook.AccessToken;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -20,10 +28,14 @@ public class UserManager {
 
     private static final String TAG = "UserManager";
 
+    private boolean isDirty = true;
     private User user;
+
+    private final List<UserListener> userListeners = new LinkedList<>();
 
     private String last_uid = null;
     private String uid = null;
+    private boolean didLogOut;
     private CountDownLatch didAuthListenerFire = new CountDownLatch(1);
 
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -36,24 +48,21 @@ public class UserManager {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() == null) {
                     Log.d(TAG, "User Logged Out " + uid);
-                //    getLoginState().setUserStatus(FirebaseLogger.UserStatus.USER_LOGGED_OUT);
-                    last_uid = uid;
-                    uid = null;
-
-
+                    userLoggedOut();
                 }
                 else {
                     uid = firebaseAuth.getCurrentUser().getUid();
                     if (last_uid == null) {
                         Log.d(TAG, "User Logged In " + uid);
-                 //       getLoginState().setUserStatus(FirebaseLogger.UserStatus.USER_LOGGED_IN);
+                        userLoggedIn();
                     } else {
                         if (uid.equals(last_uid)) {
                             Log.d(TAG, "User Token refresh" + uid);
+                            userLoggedIn();
                         }
                         else if (!uid.equals(last_uid) && last_uid != null) {
                             Log.d(TAG, "User Switched " + uid + " last: " + last_uid);
-                 //           getLoginState().setUserStatus(FirebaseLogger.UserStatus.USER_SWITCHED);
+                            userLoggedIn();
                         }
                         else {
                             Log.d(TAG, "Extraneous auth state call");
@@ -67,6 +76,74 @@ public class UserManager {
         });
     }
 
+    public interface  GetUser{
+        void getUser(User user);
+    }
+
+    public void getUser(final GetUser getUser) {
+        if(!isDirty) {
+            getUser.getUser(user);
+        } else {
+            getUserDataFromFirebase(new TaskStatus() {
+                @Override
+                public void success(UserStatus msg) {
+                    getUser.getUser(user);
+                }
+
+                @Override
+                public void failure(UserStatus msg) {
+                    getUser.getUser(new NullUser());
+                }
+            });
+        }
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        sendUserDataToFirebase();
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void addListener(UserListener userListener) {
+        userListeners.add(userListener);
+    }
+
+    private void userLoggedIn() {
+        Log.d(TAG, "user logged in");
+        didLogOut = false;
+        getUserDataFromFirebase(new TaskStatus() {
+            @Override
+            public void success(UserStatus msg) {
+                Log.d(TAG, "User Logged in, got user data");
+                for (UserListener userListener: userListeners) {
+                    userListener.userLoggedIn();
+                }
+            }
+
+            @Override
+            public void failure(UserStatus msg) {
+                Log.d(TAG, "Failed to get user data");
+
+            }
+        });
+
+
+    }
+
+    private void userLoggedOut() {
+        isDirty = true;
+        last_uid = uid;
+        uid = null;
+        user = null;
+        didLogOut = true;
+        for (UserListener userListener: userListeners) {
+            userListener.userLoggedOut();
+        }
+    }
+
 
     public void registerUserEmail(String email, String password, final TaskStatus taskStatus) {
         auth.createUserWithEmailAndPassword(email, password)
@@ -77,25 +154,80 @@ public class UserManager {
                             Log.w("AUTH", "createUserWithEmail:failed", task.getException());
                             taskStatus.failure(UserStatus.REGISTRATION_FAILED);
                         } else {
-                            Log.d("AUTH", "createUserWithEmail:success:" + auth.getCurrentUser().getEmail());
-                            taskStatus.success(UserStatus.REGISTRATION_SUCCESS);
+                            Log.d("AUTH", "createUserWithEmail:success:");
+                            createUser(new TaskStatus() {
+                                @Override
+                                public void success(UserStatus msg) {
+                                    taskStatus.success(UserStatus.REGISTRATION_SUCCESS);
+                                }
+
+                                @Override
+                                public void failure(UserStatus msg) {
+                                    taskStatus.success(UserStatus.REGISTRATION_FAILED);
+                                }
+                            });
                         }
                     }
                 });
 
     }
 
-    public void createUser() {
-        try {
-            this.user = new User(auth.getCurrentUser().getUid(), auth.getCurrentUser().getEmail());
-        } catch (NullPointerException ex) {
-            Log.w(TAG, "Could not get current user UID, could not create user");
-        }
+    public void registerUserFacebook(AccessToken accessToken, final TaskStatus taskStatus) {
+            AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+            auth.signInWithCredential(credential)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "Facebook sign-in did not work");
+                                taskStatus.failure(UserStatus.REGISTRATION_FAILED);
+                            }
+                            else
+                            {
+                            createUser(new TaskStatus() {
+                                @Override
+                                public void success(UserStatus msg) {
+                                    taskStatus.success(UserStatus.REGISTRATION_SUCCESS);
+                                }
 
-        db.child(user.getUid()).setValue(user);
+                                @Override
+                                public void failure(UserStatus msg) {
+                                    taskStatus.success(UserStatus.REGISTRATION_FAILED);
+                                }
+                            });
+                            }
+
+                        }
+                    });
     }
 
-    public void loginUser() {
+    private void createUser(TaskStatus taskStatus) {
+        String email;
+        User user;
+        try {
+            email = auth.getCurrentUser().getEmail();
+            user = new User(uid, email);
+            db.child(user.getUid()).setValue(user);
+            taskStatus.success(UserStatus.REGISTRATION_SUCCESS);
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+            taskStatus.failure(UserStatus.LOGIN_FAILED);
+        }
+
+
+    }
+
+    public void loginUser(String email, String password, final TaskStatus taskStatus) {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    taskStatus.success(UserStatus.USER_LOGGED_IN);
+                } else {
+                    taskStatus.failure(UserStatus.LOGIN_FAILED);
+                }
+            }
+        });
 
 
     }
@@ -132,6 +264,32 @@ public class UserManager {
             }
         }).start();
 
+    }
+
+    private void getUserDataFromFirebase(final TaskStatus taskStatus) {
+        if (uid != null) {
+            db.child(uid).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    setUser(dataSnapshot.getValue(User.class));
+                    Log.d(TAG, "retrieved user data");
+                    isDirty = false;
+                    taskStatus.success(UserStatus.SUCCESS);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                    taskStatus.failure(UserStatus.FAILURE);
+                }
+            });
+        }
+
+    }
+
+    private void sendUserDataToFirebase() {
+        Log.d(TAG, "sent user data to firebase");
+        db.child(uid).setValue(this.user);
     }
 
 

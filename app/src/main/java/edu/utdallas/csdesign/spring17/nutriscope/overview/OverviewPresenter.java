@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryItem;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryRepository;
-import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionFirebaseRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.NutritionRepository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -31,12 +30,13 @@ final class OverviewPresenter implements OverviewContract.Presenter {
 
 
     @Inject
-    public OverviewPresenter(@NonNull OverviewContract.View view, HistoryRepository historyRepository) {
+    public OverviewPresenter(@NonNull OverviewContract.View view, HistoryRepository historyRepository, NutritionRepository nutritionRepository) {
         this.view = checkNotNull(view);
         this.historyRepository = historyRepository;
-        this.nutritionRepository = new NutritionRepository(new NutritionFirebaseRepository()); // FIXME
+        this.nutritionRepository = nutritionRepository; // FIXME
 
     }
+
 
     @Inject
     void setupListeners() {
@@ -85,7 +85,8 @@ final class OverviewPresenter implements OverviewContract.Presenter {
     @Override
     public void loadNutritionProgress()
     {
-        /*nutritionRepository.getCalorieGoal(new NutritionFirebaseRepository.CalorieCallback() {
+        /* FIXME
+        nutritionRepository.getCalorieGoal(new NutritionFirebaseRepository.CalorieCallback() {
             @Override
             public void onChanged(final int calGoal) {
                 nutritionRepository.queryItem(new NutritionFirebaseSpecification(LocalDate.now().toEpochDay(), LocalDate.now().toEpochDay()), new Repository.QueryCallback<Nutrition>() {
