@@ -135,7 +135,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
                     Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
                 }*/ else if (tabLayout.getSelectedTabPosition() == 2) {
 
-                    showPopup(tabLayout);
+                    showPopup(((ViewGroup) tabLayout.getChildAt(0)).getChildAt(2));
 
 
                     //Toast.makeText(getActivity(), "Tab " + tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
