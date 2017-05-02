@@ -115,18 +115,49 @@ final class OverviewPresenter implements OverviewContract.Presenter {
                         HashMap<String, String> map = new HashMap<String, String>();
                         if (items.size() > 0) {
                             Iterator it = items.get(0).getNutrients().entrySet().iterator();
+                            double calConsumed = 0;
+
                             while (it.hasNext()) {
                                 Map.Entry pair = (Map.Entry) it.next();
 
                                 FoodNutrients fn = FoodNutrients.getValue(Integer.parseInt(pair.getKey().toString()));
                                 Double val = (Double) pair.getValue();
-                                double goal = fn.getNutrientValue();
+
                                 String p = "";
                                 if (fn.equal(208)) {
                                     double i = user.getCalorieGoal() - val;
+                                    calConsumed = val;
                                     p = String.format("%.0f", i);
-                                } else {
-                                    val /= goal;
+                                    map.put(fn.getNutrientString(), p);
+                                    it.remove();
+                                }
+
+                            }
+                            it = items.get(0).getNutrients().entrySet().iterator();
+                            while (it.hasNext()){
+                                Map.Entry pair = (Map.Entry) it.next();
+
+                                FoodNutrients fn = FoodNutrients.getValue(Integer.parseInt(pair.getKey().toString()));
+                                Double val = (Double) pair.getValue();
+                                String p = "";
+                                if(fn.equal(205))
+                                {
+                                    val *= 4;
+                                    val/=calConsumed;
+                                    val *= 100;
+                                    p = new DecimalFormat("##").format(val) + "%";
+                                }
+                                if(fn.equal(203))
+                                {
+                                    val *= 4;
+                                    val/=calConsumed;
+                                    val *= 100;
+                                    p = new DecimalFormat("##").format(val) + "%";
+                                }
+                                if(fn.equal(204))
+                                {
+                                    val *= 9;
+                                    val/=calConsumed;
                                     val *= 100;
                                     p = new DecimalFormat("##").format(val) + "%";
                                 }
