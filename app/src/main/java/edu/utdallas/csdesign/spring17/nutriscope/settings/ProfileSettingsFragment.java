@@ -7,6 +7,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,9 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
-import edu.utdallas.csdesign.spring17.nutriscope.data.user.NullUser;
 import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
-import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManager;
 import edu.utdallas.csdesign.spring17.nutriscope.settings.dialogs.SettingsDialogFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -34,6 +33,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ProfileSettingsFragment extends Fragment implements ProfileSettingsContract.View,
                                                 SettingsDialogFragment.SettingsDialogListener {
+
+    private static final String TAG = "settings fragment";
 
     private ProfileSettingsContract.Presenter presenter;
 
@@ -78,7 +79,6 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
         View view = inflater.inflate(R.layout.fragment_profile_settings, container, false);
         ButterKnife.bind(this, view);
 
-
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -93,8 +93,6 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
     @Override
     public void OnDialogSetBundle(Bundle bundle) {
         String type = bundle.getString(SettingsDialogFragment.SETTINGS_TYPE);
-
-
 
         try {
             switch (type) {
@@ -120,8 +118,65 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
 
                         }
                     });
+                    break;
+                case SettingsDialogFragment.SEX:
+                    final String sex_ = bundle.getString(SettingsDialogFragment.SETTINGS_MSG);
+                    presenter.getUser(new ProfileSettingsContract.RetrieveUser() {
+                        @Override
+                        public void getUser(User user) {
+                            user.setSex(sex_);
+                            presenter.modifyUser(user);
 
+                        }
+                    });
+                    break;
+                case SettingsDialogFragment.AGE:
+                    final String age_ = bundle.getString(SettingsDialogFragment.SETTINGS_MSG);
+                    presenter.getUser(new ProfileSettingsContract.RetrieveUser() {
+                        @Override
+                        public void getUser(User user) {
+                            user.setAge(age_);
+                            presenter.modifyUser(user);
 
+                        }
+                    });
+                    break;
+                case SettingsDialogFragment.WEIGHT:
+                    final String weight_ = bundle.getString(SettingsDialogFragment.SETTINGS_MSG);
+                    presenter.getUser(new ProfileSettingsContract.RetrieveUser() {
+                        @Override
+                        public void getUser(User user) {
+                            user.setWeight(weight_);
+                            presenter.modifyUser(user);
+
+                        }
+                    });
+                    break;
+                case SettingsDialogFragment.HEIGHT:
+                    final String height_ = bundle.getString(SettingsDialogFragment.SETTINGS_MSG);
+                    presenter.getUser(new ProfileSettingsContract.RetrieveUser() {
+                        @Override
+                        public void getUser(User user) {
+                            user.setHeight(height_);
+                            String[] h = height_.split(" ");
+                            user.setHft(h[0]);
+                            user.setHin(h[1]);
+                            presenter.modifyUser(user);
+
+                        }
+                    });
+                    break;
+                case SettingsDialogFragment.ACTIVITY_LEVEL:
+                    final String activity_level_ = bundle.getString(SettingsDialogFragment.SETTINGS_MSG);
+                    presenter.getUser(new ProfileSettingsContract.RetrieveUser() {
+                        @Override
+                        public void getUser(User user) {
+                            user.setActivityLevel(activity_level_);
+                            presenter.modifyUser(user);
+
+                        }
+                    });
+                    break;
             }
 
 
@@ -135,6 +190,11 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
     public void populateUser(User user) {
         setNickname(user.getNickname());
         setCalorieGoal(user.getCalorieGoal());
+        setSex(user.getSex());
+        setAge(user.getAge());
+        setWeight(user.getWeight());
+        setHeight(user.getHft() + "ft " + user.getHin() + "in");
+        setActivityLevel(User.parseLvl(user.getActivityLevel()));
     }
 
     @OnClick(R2.id.nickname)
@@ -164,6 +224,81 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
     @BindView(R2.id.text_calorie_goal) TextView calorieGoal;
     void setCalorieGoal(int calorieGoal) {
         this.calorieGoal.setText(String.valueOf(calorieGoal));
+
+    }
+
+    @OnClick(R2.id.sex)
+    void changeSex() {
+        Bundle bundle = new Bundle();
+        bundle.putString(SettingsDialogFragment.SETTINGS_TYPE, SettingsDialogFragment.SEX);
+        SettingsDialogFragment dialog = SettingsDialogFragment.newInstance(bundle);
+        dialog.setTargetFragment(this, 0);
+        dialog.show(getActivity().getSupportFragmentManager(), "dialog");
+    }
+
+    @BindView(R2.id.text_sex) TextView sex;
+    void setSex(String sex) {
+        Log.d(TAG, "set sex " + sex);
+        this.sex.setText(sex);
+    }
+
+    @OnClick(R2.id.age)
+    void changeAge() {
+        Bundle bundle = new Bundle();
+        bundle.putString(SettingsDialogFragment.SETTINGS_TYPE, SettingsDialogFragment.AGE);
+        SettingsDialogFragment dialog = SettingsDialogFragment.newInstance(bundle);
+        dialog.setTargetFragment(this, 0);
+        dialog.show(getActivity().getSupportFragmentManager(), "dialog");
+    }
+
+    @BindView(R2.id.text_age) TextView age;
+    void setAge(String age) {
+        this.age.setText(age);
+
+    }
+
+    @OnClick(R2.id.weight)
+    void changeWeight() {
+        Bundle bundle = new Bundle();
+        bundle.putString(SettingsDialogFragment.SETTINGS_TYPE, SettingsDialogFragment.WEIGHT);
+        SettingsDialogFragment dialog = SettingsDialogFragment.newInstance(bundle);
+        dialog.setTargetFragment(this, 0);
+        dialog.show(getActivity().getSupportFragmentManager(), "dialog");
+    }
+
+    @BindView(R2.id.text_weight) TextView weight;
+    void setWeight(String weight) {
+        this.weight.setText(weight);
+
+    }
+
+    @OnClick(R2.id.height)
+    void changeHeight() {
+        Bundle bundle = new Bundle();
+        bundle.putString(SettingsDialogFragment.SETTINGS_TYPE, SettingsDialogFragment.HEIGHT);
+        SettingsDialogFragment dialog = SettingsDialogFragment.newInstance(bundle);
+        dialog.setTargetFragment(this, 0);
+        dialog.show(getActivity().getSupportFragmentManager(), "dialog");
+    }
+
+    @BindView(R2.id.text_height) TextView height;
+    void setHeight(String height) {
+        this.height.setText(height);
+
+    }
+
+    @OnClick(R2.id.activity_level)
+    void changeActivityLevel() {
+        Bundle bundle = new Bundle();
+        bundle.putString(SettingsDialogFragment.SETTINGS_TYPE, SettingsDialogFragment.ACTIVITY_LEVEL);
+        SettingsDialogFragment dialog = SettingsDialogFragment.newInstance(bundle);
+        dialog.setTargetFragment(this, 0);
+        dialog.show(getActivity().getSupportFragmentManager(), "dialog");
+    }
+
+    @BindView(R2.id.text_activity_level) TextView activityLevel;
+    void setActivityLevel(String activityLevel) {
+        this.activityLevel.setText(activityLevel);
 
     }
 

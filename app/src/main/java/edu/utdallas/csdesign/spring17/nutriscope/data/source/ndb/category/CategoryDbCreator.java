@@ -2,8 +2,6 @@ package edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.category;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
 import java.util.concurrent.Callable;
 
 /**

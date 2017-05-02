@@ -1,3 +1,5 @@
+![logo](https://github.com/jtexp/NutriScope/blob/master/app/src/main/res/drawable/web_hi_res_512.png?raw=true)
+
 # NutriScope
 Nutriscope is an open source Android application to track Nutrition. The app implements Model-View-Presenter and Repository pattern.  Dependency injection is handled with Dagger2. 
 

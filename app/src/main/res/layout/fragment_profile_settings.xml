@@ -93,7 +93,7 @@
 
 
             <LinearLayout
-                android:id="@+id/gender"
+                android:id="@+id/sex"
                 style="@style/SettingItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -103,10 +103,10 @@
                     style="@style/SettingHeaderText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/gender"/>
+                    android:text="@string/sex"/>
 
                 <TextView
-                    android:id="@+id/text_gender"
+                    android:id="@+id/text_sex"
                     style="@style/SettingContentText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

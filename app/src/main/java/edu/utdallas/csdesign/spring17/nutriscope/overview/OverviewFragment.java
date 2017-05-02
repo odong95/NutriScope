@@ -23,11 +23,9 @@ import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +35,6 @@ import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.addeditfood.AddEditFoodActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFood;
 import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryItem;
-import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.Nutrition;
 import edu.utdallas.csdesign.spring17.nutriscope.graph.GraphActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.searchfood.SearchFoodActivity;
