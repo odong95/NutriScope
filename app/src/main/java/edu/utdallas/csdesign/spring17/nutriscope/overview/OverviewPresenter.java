@@ -124,7 +124,7 @@ final class OverviewPresenter implements OverviewContract.Presenter {
                                 String p = "";
                                 if (fn.equal(208)) {
                                     double i = user.getCalorieGoal() - val;
-                                    p = Double.toString(i);
+                                    p = String.format("%.0f", i);
                                 } else {
                                     val /= goal;
                                     val *= 100;
