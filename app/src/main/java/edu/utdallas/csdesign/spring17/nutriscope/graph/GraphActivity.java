@@ -139,30 +139,11 @@ public class GraphActivity extends AppCompatActivity implements View.OnClickList
                                 for (int i = 0; i < items.size(); i++) {
                                     double val = 0;
                                     double goal = 0;
-                                    double calConsumed = 0;
-                                    if(items.get(i).getNutrients().containsKey("208")) {
-                                        calConsumed = items.get(i).getNutrient("208");
-                                    }
                                     if (items.get(i).getNutrients().containsKey(Integer.toString(nutrientList.get(n).getNutrientId()))) {
                                         val = items.get(i).getNutrient(Integer.toString(nutrientList.get(n).getNutrientId()));
                                         if(nutrientList.get(n).equal(208))
                                         {
                                             goal = calGoal;
-                                        }
-                                        else if(nutrientList.get(n).equal(205))
-                                        {
-                                            val *= 4;
-                                            goal=calConsumed;
-                                        }
-                                        else if(nutrientList.get(n).equal(203))
-                                        {
-                                            val *= 4;
-                                            goal=calConsumed;
-                                        }
-                                        else if(nutrientList.get(n).equal(204))
-                                        {
-                                            val *= 9;
-                                            goal=calConsumed;
                                         }
                                         else
                                         {
@@ -232,6 +213,7 @@ public class GraphActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
                 DecimalFormat mFormat = new DecimalFormat("###,###,##0.0");
+                //return mFormat.format(value * 100) + " %";
                 return "";
             }
         });
