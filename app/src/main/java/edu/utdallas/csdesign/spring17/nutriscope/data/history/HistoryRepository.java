@@ -42,6 +42,7 @@ public class HistoryRepository implements Repository<HistoryItem>, UserListener 
     @Inject
     public HistoryRepository(UserManager userManager) {
         this.userManager = userManager;
+        userManager.addListener(this);
 
 
     }
@@ -49,6 +50,7 @@ public class HistoryRepository implements Repository<HistoryItem>, UserListener 
     @Override
     public void userLoggedIn() {
         Log.d(TAG, "user logged in, clearing history");
+        isInit = false;
 
 
     }
