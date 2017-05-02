@@ -12,6 +12,8 @@ import edu.utdallas.csdesign.spring17.nutriscope.ApplicationScope;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Specification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserListener;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.UserManager;
 
 /**
  * The purpose of this class is to hold a sorted list of all items that will be displayed on the
@@ -20,23 +22,42 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.Trackable;
 
 
 @ApplicationScope
-public class HistoryRepository implements Repository<HistoryItem> {
+public class HistoryRepository implements Repository<HistoryItem>, UserListener {
     private final static String TAG = "HistoryRepository";
 
     private boolean isInit = false;
+    private boolean userSwitched = true;
 
     List<HistoryItem> history = new ArrayList<>();
 
     List<RepositoryInfo<Trackable>> repos = new LinkedList<>();
 
     public void putRepo(RepositoryInfo<Trackable> repo) {
+        Log.d(TAG, repo.getType().toString());
         repos.add(repo);
     }
 
+    UserManager userManager;
 
     @Inject
-    public HistoryRepository() {
+    public HistoryRepository(UserManager userManager) {
+        this.userManager = userManager;
 
+
+    }
+
+    @Override
+    public void userLoggedIn() {
+        Log.d(TAG, "user logged in, clearing history");
+
+
+    }
+
+    @Override
+    public void userLoggedOut() {
+        Log.d(TAG, "user logged out, clearing history");
+        userSwitched = true;
+        isInit = false;
 
     }
 
@@ -60,11 +81,13 @@ public class HistoryRepository implements Repository<HistoryItem> {
 
     @Override
     public void queryItem(Specification specification, final QueryCallback<HistoryItem> callback) {
+
+
         // return entire sorted list if spec is null
         if (specification == null) {
             Log.d(TAG, "history query called");
             // the first time, go to each child repo and query full contents
-            if (true) {
+            if (!isInit) {
                 Log.d(TAG, "first time");
                 history.clear();
                 for (int i = 0; i < repos.size(); i++) {
