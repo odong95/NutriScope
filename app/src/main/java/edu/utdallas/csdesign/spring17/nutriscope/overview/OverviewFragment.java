@@ -40,6 +40,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.history.HistoryItem;
 import edu.utdallas.csdesign.spring17.nutriscope.data.nutrition.Nutrition;
 import edu.utdallas.csdesign.spring17.nutriscope.graph.GraphActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
+import edu.utdallas.csdesign.spring17.nutriscope.searchfood.SearchFoodActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.settings.ProfileSettingsActivity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -91,7 +92,6 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
         Log.d(TAG, "onResume");
         super.onResume();
         presenter.start();
-        presenter.loadNutritionProgress();
     }
 
     @Override
@@ -227,14 +227,14 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
     @OnClick(R2.id.overview_bottom_sheet_add_food)
     public void submit() {
-        Log.d(TAG, "overview fab clicked");
-        showAddEditFood();
+        showSearchFood();
 
     }
 
     @OnClick(R2.id.fab_add_overview)
     public void showBottomSheet() {
-        showAddEditFood();
+        Log.d(TAG, "overview fab clicked");
+        showSearchFood();
         /*behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         fab.setVisibility(View.INVISIBLE);*/
 
@@ -252,9 +252,9 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
     }
 
-    public void showAddEditFood() {
+    public void showSearchFood() {
         hideBottomSheet();
-        Intent intent = new Intent(getActivity(), AddEditFoodActivity.class);
+        Intent intent = new Intent(getActivity(), SearchFoodActivity.class);
         startActivity(intent);
 
     }

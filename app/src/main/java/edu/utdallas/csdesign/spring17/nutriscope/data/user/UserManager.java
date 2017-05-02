@@ -271,10 +271,15 @@ public class UserManager {
             db.child(uid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    setUser(dataSnapshot.getValue(User.class));
-                    Log.d(TAG, "retrieved user data");
-                    isDirty = false;
-                    taskStatus.success(UserStatus.SUCCESS);
+                    if (dataSnapshot.getValue() != null) {
+                        setUser(dataSnapshot.getValue(User.class));
+                        Log.d(TAG, "retrieved user data");
+                        isDirty = false;
+                        taskStatus.success(UserStatus.SUCCESS);
+                    }
+                    else {
+                        taskStatus.failure(UserStatus.FAILURE);
+                    }
                 }
 
                 @Override

@@ -4,11 +4,14 @@ import android.util.Log;
 
 import com.google.common.collect.ImmutableList;
 
+import org.threeten.bp.DateTimeUtils;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneOffset;
+import org.threeten.bp.ZonedDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import edu.utdallas.csdesign.spring17.nutriscope.ApplicationScope;
 import edu.utdallas.csdesign.spring17.nutriscope.data.Repository;
@@ -63,8 +66,10 @@ public class ConsumedFoodRepository implements Repository<ConsumedFood> {
     @Override
     public void createItem(ConsumedFood item, CreateCallback callback) {
         consumedFoodFirebaseRepository.createItem(item, callback);
-        nutritionRepository.updateItem(Nutrition.ndbToNutrition(LocalDateTime.ofEpochSecond(item.getDateTimeConsumed(), 0, ZoneOffset.UTC).toLocalDate().toEpochDay(),
-                item), new UpdateCallback() {
+        nutritionRepository.updateItem(Nutrition.ndbToNutrition(
+                LocalDateTime.ofEpochSecond(item.getDateTimeConsumed(), 0,
+                        ZoneOffset.ofTotalSeconds(TimeZone.getDefault().getRawOffset()/1000))
+                        .toLocalDate().toEpochDay(), item), new UpdateCallback() {
                     @Override
                     public void onUpdateComplete() {
 

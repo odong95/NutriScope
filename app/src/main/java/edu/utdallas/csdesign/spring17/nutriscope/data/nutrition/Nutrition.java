@@ -86,6 +86,10 @@ public class Nutrition implements Trackable {
                 nutrition.addNutrient(nutrient.getNutrientId(),
                         Double.parseDouble(nutrient.getValue()) * quantity / (1000*1000));
             }
+            else if (nutrient.getUnit().equals("kcal")) {
+                nutrition.addNutrient(nutrient.getNutrientId(),
+                        Double.parseDouble(nutrient.getValue()) * quantity);
+            }
             else {
                 Log.w(TAG, "unsupported unit " + nutrient.getUnit());
             }
