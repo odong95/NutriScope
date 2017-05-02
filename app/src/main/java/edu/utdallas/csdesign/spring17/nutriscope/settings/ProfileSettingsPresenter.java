@@ -47,6 +47,7 @@ public class ProfileSettingsPresenter implements ProfileSettingsContract.Present
             @Override
             public void getUser(User user) {
                 retrieveUser.getUser(user);
+                view.populateUser(user);
             }
         });
     }
@@ -54,6 +55,7 @@ public class ProfileSettingsPresenter implements ProfileSettingsContract.Present
     @Override
     public void modifyUser(User user) {
         userManager.setUser(user);
+        view.populateUser(user);
 
     }
 

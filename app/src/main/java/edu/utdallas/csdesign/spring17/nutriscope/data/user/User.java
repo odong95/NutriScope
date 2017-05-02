@@ -14,9 +14,9 @@ public class User {
     private String height;
     private String weight;
     private String activityLevel;
-    private int calorieGoal;
-    private String hft;
-    private String hin;
+    private int calorieGoal = 2000;
+    private String hft = "0";
+    private String hin = "0";
 
     public User() {
 
@@ -118,5 +118,29 @@ public class User {
     public String getHin(){return hin;};
 
     public void setHin(String hin){this.hin = hin;};
+
+    public static String parseLvl(String lvl)
+    {
+        if (lvl != null) {
+            if (lvl.equals("1.2")) {
+                return "Sedentary";
+            }
+            if (lvl.equals("1.375")) {
+                return "Lightly Active";
+            }
+            if (lvl.equals("1.55")) {
+                return "Moderately Active";
+            }
+            if (lvl.equals("1.7")) {
+                return "Very Active";
+            } else {
+                return "Extra Active";
+            }
+        }
+        else {
+            return "";
+        }
+
+    }
 
 }
