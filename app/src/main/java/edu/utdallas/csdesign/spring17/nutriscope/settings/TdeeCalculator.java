@@ -1,6 +1,7 @@
 package edu.utdallas.csdesign.spring17.nutriscope.settings;
 
 
+import android.net.ParseException;
 import android.text.TextUtils;
 
 public class TdeeCalculator
@@ -62,6 +63,40 @@ public class TdeeCalculator
             return true;
         }
         return false;
+    }
+
+    public static double getTdee(String ft, String in, String age, String w,
+                                 String activityLevel, String sex) {
+
+
+        try {
+            double height = Integer.parseInt(ft) * 30.48 + (Integer.parseInt(in) * 2.54);
+            double weight = Double.parseDouble(w) * 0.453592;
+            double dAge = Double.parseDouble(age);
+            double dActivityLevel = Double.parseDouble(activityLevel);
+
+        if (height == 0.0 || weight == 0.0 || dAge == 0.0 || dActivityLevel == 0.0 || (!sex.equals("Male") && !sex.equals("Female"))) {
+            throw new IllegalArgumentException("argument 0 or not m/f");
+        }
+
+
+        if(sex.equals("Male"))
+        {
+            return 10 * weight + 6.25 * height - 5 * dAge + 5 * dActivityLevel;
+        }
+        else
+        {
+            return 10 * weight + 6.25 * height - 5 * dAge - 161 * dActivityLevel;
+        }
+
+        } catch(NumberFormatException ex) {
+            throw new IllegalArgumentException("user not right data");
+        } catch(NullPointerException ex) {
+            throw new IllegalArgumentException("NPE");
+        }
+
+
+
     }
 
 }

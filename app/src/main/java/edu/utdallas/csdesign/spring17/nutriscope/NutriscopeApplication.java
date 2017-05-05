@@ -60,8 +60,11 @@ public class NutriscopeApplication extends Application {
 
         netComponent = DaggerNetComponent.builder().build();
 
+        userManagerComponent = DaggerUserManagerComponent.builder()
+                .userManagerModule(new UserManagerModule(new UserManager())).build();
+
         historyRepositoryComponent = DaggerHistoryRepositoryComponent.builder()
-                .historyRepositoryModule(new HistoryRepositoryModule(new HistoryRepository()))
+                .historyRepositoryModule(new HistoryRepositoryModule(new HistoryRepository(userManagerComponent.getUserManager())))
                 .build();
 
         foodRepositoryComponent = DaggerFoodRepositoryComponent.builder()
@@ -74,8 +77,7 @@ public class NutriscopeApplication extends Application {
 
 
 
-        userManagerComponent = DaggerUserManagerComponent.builder()
-                .userManagerModule(new UserManagerModule(new UserManager())).build();
+
 
         consumedFoodRepositoryComponent = DaggerConsumedFoodRepositoryComponent.builder()
                 .consumedFoodRepositoryModule(new ConsumedFoodRepositoryModule(

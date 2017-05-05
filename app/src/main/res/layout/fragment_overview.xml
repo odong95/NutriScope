@@ -268,7 +268,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="120dp"
         android:orientation="vertical">
 
         <ImageView
@@ -284,7 +284,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="8dp"
-            android:text="Add a food to get started!" />
+            android:text="Welcome" />
 
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

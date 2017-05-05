@@ -1,9 +1,13 @@
 package edu.utdallas.csdesign.spring17.nutriscope.settings;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -12,17 +16,32 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
+import edu.utdallas.csdesign.spring17.nutriscope.data.user.NullUser;
 import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
+import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.settings.dialogs.SettingsDialogFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -186,8 +205,10 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
 
     }
 
+    private User user = new NullUser();
     @Override
     public void populateUser(User user) {
+        this.user = user;
         setNickname(user.getNickname());
         setCalorieGoal(user.getCalorieGoal());
         setSex(user.getSex());
@@ -302,12 +323,33 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
 
     }
 
+    @OnClick(R2.id.calculate_tdee)
+    void calculateTdee(){
+
+        if (user instanceof NullUser) {
+            onErrorResponse("No User Data");
+        }
+        try {
+            user.setCalorieGoal((int) (TdeeCalculator.getTdee(user.getHft(), user.getHin(), user.getAge(), user.getWeight(), user.getActivityLevel(), user.getSex())));
+            presenter.modifyUser(user);
+        } catch (IllegalArgumentException ex) {
+            onErrorResponse("Height, Age, Weight, Activity Level and Sex must be entered.");
+            Log.w(TAG, ex.toString());
+        }
+
+    }
+
+
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users");
+    FirebaseUser authuser = auth.getCurrentUser();
+
     @OnClick(R2.id.change_email_button)
     void handleChangeEmail() {
-        /*
-        LayoutInflater layoutInflater = LayoutInflater.from(ProfileSettingsActivity.this);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         final View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingsActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(promptView);
 
         TextView title = (TextView) promptView.findViewById(R.id.input_dialog_text_msg);
@@ -321,7 +363,7 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
                 if (!TextUtils.isEmpty(p2.getText().toString().trim())) {
                     showLoadingDialog();
                     AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), p2.getText().toString().trim());
-                    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    authuser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (!task.isSuccessful()) {
@@ -330,17 +372,18 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
                             } else {
                                 Log.w("AUTH", "reAuthentication:success - " + auth.getCurrentUser().getEmail());
                                 showLoadingDialog();
-                                user.updateEmail(p1.getText().toString().trim())
+                                authuser.updateEmail(p1.getText().toString().trim())
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     db.child(user.getUid()).child("email").setValue(p1.getText().toString().trim());
-                                                    Toast.makeText(ProfileSettingsActivity.this, "Email updated, please login again", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getActivity(), "Email updated, please login again", Toast.LENGTH_LONG).show();
                                                     auth.signOut();
+                                                    goToLogin();
                                                 } else {
                                                     Log.w("AUTH", "emailUpdate:failed", task.getException());
-                                                    Toast.makeText(ProfileSettingsActivity.this, "Failed to update email, please try again", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getActivity(), "Failed to update email, please try again", Toast.LENGTH_LONG).show();
                                                 }
                                                 hideProgressDialog();
 
@@ -363,15 +406,15 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
         });
         builder.show();
 
-        */
+
     }
 
     @OnClick(R2.id.change_password_button)
     void handleChangePassword() {
-        /*
-        LayoutInflater layoutInflater = LayoutInflater.from(ProfileSettingsActivity.this);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         final View promptView = layoutInflater.inflate(R.layout.input_dialog_password, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingsActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(promptView);
 
         final EditText p0 = (EditText) promptView.findViewById(R.id.edittext_input_dialog1);
@@ -384,7 +427,7 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
                 if (!TextUtils.isEmpty(p0.getText().toString().trim())) {
                     showLoadingDialog();
                     AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), p0.getText().toString().trim());
-                    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    authuser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (!task.isSuccessful()) {
@@ -394,16 +437,17 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
                                 Log.w("AUTH", "reAuthentication:success - " + auth.getCurrentUser().getEmail());
                                 if (arePasswordsGood(p1.getText().toString().trim(), p2.getText().toString().trim())) {
                                     showLoadingDialog();
-                                    user.updatePassword(p1.getText().toString().trim())
+                                    authuser.updatePassword(p1.getText().toString().trim())
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
-                                                        Toast.makeText(ProfileSettingsActivity.this, "Password updated, please login again", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(getActivity(), "Password updated, please login again", Toast.LENGTH_LONG).show();
                                                         auth.signOut();
+                                                        goToLogin();
                                                     } else {
                                                         Log.w("AUTH", "passwordUpdate:failed", task.getException());
-                                                        Toast.makeText(ProfileSettingsActivity.this, "Failed to update password, please try again", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(getActivity(), "Failed to update password, please try again", Toast.LENGTH_LONG).show();
                                                     }
                                                     hideProgressDialog();
 
@@ -425,15 +469,15 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
             }
         });
         builder.show();
-        */
+
     }
 
     @OnClick(R2.id.delete_account_button)
     void handleDeleteAccount() {
-        /*
-        LayoutInflater layoutInflater = LayoutInflater.from(ProfileSettingsActivity.this);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         final View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingsActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Delete Account?");
         builder.setView(promptView);
 
@@ -456,7 +500,7 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
                     if (!TextUtils.isEmpty(p2.getText().toString().trim())) {
                         showLoadingDialog();
                         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), p2.getText().toString().trim());
-                        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        authuser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (!task.isSuccessful()) {
@@ -467,16 +511,17 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
                                     showLoadingDialog();
                                     final String uid = user.getUid();
                                     db.child(uid).removeValue();
-                                    user.delete()
+                                    authuser.delete()
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
-                                                        Toast.makeText(ProfileSettingsActivity.this, "Account deleted.", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(getActivity(), "Account deleted.", Toast.LENGTH_LONG).show();
                                                         auth.signOut();
+                                                        goToLogin();
                                                     } else {
                                                         Log.w("AUTH", "accountDelete:failed", task.getException());
-                                                        Toast.makeText(ProfileSettingsActivity.this, "Failed to delete account, please try again", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(getActivity(), "Failed to delete account, please try again", Toast.LENGTH_LONG).show();
                                                     }
                                                     hideProgressDialog();
 
@@ -503,7 +548,13 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
             }
         });
         builder.show();
-        */
+
+    }
+
+    @OnClick(R2.id.logout_button)
+    void logout(){
+        auth.signOut();
+        goToLogin();
     }
 
 
@@ -549,10 +600,9 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
 
     public void handleFacebookAccessToken(AccessToken accessToken) {
 
-        /*
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
         auth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
@@ -563,17 +613,18 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
                             showLoadingDialog();
                             final String uid = user.getUid();
                             db.child(uid).removeValue();
-                            user.delete()
+                            authuser.delete()
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Toast.makeText(ProfileSettingsActivity.this, "Account deleted.", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getActivity(), "Account deleted.", Toast.LENGTH_LONG).show();
                                                 auth.signOut();
                                                 LoginManager.getInstance().logOut();
+                                                goToLogin();
                                             } else {
                                                 Log.w("AUTH", "accountDelete:failed", task.getException());
-                                                Toast.makeText(ProfileSettingsActivity.this, "Failed to delete account, please try again", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getActivity(), "Failed to delete account, please try again", Toast.LENGTH_LONG).show();
                                             }
                                             hideProgressDialog();
 
@@ -583,6 +634,12 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
                         }
                     }
                 });
-                */
+
     }
+
+    private void goToLogin() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+    }
+
 }
