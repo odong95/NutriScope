@@ -21,6 +21,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.data.consumedfood.ConsumedFoodR
 import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodRepository;
 import edu.utdallas.csdesign.spring17.nutriscope.data.food.FoodSpecification;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Food;
+import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.FoodNutrients;
 import edu.utdallas.csdesign.spring17.nutriscope.data.source.ndb.json.Nutrient;
 
 /**
@@ -95,8 +96,10 @@ public class AddEditFoodPresenter implements AddEditFoodContract.Presenter {
         contentList.add(new FoodName(food.getDesc().getName()));
         contentList.add(new Quantity(quantity, food.getNutrients().get(0).getMeasures()));
         for (Nutrient nutrient : food.getNutrients()) {
-            contentList.add(nutrient);
-
+            for (FoodNutrients foodNutrients : FoodNutrients.values()) {
+                if (Integer.parseInt(nutrient.getNutrientId()) == foodNutrients.getNutrientId())
+                    contentList.add(nutrient);
+            }
         }
 
         view.populateContent(contentList);
