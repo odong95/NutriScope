@@ -37,8 +37,8 @@
                     android:maxLength="25"
                     android:maxLines="1"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView5"
-                    app:layout_constraintLeft_toLeftOf="@+id/textView5"
+                    app:layout_constraintBottom_toTopOf="@+id/food_consumed_date"
+                    app:layout_constraintLeft_toLeftOf="@+id/food_consumed_date"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_chainStyle="packed"
                     tools:text="McDonald's Big Mac"/>
@@ -58,12 +58,11 @@
                     tools:layout_constraintTop_creator="1"/>
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/food_consumed_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="72dp"
                     android:layout_marginStart="72dp"
-                    android:text="Brand / Food Category"
                     android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"

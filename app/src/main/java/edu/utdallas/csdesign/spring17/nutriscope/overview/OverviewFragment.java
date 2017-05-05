@@ -24,8 +24,13 @@ import android.widget.TextView;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneOffset;
+import org.threeten.bp.format.DateTimeFormatter;
+
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -302,6 +307,7 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
 
             @BindView(R.id.food_name) TextView foodName;
             @BindView(R.id.quantity_consumed) TextView textViewQtyCons;
+            @BindView(R.id.food_consumed_date) TextView date;
 
             private ConsumedFood consumedFood;
 
@@ -315,6 +321,10 @@ public class OverviewFragment extends Fragment implements OverviewContract.View 
                 this.consumedFood = consumedFood;
                 foodName.setText(consumedFood.getFood().getDesc().getName());
                 textViewQtyCons.setText((consumedFood.getQuantity() + "\ngrams"));
+                date.setText(LocalDateTime.ofEpochSecond(consumedFood.getDateTimeConsumed(), 0,
+                        ZoneOffset.ofTotalSeconds(TimeZone.getDefault().getRawOffset()/1000))
+                        .format(DateTimeFormatter.ofPattern("E hh:mm a")));
+
             }
 
 
