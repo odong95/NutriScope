@@ -265,7 +265,7 @@
                 android:textStyle="bold"/>
 
             <Button
-                android:id="@+id/go_back_button"
+                android:id="@+id/logout_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

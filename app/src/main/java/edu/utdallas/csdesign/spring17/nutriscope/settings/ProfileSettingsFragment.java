@@ -2,6 +2,7 @@ package edu.utdallas.csdesign.spring17.nutriscope.settings;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -40,6 +41,7 @@ import edu.utdallas.csdesign.spring17.nutriscope.R;
 import edu.utdallas.csdesign.spring17.nutriscope.R2;
 import edu.utdallas.csdesign.spring17.nutriscope.data.user.NullUser;
 import edu.utdallas.csdesign.spring17.nutriscope.data.user.User;
+import edu.utdallas.csdesign.spring17.nutriscope.login.LoginActivity;
 import edu.utdallas.csdesign.spring17.nutriscope.settings.dialogs.SettingsDialogFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -378,6 +380,7 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
                                                     db.child(user.getUid()).child("email").setValue(p1.getText().toString().trim());
                                                     Toast.makeText(getActivity(), "Email updated, please login again", Toast.LENGTH_LONG).show();
                                                     auth.signOut();
+                                                    goToLogin();
                                                 } else {
                                                     Log.w("AUTH", "emailUpdate:failed", task.getException());
                                                     Toast.makeText(getActivity(), "Failed to update email, please try again", Toast.LENGTH_LONG).show();
@@ -441,6 +444,7 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
                                                     if (task.isSuccessful()) {
                                                         Toast.makeText(getActivity(), "Password updated, please login again", Toast.LENGTH_LONG).show();
                                                         auth.signOut();
+                                                        goToLogin();
                                                     } else {
                                                         Log.w("AUTH", "passwordUpdate:failed", task.getException());
                                                         Toast.makeText(getActivity(), "Failed to update password, please try again", Toast.LENGTH_LONG).show();
@@ -514,6 +518,7 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
                                                     if (task.isSuccessful()) {
                                                         Toast.makeText(getActivity(), "Account deleted.", Toast.LENGTH_LONG).show();
                                                         auth.signOut();
+                                                        goToLogin();
                                                     } else {
                                                         Log.w("AUTH", "accountDelete:failed", task.getException());
                                                         Toast.makeText(getActivity(), "Failed to delete account, please try again", Toast.LENGTH_LONG).show();
@@ -544,6 +549,12 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
         });
         builder.show();
 
+    }
+
+    @OnClick(R2.id.logout_button)
+    void logout(){
+        auth.signOut();
+        goToLogin();
     }
 
 
@@ -610,6 +621,7 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
                                                 Toast.makeText(getActivity(), "Account deleted.", Toast.LENGTH_LONG).show();
                                                 auth.signOut();
                                                 LoginManager.getInstance().logOut();
+                                                goToLogin();
                                             } else {
                                                 Log.w("AUTH", "accountDelete:failed", task.getException());
                                                 Toast.makeText(getActivity(), "Failed to delete account, please try again", Toast.LENGTH_LONG).show();
@@ -624,4 +636,10 @@ public class ProfileSettingsFragment extends Fragment implements ProfileSettings
                 });
 
     }
+
+    private void goToLogin() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+    }
+
 }
